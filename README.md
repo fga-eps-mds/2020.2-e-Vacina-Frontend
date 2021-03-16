@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Carteira de Vacinação Digital
 
 ## Descrição
@@ -22,8 +21,3 @@ Para mais informações sobre o projeto acesse nossa [documentação](https://fg
  190013354|Gabriel Luiz  
  190014032|Guilherme Rogelin
  190047968|Paulo Vitor  
-
-=======
-# e-Vacina
-## Carteira de Vacina digital
->>>>>>> upstream/devel
