@@ -28,7 +28,7 @@ Widget _menuRegistro(context) {
             TextStyle(color: Color.fromRGBO(42, 174, 198, 1.0), fontSize: 25),
       ),
     ),
-    body: Container(
+    body: SingleChildScrollView(
       padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
