@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'RegisterScreen.dart';
+import 'RegisterScreen.dart';
+import 'adminConfig_screen.dart';
 
 void main() {
   runApp(MyApp());
