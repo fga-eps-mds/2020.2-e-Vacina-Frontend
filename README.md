@@ -1,7 +1,7 @@
 # Carteira de Vacinação Digital
 
 ## Descrição
-Este é o repositório destinado ao frontend do e-Vacina. O e-Vacina é um aplicativo para IOS e Android de carteira de vacinação digital. O e-Vacina irá ajudar nas campanhas de vacinação da populção, informando novas vacinas e campanhas além de guardar dados sobre vacinas já aplicadas.
+Este é o repositório destinado ao frontend do e-Vacina. O e-Vacina é um aplicativo para IOS e Android de carteira de vacinação digital. O e-Vacina irá ajudar nas campanhas de vacinação da população, informando novas vacinas e campanhas além de guardar dados sobre vacinas já aplicadas.
 
 Caso deseje colaborar acesse o nosso [Contributing](https://github.com/fga-eps-mds/2020.2-e-Vacina-Backend/blob/main/CONTRIBUTING.md).
 
