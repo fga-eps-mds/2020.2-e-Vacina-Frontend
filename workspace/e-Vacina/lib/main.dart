@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'RegisterScreen.dart';
-import 'RegisterScreen.dart';
 import 'adminConfig_screen.dart';
 
 void main() {
@@ -16,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primaryColor: Color.fromRGBO(42, 174, 198, 1.0),
           visualDensity: VisualDensity.adaptivePlatformDensity),
-      home: RegisterScreen(),
+      home: AdminConfig(),
     );
   }
 }

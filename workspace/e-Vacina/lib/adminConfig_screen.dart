@@ -12,7 +12,7 @@ class AdminConfig extends StatelessWidget {
         shadowColor: Color.fromRGBO(0, 0, 0, 1),
         centerTitle: true,
         title: Text(
-          'configurações',
+          'Configurações',
           style: TextStyle(
             fontFamily: 'Roboto',
             fontSize: 15,
@@ -30,12 +30,20 @@ class AdminConfig extends StatelessWidget {
         }),
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(top: 20.0, right: 30.0),
-            child: Text(
-              'Salvar',
-              style: TextStyle(color: Color.fromRGBO(42, 174, 198, 1)),
-              textAlign: TextAlign.start,
-            ),
+            padding: const EdgeInsets.only(right: 30.0),
+              child: TextButton(
+                  onPressed: () {
+                    print("Salvar");
+                  },
+                  child: Text(
+                    "Salvar",
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 15,
+                      color: Color.fromRGBO(42, 174, 198, 1),
+                    ),
+                  ),
+            )
           ),
         ],
       ),
@@ -48,16 +56,22 @@ class AdminConfig extends StatelessWidget {
               MyWidgets().caixaTexto('Email'),
               MyWidgets().caixaTexto('Telefone'),
               MyWidgets().caixaTexto('Senha'),
-              
-              ElevatedButton(
-                child: Text('Excluir conta',
-                style: TextStyle(
-                  color: Colors.red,
-                fontFamily: 'Roboto',
-                fontSize: 20)),
-                onPressed: null,
+              Padding(
+                padding: EdgeInsets.only(right: 248),
+                child: TextButton(
+                  onPressed: () {
+                    print("Excluir Conta");
+                  },
+                  child: Text(
+                    "Excluir Conta",
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 17,
+                      color: Color.fromARGB(0xFF, 255, 66, 66),
+                    ),
+                  ),
+                ),
               ),
-              
             ],
           ),
         ),
