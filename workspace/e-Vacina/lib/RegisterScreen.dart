@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
-import 'Caixa.dart';
+import 'MyWidgets.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -21,7 +21,9 @@ class RegisterScreenState extends State<RegisterScreen> {
           title: Text(
             'e-Vacina',
             style: TextStyle(
-                color: Color.fromRGBO(42, 174, 198, 1.0), fontSize: 25),
+              color: Theme.of(context).primaryColor,
+              fontSize: 25,
+            ),
           ),
           leading: Builder(
             builder: (BuildContext context) {
@@ -29,6 +31,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                   icon: const Icon(Icons.arrow_back),
                   onPressed: () {
                     print('voltar');
+                    Navigator.pop(context);
                   });
             },
           )),
@@ -44,7 +47,11 @@ class RegisterScreenState extends State<RegisterScreen> {
             genderPick(),
             MyWidgets().caixaTexto('Email'),
             MyWidgets().caixaTexto('Senha', isObscure: true),
-            MyWidgets().button('Registrar', 300.0, 50.0),
+            MyWidgets().button(
+                'Registrar', 300.0, 50.0, 26, Theme.of(context).primaryColor,
+                () {
+              print('Registro');
+            }),
           ],
         ),
       ),
