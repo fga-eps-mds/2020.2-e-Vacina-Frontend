@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'adminConfig_screen.dart';
+import 'LoginScreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primaryColor: Color.fromRGBO(42, 174, 198, 1.0),
           visualDensity: VisualDensity.adaptivePlatformDensity),
-      home: AdminConfig(),
+      home: LoginMenu(),
     );
   }
 }
