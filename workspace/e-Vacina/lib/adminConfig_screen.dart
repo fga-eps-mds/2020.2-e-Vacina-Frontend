@@ -55,7 +55,7 @@ class AdminConfig extends StatelessWidget {
             children: <Widget>[
               MyWidgets().caixaTexto('Email'),
               MyWidgets().caixaTexto('Telefone'),
-              MyWidgets().caixaTexto('Senha'),
+              MyWidgets().caixaTexto('Senha', isObscure: true),
               Padding(
                 padding: EdgeInsets.only(right: 248),
                 child: TextButton(
