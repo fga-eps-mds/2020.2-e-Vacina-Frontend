@@ -24,7 +24,9 @@ class RegisterScreenState extends State<RegisterScreen> {
           title: Text(
             'e-Vacina',
             style: TextStyle(
-                color: Color.fromRGBO(42, 174, 198, 1.0), fontSize: 25),
+              color: Theme.of(context).primaryColor,
+              fontSize: 25,
+            ),
           ),
           leading: Builder(
             builder: (BuildContext context) {
