@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Caixa.dart';
+import 'MyWidgets.dart';
 
 class AdminConfig extends StatelessWidget {
   @override
@@ -30,21 +30,20 @@ class AdminConfig extends StatelessWidget {
         }),
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(right: 30.0),
+              padding: const EdgeInsets.only(right: 30.0),
               child: TextButton(
-                  onPressed: () {
-                    print("Salvar");
-                  },
-                  child: Text(
-                    "Salvar",
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 15,
-                      color: Color.fromRGBO(42, 174, 198, 1),
-                    ),
+                onPressed: () {
+                  print("Salvar");
+                },
+                child: Text(
+                  "Salvar",
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 15,
+                    color: Color.fromRGBO(42, 174, 198, 1),
                   ),
-            )
-          ),
+                ),
+              )),
         ],
       ),
       body: Container(
