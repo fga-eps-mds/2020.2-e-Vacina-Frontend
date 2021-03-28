@@ -23,7 +23,10 @@ class AdminConfig extends StatelessWidget {
             padding: const EdgeInsets.only(left: 30.0),
             child: IconButton(
               icon: const Icon(Icons.arrow_back),
-              onPressed: null,
+              onPressed: () {
+                print('voltar');
+                Navigator.pop(context);
+              },
               alignment: Alignment.centerRight,
             ),
           );
@@ -55,19 +58,9 @@ class AdminConfig extends StatelessWidget {
               MyWidgets().caixaTexto('Email'),
               MyWidgets().caixaTexto('Telefone'),
               MyWidgets().caixaTexto('Senha', isObscure: true),
+              MyWidgets().button('Excluir Usuário', 10, 10, 17, Color.fromARGB(0xFF, 255, 66, 66), print("Excluir Conta"))
               Padding(
                 padding: EdgeInsets.only(right: 248),
-                child: TextButton(
-                  onPressed: () {
-                    print("Excluir Conta");
-                  },
-                  child: Text(
-                    "Excluir Conta",
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 17,
-                      color: Color.fromARGB(0xFF, 255, 66, 66),
-                    ),
                   ),
                 ),
               ),
