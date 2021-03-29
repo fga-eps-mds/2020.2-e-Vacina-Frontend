@@ -1,4 +1,4 @@
-import 'package:http/http.dart';
+/*import 'package:http/http.dart';
 import 'package:flutter/material.dart' as http;
 
 Future<String> createUser() async{
@@ -13,4 +13,4 @@ Future<String> createUser() async{
   print('Response status: ${response.statusCode}');
   print('Response body: ${response.body}');
 
-}
+}*/

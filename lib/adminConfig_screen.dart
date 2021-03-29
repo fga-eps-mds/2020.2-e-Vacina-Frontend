@@ -58,12 +58,15 @@ class AdminConfig extends StatelessWidget {
               MyWidgets().caixaTexto('Email'),
               MyWidgets().caixaTexto('Telefone'),
               MyWidgets().caixaTexto('Senha', isObscure: true),
-              MyWidgets().button('Excluir Usuário', 10, 10, 17, Color.fromARGB(0xFF, 255, 66, 66), print("Excluir Conta"))
-              Padding(
+              MyWidgets().button('Excluir Usuário', 300, 50, 26,
+                  Color.fromARGB(0xFF, 255, 66, 66), () {
+                print("Excluir Conta");
+              })
+              /*Padding(
                 padding: EdgeInsets.only(right: 248),
                   ),
                 ),
-              ),
+              //),*/
             ],
           ),
         ),
