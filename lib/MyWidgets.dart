@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
 class MyWidgets {
-  
   //TextEditingController _textEditingController = TextEditingController();
 
-  Widget caixaTexto(String texto,
-      {bool numberPad = false,
-      bool isObscure = false,
-      int maxLength = TextField.noMaxLength}) {
+  Widget caixaTexto(String texto, final inputCon,
+      {bool isObscure = false,
+      int maxLength = TextField.noMaxLength,
+      TextInputType inputType = TextInputType.text}) {
+    // final inputCon = new TextEditingController();
+
     return Container(
       padding: EdgeInsets.only(bottom: 11.5),
       child: TextField(
-        //keyboardType: TextInputType.number,
+        controller: inputCon,
+        keyboardType: inputType,
         maxLength: maxLength,
         obscureText: isObscure,
         decoration: InputDecoration(
@@ -45,7 +47,7 @@ class MyWidgets {
   }
 
   Widget textButton(String label, double largura, double altura,
-      double fontSize, Color cor, Function? onPressedAction) {
+      double fontSize, Color cor, Function onPressedAction) {
     return Padding(
       padding: EdgeInsets.only(bottom: 11.5),
       child: SizedBox(

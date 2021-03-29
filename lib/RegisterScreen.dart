@@ -14,6 +14,18 @@ class RegisterScreenState extends State<RegisterScreen> {
   String dropdownMonth;
   String dropdownYear;
 
+  var _email;
+  var _password;
+  var _phone;
+  var _name;
+  var _cpf;
+
+  final emailCon = new TextEditingController();
+  final passwordCon = new TextEditingController();
+  final phoneCon = new TextEditingController();
+  final cpfCon = new TextEditingController();
+  final nameCon = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,8 +57,8 @@ class RegisterScreenState extends State<RegisterScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              MyWidgets().caixaTexto('Nome'),
-              MyWidgets().caixaTexto('CPF', maxLength: 11),
+              MyWidgets().caixaTexto('Nome', nameCon),
+              MyWidgets().caixaTexto('CPF', cpfCon, maxLength: 11),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -56,13 +68,21 @@ class RegisterScreenState extends State<RegisterScreen> {
                 ],
               ),
               genderPick(),
-              MyWidgets().caixaTexto('Telefone'),
-              MyWidgets().caixaTexto('Email'),
-              MyWidgets().caixaTexto('Senha', isObscure: true),
+              MyWidgets().caixaTexto('Telefone', phoneCon),
+              MyWidgets().caixaTexto('Email', emailCon),
+              MyWidgets().caixaTexto('Senha', passwordCon, isObscure: true),
               MyWidgets().button(
                   'Registrar', 300.0, 50.0, 26, Theme.of(context).primaryColor,
                   () {
-                print('Registro');
+                setState(() {
+                  _cpf = cpfCon.text;
+                  _email = emailCon.text;
+                  _name = nameCon.text;
+                  _password = passwordCon.text;
+                  _phone = phoneCon.text;
+                });
+                print(
+                    'Registro email $_email, senha $_password, telefone $_phone, nome $_name, cpf $_cpf');
               }),
             ]),
       ),
