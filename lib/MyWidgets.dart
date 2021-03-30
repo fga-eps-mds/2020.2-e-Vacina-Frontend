@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
 class MyWidgets {
-  //TextEditingController _textEditingController = TextEditingController();
-
-  Widget caixaTexto(String texto,
-      {bool numberPad = false,
-      bool isObscure = false,
-      int maxLength = TextField.noMaxLength}) {
+  Widget caixaTexto(
+    String texto, {
+    bool numberPad = false,
+    bool isObscure = false,
+    int maxLength = TextField.noMaxLength,
+    TextInputType textInput = TextInputType.text,
+  }) {
     return Container(
       padding: EdgeInsets.only(bottom: 11.5),
       child: TextField(
-        //keyboardType: TextInputType.number,
+        keyboardType: textInput,
         maxLength: maxLength,
         obscureText: isObscure,
         decoration: InputDecoration(
@@ -64,6 +65,44 @@ class MyWidgets {
           ),
         ),
       ),
+    );
+  }
+}
+
+class GenderPicker extends StatefulWidget {
+  @override
+  _GenderPickerState createState() => _GenderPickerState();
+}
+
+class _GenderPickerState extends State<GenderPicker> {
+  String dropdownValue;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(bottom: 31.5),
+      child: DropdownButtonFormField<String>(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+          ),
+          hint: Text('Sexo'),
+          value: dropdownValue,
+          isExpanded: true,
+          onChanged: (String newValue) {
+            setState(() {
+              dropdownValue = newValue;
+              print(newValue);
+            });
+          },
+          items: [
+            DropdownMenuItem(
+              child: Text('Masculino'),
+              value: '1', //value pode ser mudado para valor mais significativo
+            ),
+            DropdownMenuItem(
+              child: Text('Feminino'),
+              value: '2',
+            ),
+          ]),
     );
   }
 }
