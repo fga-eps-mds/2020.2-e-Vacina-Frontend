@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'MyWidgets.dart';
 import 'RegisterScreen.dart';
+import 'adminConfig_screen.dart';
 
 class LoginMenu extends StatefulWidget {
   @override
@@ -40,6 +41,8 @@ class _LoginMenuState extends State<LoginMenu> {
             MyWidgets().button(
                 'Entrar', 320.0, 50.0, 26, Theme.of(context).primaryColor, () {
               print('Entrar');
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AdminConfig()));
             }),
             Text('OU\n'),
             MyWidgets().button('Registre-se', 200.0, 50.0, 16, gangGray, () {
