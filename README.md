@@ -12,11 +12,25 @@ Repositório destinado ao backend: [e-Vacina Back End](https://github.com/fga-ep
 ## Documentação
 Para mais informações sobre o projeto acesse nossa [documentação](https://fga-eps-mds.github.io/2020.2-e-Vacina-Backend/#/).
 
+## Instalação
+Para utilização do aplicativo será necessário:
+
+- [Flutter](https://flutter.dev/docs/get-started/install)
+
+### Clonando o repositório
+```bash
+$ git clone https://github.com/fga-eps-mds/2020.2-e-Vacina-Frontend.git
+$ cd 2020.2-e-Vacina-Frontend
+```
+### Executando o flutter
+```bash
+$ flutter run
+```
+
 ## Equipe
  Matricula|  Aluno
  ---|---
  190011408|Carlos Daniel  
- 190011424|Carlos Eduardo 
  190011611|Ciro Costa 
  190027355|Erick  
  190013354|Gabriel Luiz  
