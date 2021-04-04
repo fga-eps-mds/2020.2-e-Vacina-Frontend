@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-
 import 'MyWidgets.dart';
 
 import 'package:e_vacina/globals.dart';
@@ -11,7 +10,6 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class RegisterScreenState extends State<RegisterScreen> {
-  String dropdownValue;
   String dropdownDay;
   String dropdownMonth;
   String dropdownYear;
@@ -69,7 +67,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                   yearPick(),
                 ],
               ),
-              genderPick(),
+              GenderPicker(),
               MyWidgets().caixaTexto('Telefone', phoneCon),
               MyWidgets().caixaTexto('Email', emailCon),
               MyWidgets().caixaTexto('Senha', passwordCon, isObscure: true),
@@ -87,35 +85,6 @@ class RegisterScreenState extends State<RegisterScreen> {
               }),
             ]),
       ),
-    );
-  }
-
-  Widget genderPick() {
-    return Container(
-      padding: EdgeInsets.only(bottom: 31.5),
-      child: DropdownButtonFormField<String>(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          hint: Text('Sexo'),
-          value: dropdownValue,
-          isExpanded: true,
-          onChanged: (String newValue) {
-            setState(() {
-              dropdownValue = newValue;
-              print(newValue);
-            });
-          },
-          items: [
-            DropdownMenuItem(
-              child: Text('Masculino'),
-              value: '1', //value pode ser mudado para valor mais significativo
-            ),
-            DropdownMenuItem(
-              child: Text('Feminino'),
-              value: '2',
-            ),
-          ]),
     );
   }
 
