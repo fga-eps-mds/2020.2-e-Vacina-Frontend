@@ -3,6 +3,8 @@ import 'MyWidgets.dart';
 import 'RegisterScreen.dart';
 import 'adminConfig_screen.dart';
 
+import 'package:e_vacina/globals.dart';
+
 class LoginMenu extends StatefulWidget {
   @override
   _LoginMenuState createState() => _LoginMenuState();
@@ -42,7 +44,7 @@ class _LoginMenuState extends State<LoginMenu> {
             MyWidgets().caixaTexto('Senha', passwordCon),
             MyWidgets().textButton('Esqueci a senha', 200, 40, 20, gangGray,
                 () {
-              print('Esqueci bro');
+              userController.teste();
             }),
             MyWidgets().button(
                 'Entrar', 320.0, 50.0, 26, Theme.of(context).primaryColor, () {
@@ -50,6 +52,7 @@ class _LoginMenuState extends State<LoginMenu> {
                 _email = emailCon.text;
                 _password = passwordCon.text;
               });
+              userController.login(_email, _password);
               print('Entrar Email:$_email, Senha:$_password');
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AdminConfig()));

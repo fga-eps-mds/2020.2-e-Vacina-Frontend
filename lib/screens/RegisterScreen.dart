@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'MyWidgets.dart';
 
+import 'package:e_vacina/globals.dart';
+
 class RegisterScreen extends StatefulWidget {
   @override
   RegisterScreenState createState() => RegisterScreenState();
@@ -81,8 +83,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                   _password = passwordCon.text;
                   _phone = phoneCon.text;
                 });
-                print(
-                    'Registro email $_email, senha $_password, telefone $_phone, nome $_name, cpf $_cpf');
+                userController.register(_email, _phone, _password);
               }),
             ]),
       ),

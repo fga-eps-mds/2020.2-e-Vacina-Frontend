@@ -1,3 +1,4 @@
+import 'package:e_vacina/globals.dart';
 import 'package:flutter/material.dart';
 import 'MyWidgets.dart';
 
@@ -49,7 +50,12 @@ class AdminConfigState extends State<AdminConfig> {
               padding: const EdgeInsets.only(right: 30.0),
               child: TextButton(
                 onPressed: () {
-                  print("Salvar");
+                  setState(() {
+                    _email = emailCon.text;
+                    _password = passwordCon.text;
+                    _phone = phoneCon.text;
+                  });
+                  userController.update(_email, _phone, _password);
                 },
                 child: Text(
                   "Salvar",
@@ -77,8 +83,9 @@ class AdminConfigState extends State<AdminConfig> {
                 setState(() {
                   _email = emailCon.text;
                   _password = passwordCon.text;
-                  _phone = passwordCon.text;
+                  _phone = phoneCon.text;
                 });
+                userController.delete();
                 print(
                     "Excluir Conta Email:$_email, Telefone:$_phone, Senha:$_password");
               }),
