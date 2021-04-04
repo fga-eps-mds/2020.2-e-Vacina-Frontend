@@ -30,9 +30,9 @@ $ flutter run
 ## Equipe
  Matricula|  Aluno
  ---|---
- 190011408|Carlos Daniel  
- 190011611|Ciro Costa 
- 190027355|Erick  
- 190013354|Gabriel Luiz  
- 190014032|Guilherme Rogelin
- 190047968|Paulo Vitor 
+ 190011408|Carlos Daniel ![Carlos](assets/Carlos.jpeg)
+ 190011611|Ciro Costa ![Ciro](assets/Ciro.jpeg)
+ 190027355|Erick  ![Erick](assets/Erick.jpeg)
+ 190013354|Gabriel Luiz  ![Gabriel](assets/Gabriel.jpeg)
+ 190014032|Guilherme Rogelin![Guilherme](assets/Guilherme.jpeg)
+ 190047968|Paulo Vitor ![Paulo](assets/Paulo.jpeg)
