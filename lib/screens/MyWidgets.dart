@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class MyWidgets {
   Widget caixaTexto(
-    String texto, {
+    String texto,
+    final inputCon, {
     bool numberPad = false,
     bool isObscure = false,
     int maxLength = TextField.noMaxLength,
@@ -11,6 +12,7 @@ class MyWidgets {
     return Container(
       padding: EdgeInsets.only(bottom: 11.5),
       child: TextField(
+        controller: inputCon,
         keyboardType: textInput,
         maxLength: maxLength,
         obscureText: isObscure,

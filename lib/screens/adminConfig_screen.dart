@@ -1,7 +1,21 @@
+import 'package:e_vacina/globals.dart';
 import 'package:flutter/material.dart';
 import 'MyWidgets.dart';
 
-class AdminConfig extends StatelessWidget {
+class AdminConfig extends StatefulWidget {
+  @override
+  AdminConfigState createState() => AdminConfigState();
+}
+
+class AdminConfigState extends State<AdminConfig> {
+  final passwordCon = new TextEditingController();
+  final emailCon = new TextEditingController();
+  final phoneCon = new TextEditingController();
+
+  var _phone;
+  var _email;
+  var _password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +50,12 @@ class AdminConfig extends StatelessWidget {
               padding: const EdgeInsets.only(right: 30.0),
               child: TextButton(
                 onPressed: () {
-                  print("Salvar");
+                  setState(() {
+                    _email = emailCon.text;
+                    _password = passwordCon.text;
+                    _phone = phoneCon.text;
+                  });
+                  userController.update(_email, _phone, _password);
                 },
                 child: Text(
                   "Salvar",
@@ -53,20 +72,26 @@ class AdminConfig extends StatelessWidget {
         child: SingleChildScrollView(
           padding: EdgeInsets.all(18),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              MyWidgets().caixaTexto('Email'),
-              MyWidgets().caixaTexto('Telefone'),
-              MyWidgets().caixaTexto('Senha', isObscure: true),
-              MyWidgets().button('Excluir Usuário', 300, 50, 26,
+              MyWidgets().caixaTexto('Email', emailCon),
+              MyWidgets().caixaTexto('Telefone', phoneCon),
+              MyWidgets().caixaTexto('Senha', passwordCon, isObscure: true),
+              MyWidgets().button('Excluir Usuário', 200, 50, 17,
                   Color.fromARGB(0xFF, 255, 66, 66), () {
-                print("Excluir Conta");
-              })
-              /*Padding(
+                setState(() {
+                  _email = emailCon.text;
+                  _password = passwordCon.text;
+                  _phone = phoneCon.text;
+                });
+                userController.delete();
+                print(
+                    "Excluir Conta Email:$_email, Telefone:$_phone, Senha:$_password");
+              }),
+              Padding(
                 padding: EdgeInsets.only(right: 248),
-                  ),
-                ),
-              //),*/
+              ),
             ],
           ),
         ),
