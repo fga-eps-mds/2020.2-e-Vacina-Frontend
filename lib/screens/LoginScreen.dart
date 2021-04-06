@@ -44,7 +44,7 @@ class _LoginMenuState extends State<LoginMenu> {
             MyWidgets().caixaTexto('Senha', passwordCon),
             MyWidgets().textButton('Esqueci a senha', 200, 40, 20, gangGray,
                 () {
-              userController.teste();
+              api.testConnection();
             }),
             MyWidgets().button(
                 'Entrar', 320.0, 50.0, 26, Theme.of(context).primaryColor, () {
