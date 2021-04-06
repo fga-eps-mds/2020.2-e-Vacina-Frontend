@@ -3,6 +3,8 @@ import 'MyWidgets.dart';
 import 'RegisterScreen.dart';
 import 'adminConfig_screen.dart';
 
+import 'package:e_vacina/globals.dart';
+
 class LoginMenu extends StatefulWidget {
   @override
   _LoginMenuState createState() => _LoginMenuState();
@@ -10,6 +12,12 @@ class LoginMenu extends StatefulWidget {
 
 class _LoginMenuState extends State<LoginMenu> {
   final Color gangGray = Color.fromRGBO(51, 51, 51, 1.0);
+  final emailCon = TextEditingController();
+  final passwordCon = TextEditingController();
+
+  var _email;
+  var _password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,15 +40,20 @@ class _LoginMenuState extends State<LoginMenu> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            MyWidgets().caixaTexto('Email'),
-            MyWidgets().caixaTexto('Senha'),
+            MyWidgets().caixaTexto('Email', emailCon),
+            MyWidgets().caixaTexto('Senha', passwordCon),
             MyWidgets().textButton('Esqueci a senha', 200, 40, 20, gangGray,
                 () {
-              print('Esqueci bro');
+              api.testConnection();
             }),
             MyWidgets().button(
                 'Entrar', 320.0, 50.0, 26, Theme.of(context).primaryColor, () {
-              print('Entrar');
+              setState(() {
+                _email = emailCon.text;
+                _password = passwordCon.text;
+              });
+              userController.login(_email, _password);
+              print('Entrar Email:$_email, Senha:$_password');
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AdminConfig()));
             }),

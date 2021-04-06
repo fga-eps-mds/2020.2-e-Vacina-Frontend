@@ -1,3 +1,12 @@
+---
+name: Pull requests.
+about: Template para a criação de pull requests.
+title: Pull request.
+labels: ''
+assignees: ''
+
+---
+
 ### Descrição - _<O que este Pull Request faz?>_
 Pequena descrição sobre o PR, exemplificando quais arquivos foram criados, alterados e o porque de cada criação/alteração.
 
@@ -8,8 +17,8 @@ _Permite que o celular do usuário se conecte com o seu computador pessoal._
 ### Critérios de Aceitação
 #### Checklist
 
-- [x]
-- [x] Build passando
+- [x] Testes passando.
+- [x] Build passando.
 - [x] Sem conflitos com a Branch Main ou Development.
 
 Resolve #Número_da_Issue.

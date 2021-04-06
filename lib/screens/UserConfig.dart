@@ -1,52 +1,98 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import 'MyWidgets.dart';
 
-class RegisterScreen extends StatefulWidget {
+class UserConfig extends StatefulWidget {
   @override
-  RegisterScreenState createState() => RegisterScreenState();
+  _UserConfigState createState() => _UserConfigState();
 }
 
-class RegisterScreenState extends State<RegisterScreen> {
-  String dropdownValue;
+class _UserConfigState extends State<UserConfig> {
   String dropdownDay;
   String dropdownMonth;
   String dropdownYear;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+          elevation: 5,
+          shadowColor: Color.fromRGBO(0, 0, 0, 1),
           centerTitle: true,
           title: Text(
-            'e-Vacina',
+            'Configurações',
             style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 25,
+              fontFamily: 'Roboto',
+              fontSize: 15,
             ),
           ),
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                  icon: const Icon(Icons.arrow_back),
+          leading: Builder(builder: (BuildContext context) {
+            return Padding(
+              padding: const EdgeInsets.only(left: 30.0),
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  print('voltar');
+                },
+                alignment: Alignment.centerRight,
+              ),
+            );
+          }),
+          actions: <Widget>[
+            Padding(
+                padding: const EdgeInsets.only(right: 30.0),
+                child: TextButton(
                   onPressed: () {
-                    print('voltar');
-                    Navigator.pop(context);
-                  });
-            },
-          )),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+                    setState(() {
+                      print("Salvar");
+                    });
+                  },
+                  child: Text(
+                    "Salvar",
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 15,
+                      color: Color.fromRGBO(42, 174, 198, 1),
+                    ),
+                  ),
+                )),
+          ],
+        ),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              MyWidgets().caixaTexto('Nome'),
-              MyWidgets().caixaTexto('CPF', maxLength: 11),
+              Container(
+                margin: EdgeInsets.only(bottom: 16),
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      width: 2.0, color: const Color.fromRGBO(20, 20, 20, 1)),
+                  borderRadius: BorderRadius.circular(150),
+                  image: DecorationImage(
+                      image: AssetImage("assets/Carlos.jpeg"),
+                      fit: BoxFit.cover), //http rquest in future.
+                ),
+              ),
+              Container(
+                  margin: EdgeInsets.only(bottom: 36),
+                  child: TextButton(
+                    onPressed: () {
+                      print("Mudar");
+                    },
+                    child: Text(
+                      "Mudar Avatar",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )),
+              MyWidgets().caixaTexto('Nome:', null),
+              MyWidgets().caixaTexto('CPF:', null),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -55,47 +101,17 @@ class RegisterScreenState extends State<RegisterScreen> {
                   yearPick(),
                 ],
               ),
-              genderPick(),
-              MyWidgets().caixaTexto('Telefone'),
-              MyWidgets().caixaTexto('Email'),
-              MyWidgets().caixaTexto('Senha', isObscure: true),
+              GenderPicker(),
               MyWidgets().button(
-                  'Registrar', 300.0, 50.0, 26, Theme.of(context).primaryColor,
+                  'Excluir Usuário', 150, 45, 17, Color.fromRGBO(255, 0, 0, 1),
                   () {
-                print('Registro');
+                setState(() {
+                  print('Excluir');
+                });
               }),
-            ]),
-      ),
-    );
-  }
-
-  Widget genderPick() {
-    return Container(
-      padding: EdgeInsets.only(bottom: 31.5),
-      child: DropdownButtonFormField<String>(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
+            ],
           ),
-          hint: Text('Sexo'),
-          value: dropdownValue,
-          isExpanded: true,
-          onChanged: (String newValue) {
-            setState(() {
-              dropdownValue = newValue;
-              print(newValue);
-            });
-          },
-          items: [
-            DropdownMenuItem(
-              child: Text('Masculino'),
-              value: '1', //value pode ser mudado para valor mais significativo
-            ),
-            DropdownMenuItem(
-              child: Text('Feminino'),
-              value: '2',
-            ),
-          ]),
-    );
+        ));
   }
 
   Widget dayPick() {
