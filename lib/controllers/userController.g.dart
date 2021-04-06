@@ -39,11 +39,71 @@ mixin _$UserController on UserControllerBase, Store {
     });
   }
 
-  final _$testeAsyncAction = AsyncAction('UserControllerBase.teste');
+  final _$userIdAtom = Atom(name: 'UserControllerBase.userId');
 
   @override
-  Future teste() {
-    return _$testeAsyncAction.run(() => super.teste());
+  dynamic get userId {
+    _$userIdAtom.reportRead();
+    return super.userId;
+  }
+
+  @override
+  set userId(dynamic value) {
+    _$userIdAtom.reportWrite(value, super.userId, () {
+      super.userId = value;
+    });
+  }
+
+  final _$tokenAtom = Atom(name: 'UserControllerBase.token');
+
+  @override
+  dynamic get token {
+    _$tokenAtom.reportRead();
+    return super.token;
+  }
+
+  @override
+  set token(dynamic value) {
+    _$tokenAtom.reportWrite(value, super.token, () {
+      super.token = value;
+    });
+  }
+
+  final _$loginAsyncAction = AsyncAction('UserControllerBase.login');
+
+  @override
+  Future login(String email, String password) {
+    return _$loginAsyncAction.run(() => super.login(email, password));
+  }
+
+  final _$logoutAsyncAction = AsyncAction('UserControllerBase.logout');
+
+  @override
+  Future logout() {
+    return _$logoutAsyncAction.run(() => super.logout());
+  }
+
+  final _$registerAsyncAction = AsyncAction('UserControllerBase.register');
+
+  @override
+  Future register(String email, String phoneNumber, String password) {
+    return _$registerAsyncAction
+        .run(() => super.register(email, phoneNumber, password));
+  }
+
+  final _$deleteAsyncAction = AsyncAction('UserControllerBase.delete');
+
+  @override
+  Future delete() {
+    return _$deleteAsyncAction.run(() => super.delete());
+  }
+
+  final _$updateAsyncAction = AsyncAction('UserControllerBase.update');
+
+  @override
+  Future update(String email, String phoneNumber, String password) {
+    return _$updateAsyncAction
+        .run(() => super.update(email, phoneNumber, password));
   }
 
   final _$UserControllerBaseActionController =
@@ -72,10 +132,34 @@ mixin _$UserController on UserControllerBase, Store {
   }
 
   @override
+  dynamic changeUserId(String value) {
+    final _$actionInfo = _$UserControllerBaseActionController.startAction(
+        name: 'UserControllerBase.changeUserId');
+    try {
+      return super.changeUserId(value);
+    } finally {
+      _$UserControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeToken(String value) {
+    final _$actionInfo = _$UserControllerBaseActionController.startAction(
+        name: 'UserControllerBase.changeToken');
+    try {
+      return super.changeToken(value);
+    } finally {
+      _$UserControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 email: ${email},
-password: ${password}
+password: ${password},
+userId: ${userId},
+token: ${token}
     ''';
   }
 }
