@@ -1,3 +1,4 @@
+import 'package:e_vacina/screens/UserConfig.dart';
 import 'package:flutter/material.dart';
 import 'screens/LoginScreen.dart';
 
