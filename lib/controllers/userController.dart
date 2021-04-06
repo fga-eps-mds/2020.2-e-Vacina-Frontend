@@ -4,7 +4,6 @@ import 'package:e_vacina/globals.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 part 'userController.g.dart';
-// import 'package:flutter/material.dart;'
 
 class UserController = UserControllerBase with _$UserController;
 
