@@ -2,11 +2,16 @@ import 'package:mobx/mobx.dart';
 import 'package:dio/dio.dart';
 import 'dart:convert';
 import 'package:e_vacina/globals.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 part 'userController.g.dart';
 // import 'package:flutter/material.dart;'
 
 class UserController = UserControllerBase with _$UserController;
+
+final _storage = new FlutterSecureStorage();
+
 
 abstract class UserControllerBase with Store {
   @observable
@@ -46,7 +51,16 @@ abstract class UserControllerBase with Store {
 
     changeToken(response.data['token']);
     changeUserId(response.data['user']['_id']);
+    await _storage.write(key: 'token', value: token);
+    await _storage.write(key: 'userId', value: userId);
     print('$token');
+  }
+
+  @action
+  logout() async {
+    changeToken('');
+    changeUserId('');
+    await _storage.deleteAll();
   }
 
   @action

@@ -27,6 +27,7 @@ dependencies:
   flutter_mobx: ^2.0.0
   mobx: ^2.0.0
   dio: ^4.0.0
+  flutter_secure_storage: ^4.1.0
   
 
   # The following adds the Cupertino Icons font to your application.
