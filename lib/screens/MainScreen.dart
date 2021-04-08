@@ -7,25 +7,14 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   String _nome = 'Exemplo';
+  int _selectedItem = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appBar(),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedFontSize: 14,
-        unselectedFontSize: 14,
-        backgroundColor: Colors.white,
-        iconSize: 45,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: 'Configurações'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.folder_shared_outlined), label: 'Carteiras'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Buscar'),
-        ],
-      ),
+      bottomNavigationBar: BottomBar(),
     );
   }
 
@@ -56,5 +45,29 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
     );
+  }
+
+  Widget BottomBar() {
+    return BottomNavigationBar(
+      selectedFontSize: 14,
+      unselectedFontSize: 14,
+      backgroundColor: Colors.white,
+      iconSize: 45,
+      onTap: _onItemTapped,
+      currentIndex: _selectedItem,
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+            icon: Icon(Icons.settings), label: 'Configurações'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.folder_shared_outlined), label: 'Carteiras'),
+        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Buscar'),
+      ],
+    );
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedItem = index;
+    });
   }
 }
