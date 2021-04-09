@@ -14,6 +14,15 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appBar(),
+      body: Center(
+        child: FloatingActionButton(
+          backgroundColor: Theme.of(context).primaryColor,
+              onPressed: (){
+                 print('Botão');
+              },
+              child: new Icon(Icons.add, color: Colors.white, size: 50),      
+        ),
+      ),
       bottomNavigationBar: BottomBar(),
     );
   }
