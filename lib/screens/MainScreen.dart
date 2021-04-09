@@ -15,12 +15,18 @@ class _MainScreenState extends State<MainScreen> {
       backgroundColor: Colors.white,
       appBar: appBar(),
       body: Center(
-        child: FloatingActionButton(
-          backgroundColor: Theme.of(context).primaryColor,
-              onPressed: (){
-                 print('Botão');
-              },
-              child: new Icon(Icons.add, color: Colors.white, size: 50),      
+        child: SizedBox(
+          height: 90,
+          width: 90,
+          child: FloatingActionButton(
+            elevation: 0,
+            backgroundColor: Colors.white,
+            onPressed: () {
+              print('Botão');
+            },
+            child: new Icon(Icons.add,
+                color: Theme.of(context).primaryColor, size: 80),
+          ),
         ),
       ),
       bottomNavigationBar: BottomBar(),
@@ -29,6 +35,7 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget appBar() {
     return AppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
