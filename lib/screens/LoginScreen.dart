@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'MyWidgets.dart';
 import 'RegisterScreen.dart';
-import 'adminConfig_screen.dart';
+import 'MainScreen.dart';
 
 import 'package:e_vacina/globals.dart';
 
@@ -55,7 +55,7 @@ class _LoginMenuState extends State<LoginMenu> {
               userController.login(_email, _password);
               print('Entrar Email:$_email, Senha:$_password');
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AdminConfig()));
+                  MaterialPageRoute(builder: (context) => MainScreen()));
             }),
             Text('OU\n'),
             MyWidgets().button('Registre-se', 200.0, 50.0, 16, gangGray, () {
