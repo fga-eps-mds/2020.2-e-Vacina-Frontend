@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'MyWidgets.dart';
 
-class UserConfig extends StatefulWidget {
+class CreateProfile extends StatefulWidget {
   @override
-  _UserConfigState createState() => _UserConfigState();
+  _CreateProfileState createState() => _CreateProfileState();
 }
 
-class _UserConfigState extends State<UserConfig> {
+class _CreateProfileState extends State<CreateProfile> {
   String dropdownDay;
   String dropdownMonth;
   String dropdownYear;
@@ -83,7 +83,7 @@ class _UserConfigState extends State<UserConfig> {
                       print("Mudar");
                     },
                     child: Text(
-                      "Mudar Avatar",
+                      "Selecionar Avatar",
                       style: TextStyle(
                         fontSize: 16,
                         fontFamily: 'Roboto',
@@ -93,18 +93,16 @@ class _UserConfigState extends State<UserConfig> {
                   )),
               MyWidgets().caixaTexto('Nome:', null),
               MyWidgets().caixaTexto('CPF:', null),
-              DatePick(),
+              DatePick(),    
               GenderPicker(),
-              MyWidgets().button(
-                  'Excluir Usuário', 150, 45, 17, Color.fromRGBO(255, 0, 0, 1),
-                  () {
-                setState(() {
-                  print('Excluir');
-                });
-              }),
             ],
           ),
         ));
   }
+
+    
+    
+  
+
 
 }
