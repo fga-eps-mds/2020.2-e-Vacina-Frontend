@@ -8,9 +8,21 @@ class CreateProfile extends StatefulWidget {
 }
 
 class _CreateProfileState extends State<CreateProfile> {
-  String dropdownDay;
-  String dropdownMonth;
-  String dropdownYear;
+  final nameCon = new TextEditingController();
+  final cpfCon = new TextEditingController();
+  final dayCon = new TextEditingController();
+  final monthCon = new TextEditingController();
+  final yearCon = new TextEditingController();
+  final sexCon = new TextEditingController();
+
+  var _name;
+  var _cpf;
+  var _day;
+  var _month;
+  var _year;
+  var _birthDate;
+  var _sex;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,8 +56,16 @@ class _CreateProfileState extends State<CreateProfile> {
                 child: TextButton(
                   onPressed: () {
                     setState(() {
-                      print("Salvar");
+                      _name = nameCon.text;
+                      _cpf = cpfCon.text;
+                      _day = dayCon.text;
+                      _month = monthCon.text;
+                      _year = yearCon.text;
+                      _sex = sexCon.text;
                     });
+
+                    print('Sexo:$_sex');
+                    //_birthDate = '$_day/$_month/$_year';
                   },
                   child: Text(
                     "Salvar",
@@ -91,18 +111,12 @@ class _CreateProfileState extends State<CreateProfile> {
                       ),
                     ),
                   )),
-              MyWidgets().caixaTexto('Nome:', null),
-              MyWidgets().caixaTexto('CPF:', null),
-              DatePick(),    
+              MyWidgets().caixaTexto('Nome:', nameCon),
+              MyWidgets().caixaTexto('CPF:', cpfCon),
+              DatePick(),
               GenderPicker(),
             ],
           ),
         ));
   }
-
-    
-    
-  
-
-
 }
