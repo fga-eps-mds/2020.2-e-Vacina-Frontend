@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MyWidgets {
+  final Color gangGray = Color.fromRGBO(51, 51, 51, 1.0);
+
   Widget caixaTexto(
     String texto,
     final inputCon, {
@@ -66,6 +68,34 @@ class MyWidgets {
               color: cor,
               fontWeight: FontWeight.bold,
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget BorderButton(String label, double altura, double fontSize, Color cor,
+      Function onPressed) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 0),
+      child: SizedBox(
+        height: altura,
+        child: OutlinedButton(
+          style: OutlinedButton.styleFrom(side: BorderSide(color: gangGray)),
+          onPressed: onPressed,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: fontSize,
+                  color: gangGray,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Icon(Icons.arrow_forward, size: 30, color: cor),
+            ],
           ),
         ),
       ),
