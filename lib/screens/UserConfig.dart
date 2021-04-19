@@ -8,9 +8,18 @@ class UserConfig extends StatefulWidget {
 }
 
 class _UserConfigState extends State<UserConfig> {
-  String dropdownDay;
-  String dropdownMonth;
-  String dropdownYear;
+  final nameCon = new TextEditingController();
+  final cpfCon = new TextEditingController();
+  final dayCon = new TextEditingController();
+  final monthCon = new TextEditingController();
+  final yearCon = new TextEditingController();
+  final sexCon = new TextEditingController();
+
+  var _name;
+  var _cpf;
+  var _birthDate;
+  var _sex;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +53,13 @@ class _UserConfigState extends State<UserConfig> {
                 child: TextButton(
                   onPressed: () {
                     setState(() {
-                      print("Salvar");
+                      _name = nameCon.text;
+                      _cpf = cpfCon.text;
+                      _birthDate =
+                          '${monthCon.text}/${dayCon.text}/${yearCon.text}';
+                      sexCon.text == '1'
+                          ? (_sex = 'Masculino')
+                          : (_sex = 'Feminino');
                     });
                   },
                   child: Text(
@@ -93,8 +108,8 @@ class _UserConfigState extends State<UserConfig> {
                   )),
               MyWidgets().caixaTexto('Nome:', null),
               MyWidgets().caixaTexto('CPF:', null),
-              DatePick(),
-              GenderPicker(),
+              DatePick(dayCon, monthCon, yearCon),
+              GenderPicker(sexCon),
               MyWidgets().button(
                   'Excluir Usuário', 150, 45, 17, Color.fromRGBO(255, 0, 0, 1),
                   () {
@@ -106,5 +121,4 @@ class _UserConfigState extends State<UserConfig> {
           ),
         ));
   }
-
 }

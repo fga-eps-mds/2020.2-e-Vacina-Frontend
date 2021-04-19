@@ -17,9 +17,6 @@ class _CreateProfileState extends State<CreateProfile> {
 
   var _name;
   var _cpf;
-  var _day;
-  var _month;
-  var _year;
   var _birthDate;
   var _sex;
 
@@ -58,14 +55,15 @@ class _CreateProfileState extends State<CreateProfile> {
                     setState(() {
                       _name = nameCon.text;
                       _cpf = cpfCon.text;
-                      _day = dayCon.text;
-                      _month = monthCon.text;
-                      _year = yearCon.text;
-                      _sex = sexCon.text;
+                      _birthDate =
+                          '${monthCon.text}/${dayCon.text}/${yearCon.text}';
+                      sexCon.text == '1'
+                          ? (_sex = 'Masculino')
+                          : (_sex = 'Feminino');
                     });
 
                     print('Sexo:$_sex');
-                    //_birthDate = '$_day/$_month/$_year';
+                    print('Data: $_birthDate');
                   },
                   child: Text(
                     "Salvar",
@@ -113,8 +111,8 @@ class _CreateProfileState extends State<CreateProfile> {
                   )),
               MyWidgets().caixaTexto('Nome:', nameCon),
               MyWidgets().caixaTexto('CPF:', cpfCon),
-              DatePick(),
-              GenderPicker(),
+              DatePick(dayCon, monthCon, yearCon),
+              GenderPicker(sexCon),
             ],
           ),
         ));
