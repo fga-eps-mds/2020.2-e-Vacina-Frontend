@@ -93,16 +93,10 @@ class _CreateProfileState extends State<CreateProfile> {
                   )),
               MyWidgets().caixaTexto('Nome:', null),
               MyWidgets().caixaTexto('CPF:', null),
-              DatePick(),    
+              DatePick(),
               GenderPicker(),
             ],
           ),
         ));
   }
-
-    
-    
-  
-
-
 }
