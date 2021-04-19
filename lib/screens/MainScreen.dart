@@ -1,4 +1,7 @@
+import 'package:e_vacina/screens/UserConfig.dart';
+import 'package:e_vacina/screens/adminConfig_screen.dart';
 import 'package:flutter/material.dart';
+import 'MyWidgets.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -7,28 +10,16 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   String _nome = 'Exemplo';
-  int _selectedItem = 0;
+  int _selectedItem = 1;
+
+  final tabs = [ConfigTab(), MainTab(), Center(child: Text('Adicionar aqui'))];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appBar(),
-      body: Center(
-        child: SizedBox(
-          height: 90,
-          width: 90,
-          child: FloatingActionButton(
-            elevation: 0,
-            backgroundColor: Colors.white,
-            onPressed: () {
-              print('Botão');
-            },
-            child: new Icon(Icons.add,
-                color: Theme.of(context).primaryColor, size: 80),
-          ),
-        ),
-      ),
+      body: tabs[_selectedItem],
       bottomNavigationBar: BottomBar(),
     );
   }
@@ -76,7 +67,8 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.settings), label: 'Configurações'),
         BottomNavigationBarItem(
             icon: Icon(Icons.folder_shared_outlined), label: 'Carteiras'),
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Buscar'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.create_new_folder_outlined), label: 'Adicionar'),
       ],
     );
   }
@@ -85,5 +77,68 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       _selectedItem = index;
     });
+  }
+}
+
+class ConfigTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(
+            height: 100,
+            child: Center(
+              child: Text(
+                'Configurações',
+                style: TextStyle(
+                  color: MyWidgets().gangGray,
+                  fontSize: 24,
+                  fontFamily: 'SuezOne',
+                ),
+              ),
+            ),
+          ),
+          MyWidgets().BorderButton('Informações de Login', 86, 25, Colors.black,
+              () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AdminConfig()));
+          }),
+          MyWidgets().BorderButton('Geral', 86, 25, Colors.black, () {}),
+          MyWidgets().BorderButton('Perfis', 86, 25, Colors.black, () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => UserConfig()));
+          }),
+          MyWidgets()
+              .BorderButton('Termos de Uso', 86, 25, Colors.black, () {}),
+          MyWidgets().BorderButton('Sair', 86, 25, Colors.black, () {
+            Navigator.pop(context);
+          }),
+        ],
+      ),
+    );
+  }
+}
+
+class MainTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        height: 90,
+        width: 90,
+        child: FloatingActionButton(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          onPressed: () {
+            print('Botão');
+          },
+          child: new Icon(Icons.add,
+              color: Theme.of(context).primaryColor, size: 80),
+        ),
+      ),
+    );
   }
 }

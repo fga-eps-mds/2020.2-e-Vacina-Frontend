@@ -32,7 +32,7 @@ class _UserConfigState extends State<UserConfig> {
               child: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
-                  print('voltar');
+                  Navigator.pop(context);
                 },
                 alignment: Alignment.centerRight,
               ),
