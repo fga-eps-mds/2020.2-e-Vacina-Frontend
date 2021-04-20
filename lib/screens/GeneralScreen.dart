@@ -40,12 +40,12 @@ class _GeneralScreenState extends State<GeneralScreen> {
       ),
       body: Column(
         children: [
-          textWidget("Tema Escuro", 72, 16,
+          textSwitch("Tema Escuro", 72, 16,
               icon: Icon(
                 Icons.bedtime_outlined,
                 color: Colors.black,
               )),
-          textWidget("Notificações", 72, 16,
+          textSwitch("Notificações", 72, 16,
               icon: Icon(
                 Icons.notifications_none,
                 color: Colors.black,

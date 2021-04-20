@@ -108,18 +108,18 @@ class MyWidgets {
   }
 }
 
-class textWidget extends StatefulWidget {
+class textSwitch extends StatefulWidget {
   final String label;
   final double altura, fontSize;
   final Icon icon;
 
-  const textWidget(this.label, this.altura, this.fontSize, {Key key, this.icon})
+  const textSwitch(this.label, this.altura, this.fontSize, {Key key, this.icon})
       : super(key: key);
   @override
-  _textWidgetState createState() => _textWidgetState();
+  _textSwitchState createState() => _textSwitchState();
 }
 
-class _textWidgetState extends State<textWidget> {
+class _textSwitchState extends State<textSwitch> {
   bool _escolha = false;
 
   @override
