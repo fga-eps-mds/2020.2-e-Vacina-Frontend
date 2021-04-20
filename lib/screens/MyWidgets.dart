@@ -163,6 +163,9 @@ class _textWidgetState extends State<textWidget> {
 }
 
 class GenderPicker extends StatefulWidget {
+  final TextEditingController controller;
+  const GenderPicker(this.controller, {Key key}) : super(key: key);
+
   @override
   _GenderPickerState createState() => _GenderPickerState();
 }
@@ -183,6 +186,7 @@ class _GenderPickerState extends State<GenderPicker> {
           onChanged: (String newValue) {
             setState(() {
               dropdownValue = newValue;
+              widget.controller.text = newValue;
               print(newValue);
             });
           },
@@ -201,6 +205,13 @@ class _GenderPickerState extends State<GenderPicker> {
 }
 
 class DatePick extends StatefulWidget {
+  final TextEditingController dayController;
+  final TextEditingController monthController;
+  final TextEditingController yearController;
+
+  const DatePick(this.dayController, this.monthController, this.yearController,
+      {Key key})
+      : super(key: key);
   @override
   _DatePickState createState() => _DatePickState();
 }
@@ -228,18 +239,19 @@ class _DatePickState extends State<DatePick> {
               onChanged: (String newValue) {
                 setState(() {
                   dropdownDay = newValue;
+                  widget.dayController.text = newValue;
                 });
               },
               items: <String>[
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "7",
-                "8",
-                "9",
+                "01",
+                "02",
+                "03",
+                "04",
+                "05",
+                "06",
+                "07",
+                "08",
+                "09",
                 "10",
                 "11",
                 "12",
@@ -283,18 +295,19 @@ class _DatePickState extends State<DatePick> {
               onChanged: (String newValue) {
                 setState(() {
                   dropdownMonth = newValue;
+                  widget.monthController.text = newValue;
                 });
               },
               items: <String>[
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "7",
-                "8",
-                "9",
+                "01",
+                "02",
+                "03",
+                "04",
+                "05",
+                "06",
+                "07",
+                "08",
+                "09",
                 "10",
                 "11",
                 "12"
@@ -319,6 +332,7 @@ class _DatePickState extends State<DatePick> {
               onChanged: (String newValue) {
                 setState(() {
                   dropdownYear = newValue;
+                  widget.yearController.text = newValue;
                 });
               },
               items: <String>[
