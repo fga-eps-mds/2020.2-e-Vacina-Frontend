@@ -73,7 +73,8 @@ class MyWidgets {
   }
 
   Widget BorderButton(String label, double altura, double fontSize, Color cor,
-      Function onPressed) {
+      Function onPressed,
+      {Icon icon}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 0),
       child: SizedBox(
@@ -84,20 +85,80 @@ class MyWidgets {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: fontSize,
-                  color: gangGray,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                if (icon != null) icon,
+                Padding(
+                  padding: EdgeInsets.only(left: 8),
+                  child: Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: fontSize,
+                      color: gangGray,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+              ]),
               Icon(Icons.arrow_forward, size: 30, color: cor),
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+class textSwitch extends StatefulWidget {
+  final String label;
+  final double altura, fontSize;
+  final Icon icon;
+
+  const textSwitch(this.label, this.altura, this.fontSize, {Key key, this.icon})
+      : super(key: key);
+  @override
+  _textSwitchState createState() => _textSwitchState();
+}
+
+class _textSwitchState extends State<textSwitch> {
+  bool _escolha = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: widget.altura,
+        decoration: (BoxDecoration(
+          border: Border.all(
+              width: 1.0, color: const Color.fromRGBO(100, 100, 100, 1)),
+        )),
+        child: Padding(
+          padding: EdgeInsets.only(left: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                if (widget.icon != null) widget.icon,
+                Padding(
+                  padding: EdgeInsets.only(left: 5),
+                  child: Text(
+                    widget.label,
+                    style: TextStyle(
+                      fontSize: widget.fontSize,
+                      color: Color.fromRGBO(51, 51, 51, 1.0),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+              ]),
+              Switch(
+                  value: _escolha,
+                  onChanged: (bool valor) {
+                    setState(() {
+                      _escolha = valor;
+                    });
+                  })
+            ],
+          ),
+        ));
   }
 }
 

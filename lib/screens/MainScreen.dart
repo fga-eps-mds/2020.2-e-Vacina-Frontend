@@ -2,6 +2,7 @@ import 'package:e_vacina/screens/UserConfig.dart';
 import 'package:e_vacina/screens/adminConfig_screen.dart';
 import 'package:flutter/material.dart';
 import 'MyWidgets.dart';
+import 'GeneralScreen.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -103,13 +104,16 @@ class ConfigTab extends StatelessWidget {
           ),
           MyWidgets().BorderButton('Informações de Login', 86, 25, Colors.black,
               () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AdminConfig()));
-          }),
-          MyWidgets().BorderButton('Geral', 86, 25, Colors.black, () {}),
-          MyWidgets().BorderButton('Perfis', 86, 25, Colors.black, () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => UserConfig()));
+                context, MaterialPageRoute(builder: (context) => AdminConfig()));
+          }),
+          MyWidgets().BorderButton('Geral', 86, 25, Colors.black, () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => GeneralScreen()));
+          }),
+          MyWidgets().BorderButton('Perfis', 86, 25, Colors.black, () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => UserConfig()));
           }),
           MyWidgets()
               .BorderButton('Termos de Uso', 86, 25, Colors.black, () {}),
