@@ -73,7 +73,7 @@ class MyWidgets {
   }
 
   Widget BorderButton(String label, double altura, double fontSize, Color cor,
-      Function onPressed,
+      IconData arrow, Function onPressed,
       {Icon icon}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 0),
@@ -99,7 +99,7 @@ class MyWidgets {
                   ),
                 )
               ]),
-              Icon(Icons.arrow_forward, size: 30, color: cor),
+              Icon(arrow, size: 30, color: cor),
             ],
           ),
         ),
