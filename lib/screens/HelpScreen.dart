@@ -193,7 +193,7 @@ class _HelpScreenState extends State<HelpScreen> {
                     style: TextStyle(fontSize: size),
                   ),
                   WidgetSpan(
-                    child: Icon(Icons.settings_outlined, size: 20),
+                    child: Icon(Icons.settings, size: 20),
                   ),
                   TextSpan(
                     text: '.\n',
@@ -246,7 +246,7 @@ class _HelpScreenState extends State<HelpScreen> {
                     style: TextStyle(fontSize: size),
                   ),
                   WidgetSpan(
-                    child: Icon(Icons.settings_outlined, size: 20),
+                    child: Icon(Icons.settings, size: 20),
                   ),
                   TextSpan(
                     text: '.\n',
@@ -266,7 +266,7 @@ class _HelpScreenState extends State<HelpScreen> {
                     style: TextStyle(fontSize: size),
                   ),
                   WidgetSpan(
-                    child: Icon(Icons.settings_outlined, size: 20),
+                    child: Icon(Icons.settings, size: 20),
                   ),
                   TextSpan(
                     text: 'correspondente ao perfil que deseja excluir.\n',
@@ -309,7 +309,7 @@ class _HelpScreenState extends State<HelpScreen> {
                     style: TextStyle(fontSize: size),
                   ),
                   WidgetSpan(
-                    child: Icon(Icons.settings_outlined, size: 20),
+                    child: Icon(Icons.settings, size: 20),
                   ),
                   TextSpan(
                     text: '.\n',
@@ -329,7 +329,7 @@ class _HelpScreenState extends State<HelpScreen> {
                     style: TextStyle(fontSize: size),
                   ),
                   WidgetSpan(
-                    child: Icon(Icons.settings_outlined, size: 20),
+                    child: Icon(Icons.settings, size: 20),
                   ),
                   TextSpan(
                     text: 'correspondente ao perfil que deseja excluir.\n',
@@ -377,7 +377,7 @@ class _HelpScreenState extends State<HelpScreen> {
                     style: TextStyle(fontSize: size),
                   ),
                   WidgetSpan(
-                    child: Icon(Icons.settings_outlined, size: 20),
+                    child: Icon(Icons.settings, size: 20),
                   ),
                   TextSpan(
                     text: '.\n',
@@ -425,7 +425,7 @@ class _HelpScreenState extends State<HelpScreen> {
                     style: TextStyle(fontSize: size),
                   ),
                   WidgetSpan(
-                    child: Icon(Icons.settings_outlined, size: 20),
+                    child: Icon(Icons.settings, size: 20),
                   ),
                   TextSpan(
                     text: '.\n',
@@ -434,7 +434,7 @@ class _HelpScreenState extends State<HelpScreen> {
                 ]),
               ),
               Text(
-                '2. Nesse menu, clique em "Info de Login".\n',
+                '2. Nesse menu, clique em "Informações de Login".\n',
                 style: TextStyle(fontSize: size),
                 textAlign: TextAlign.justify,
               ),
@@ -478,7 +478,7 @@ class _HelpScreenState extends State<HelpScreen> {
                     style: TextStyle(fontSize: size),
                   ),
                   WidgetSpan(
-                    child: Icon(Icons.settings_outlined, size: 20),
+                    child: Icon(Icons.settings, size: 20),
                   ),
                   TextSpan(
                     text: '.\n',
@@ -487,7 +487,7 @@ class _HelpScreenState extends State<HelpScreen> {
                 ]),
               ),
               Text(
-                '2. Nesse menu, clique em "Info de Login".\n',
+                '2. Nesse menu, clique em "Informações de Login".\n',
                 style: TextStyle(fontSize: size),
                 textAlign: TextAlign.justify,
               ),

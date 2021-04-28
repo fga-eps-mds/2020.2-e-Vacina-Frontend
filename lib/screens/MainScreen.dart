@@ -68,8 +68,7 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.settings), label: 'Configurações'),
         BottomNavigationBarItem(
             icon: Icon(Icons.folder_shared_outlined), label: 'Carteiras'),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.create_new_folder_outlined), label: 'Adicionar'),
+        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Adicionar'),
       ],
     );
   }
