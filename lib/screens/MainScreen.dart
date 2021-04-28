@@ -68,8 +68,7 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.settings), label: 'Configurações'),
         BottomNavigationBarItem(
             icon: Icon(Icons.folder_shared_outlined), label: 'Carteiras'),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.create_new_folder_outlined), label: 'Adicionar'),
+        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Adicionar'),
       ],
     );
   }
@@ -102,22 +101,26 @@ class ConfigTab extends StatelessWidget {
               ),
             ),
           ),
-          MyWidgets().BorderButton('Informações de Login', 86, 25, Colors.black,
+          MyWidgets().BorderButton(
+              'Informações de Login', 86, 25, Colors.black, Icons.arrow_forward,
               () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => AdminConfig()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AdminConfig()));
           }),
-          MyWidgets().BorderButton('Geral', 86, 25, Colors.black, () {
+          MyWidgets().BorderButton(
+              'Geral', 86, 25, Colors.black, Icons.arrow_forward, () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => GeneralScreen()));
           }),
-          MyWidgets().BorderButton('Perfis', 86, 25, Colors.black, () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => UserConfig()));
+          MyWidgets().BorderButton(
+              'Perfis', 86, 25, Colors.black, Icons.arrow_forward, () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => UserConfig()));
           }),
-          MyWidgets()
-              .BorderButton('Termos de Uso', 86, 25, Colors.black, () {}),
-          MyWidgets().BorderButton('Sair', 86, 25, Colors.black, () {
+          MyWidgets().BorderButton('Termos de Uso', 86, 25, Colors.black,
+              Icons.arrow_forward, () {}),
+          MyWidgets().BorderButton(
+              'Sair', 86, 25, Colors.black, Icons.arrow_forward, () {
             Navigator.pop(context);
           }),
         ],

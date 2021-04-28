@@ -1,3 +1,4 @@
+import 'package:e_vacina/screens/HelpScreen.dart';
 import 'package:flutter/material.dart';
 import 'MyWidgets.dart';
 
@@ -50,12 +51,17 @@ class _GeneralScreenState extends State<GeneralScreen> {
                 Icons.notifications_none,
                 color: Colors.black,
               )),
-          MyWidgets().BorderButton('Permissões', 72, 16, Colors.black, () {},
+          MyWidgets().BorderButton(
+              'Permissões', 72, 16, Colors.black, Icons.arrow_forward, () {},
               icon: Icon(
                 Icons.vpn_key_outlined,
                 color: Colors.black,
               )),
-          MyWidgets().BorderButton('Ajuda', 72, 16, Colors.black, () {},
+          MyWidgets().BorderButton(
+              'Ajuda', 72, 16, Colors.black, Icons.arrow_forward, () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => HelpScreen()));
+          },
               icon: Icon(
                 Icons.help_outline_outlined,
                 color: Colors.black,
