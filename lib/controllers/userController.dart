@@ -36,13 +36,18 @@ abstract class UserControllerBase with Store {
 
   @action
   login(String email, String password) async {
-    Response response = await api.auth(email, password);
+    try {
+      Response response = await api.auth(email, password);
+      //print(response.data.toString());
 
-    changeToken(response.data['token']);
-    changeUserId(response.data['user']['_id']);
-    await _storage.write(key: 'token', value: token);
-    await _storage.write(key: 'userId', value: userId);
-    print('$token');
+      changeToken(response.data['token']);
+      changeUserId(response.data['user']['_id']);
+      await _storage.write(key: 'token', value: token);
+      await _storage.write(key: 'userId', value: userId);
+      print('$token');
+    } on DioError catch (err) {
+      print("Erro: ${err.response.statusCode}");
+    }
   }
 
   @action

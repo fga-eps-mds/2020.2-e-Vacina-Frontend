@@ -17,6 +17,12 @@ class _LoginMenuState extends State<LoginMenu> {
 
   var _email;
   var _password;
+  var _errorText = null;
+  void mensage() {
+    setState(() {
+      _errorText = "email ou senha inválidos";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
