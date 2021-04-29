@@ -42,13 +42,13 @@ mixin _$UserController on UserControllerBase, Store {
   final _$userIdAtom = Atom(name: 'UserControllerBase.userId');
 
   @override
-  dynamic get userId {
+  String get userId {
     _$userIdAtom.reportRead();
     return super.userId;
   }
 
   @override
-  set userId(dynamic value) {
+  set userId(String value) {
     _$userIdAtom.reportWrite(value, super.userId, () {
       super.userId = value;
     });
@@ -86,9 +86,10 @@ mixin _$UserController on UserControllerBase, Store {
   final _$registerAsyncAction = AsyncAction('UserControllerBase.register');
 
   @override
-  Future register(String email, String phoneNumber, String password) {
-    return _$registerAsyncAction
-        .run(() => super.register(email, phoneNumber, password));
+  Future register(String email, String phoneNumber, String password,
+      String name, String cpf, String sex, String birthDate) {
+    return _$registerAsyncAction.run(() => super
+        .register(email, phoneNumber, password, name, cpf, sex, birthDate));
   }
 
   final _$deleteAsyncAction = AsyncAction('UserControllerBase.delete');

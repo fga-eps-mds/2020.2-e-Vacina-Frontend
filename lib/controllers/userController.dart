@@ -23,7 +23,7 @@ abstract class UserControllerBase with Store {
   changePassword(String value) => password = value;
 
   @observable
-  dynamic userId;
+  String userId = '';
 
   @action
   changeUserId(String value) => userId = value;
@@ -37,12 +37,10 @@ abstract class UserControllerBase with Store {
   @action
   login(String email, String password) async {
     Response response = await api.auth(email, password);
-
     changeToken(response.data['token']);
     changeUserId(response.data['user']['_id']);
-    await _storage.write(key: 'token', value: token);
-    await _storage.write(key: 'userId', value: userId);
-    print('$token');
+    // await _storage.write(key: 'token', value: token);
+    // await _storage.write(key: 'userId', value: userId);
   }
 
   @action
@@ -53,17 +51,24 @@ abstract class UserControllerBase with Store {
   }
 
   @action
-  register(String email, String phoneNumber, String password) async {
+  register(String email, String phoneNumber, String password, String name,
+      String cpf, String sex, String birthDate) async {
     if (email.isEmpty || phoneNumber.isEmpty || password.isEmpty) {
       print("deu erro");
     }
-    print("teste");
-    Response response = await api.registerUser(email, phoneNumber, password);
-    changeEmail(email);
-    changePassword(password);
-    changeUserId(response.data['savedUser']['_id']);
-    login(email, password);
-    print("deu certo");
+    try {
+      Response response = await api.registerUser(email, phoneNumber, password);
+      await login(email, password);
+      Response rProfile = await profileController.createProfile(
+          userId, name, cpf, sex, birthDate);
+      print("resposta profile");
+
+      changeEmail(email);
+      changePassword(password);
+    } catch (e) {
+      print("deu exceção\n");
+      print(e);
+    }
   }
 
   @action

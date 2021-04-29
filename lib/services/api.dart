@@ -60,4 +60,57 @@ abstract class ApiBase with Store {
         ));
     return response;
   }
+
+  @action
+  createProfile(String userId, String name, String cpf, String sex,
+      String birthDate) async {
+    var token = userController.token;
+    print("dentro apiprofile");
+    print(userId);
+    print("cabou create-------------------");
+    Response response = await dio.post('/profile/$userId',
+        data: {'name': name, 'cpf': cpf, 'birthDate': birthDate, 'sex': sex},
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ));
+    return response;
+  }
+
+  @action
+  updateProfile(String profileId, String name, String cpf, String sex,
+      String birthDate) async {
+    var token = userController.token;
+    Response response = await dio.put('/profile/$profileId',
+        data: {
+          'name': name,
+          'cpf': cpf,
+          'birthDate': birthDate,
+          'sex': sex,
+        },
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ));
+    return response;
+  }
+
+  @action
+  deleteProfile(String profileId) async {
+    var token = userController.token;
+    var userId = userController.userId;
+    Response response = await dio.delete('/profile/$profileId/user/$userId',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ));
+    return response;
+  }
+
+  @action
+  getProfile(String profileId) async {
+    var token = userController.token;
+    Response response = await dio.get('/profile/$profileId',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ));
+    return response;
+  }
 }
