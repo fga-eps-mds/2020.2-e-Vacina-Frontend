@@ -42,9 +42,10 @@ abstract class UserControllerBase with Store {
 
       changeToken(response.data['token']);
       changeUserId(response.data['user']['_id']);
-      await _storage.write(key: 'token', value: token);
-      await _storage.write(key: 'userId', value: userId);
+      // await _storage.write(key: 'token', value: token);
+      // await _storage.write(key: 'userId', value: userId);
       print('$token');
+      return response.statusCode;
     } on DioError catch (err) {
       print("Erro: ${err.response.statusCode}");
     }

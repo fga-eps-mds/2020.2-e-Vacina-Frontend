@@ -58,6 +58,7 @@ class _LoginMenuState extends State<LoginMenu> {
                 _email = emailCon.text;
                 _password = passwordCon.text;
               });
+              
               userController.login(_email, _password);
               print('Entrar Email:$_email, Senha:$_password');
               Navigator.push(context,

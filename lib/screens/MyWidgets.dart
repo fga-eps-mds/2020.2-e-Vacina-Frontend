@@ -36,7 +36,7 @@ class MyWidgets {
         height: altura,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(primary: cor),
-          onPressed: () {
+          onPressed: ()  {
             onPressedAction();
           },
           child: Text(
