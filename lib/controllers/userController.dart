@@ -35,7 +35,8 @@ abstract class UserControllerBase with Store {
   changeToken(String value) => token = value;
 
   @action
-  login(String email, String password) async {
+  Future<dynamic> login(String email, String password) async {
+    var resposta = true;
     try {
       Response response = await api.auth(email, password);
       //print(response.data.toString());
@@ -45,10 +46,11 @@ abstract class UserControllerBase with Store {
       // await _storage.write(key: 'token', value: token);
       // await _storage.write(key: 'userId', value: userId);
       print('$token');
-      return response.statusCode;
     } on DioError catch (err) {
       print("Erro: ${err.response.statusCode}");
+      resposta = false;
     }
+    return resposta;
   }
 
   @action
