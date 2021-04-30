@@ -17,11 +17,20 @@ class _LoginMenuState extends State<LoginMenu> {
 
   var _email;
   var _password;
-  var _errorText = null;
-  void mensage() {
-    setState(() {
-      _errorText = "email ou senha inválidos";
-    });
+
+  String _wrongEmail = null;
+  String _wrongPassword = null;
+
+  void mudaTela(bool resposta) {
+    if (resposta == true) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MainScreen()));
+    } else {
+      setState(() {
+        _wrongEmail = "";
+        _wrongPassword = "Email e/ou senha inválidos";
+      });
+    }
   }
 
   @override
@@ -46,8 +55,15 @@ class _LoginMenuState extends State<LoginMenu> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            MyWidgets().caixaTexto('Email', emailCon),
-            MyWidgets().caixaTexto('Senha', passwordCon),
+            MyWidgets().caixaTexto('Email', emailCon, errorText: _wrongEmail),
+            MyWidgets().caixaTexto('Senha', passwordCon, errorText: _wrongPassword),
+            /*Column(children: [
+              if (_errorLogin == true)
+                Text("Email e/ou senha inválidos",
+                    style: TextStyle(
+                      color: Color.fromRGBO(100, 0, 0, 1),
+                    )),
+            ]),*/
             MyWidgets().textButton('Esqueci a senha', 200, 40, 20, gangGray,
                 () {
               api.testConnection();
@@ -58,11 +74,10 @@ class _LoginMenuState extends State<LoginMenu> {
                 _email = emailCon.text;
                 _password = passwordCon.text;
               });
-              
-              userController.login(_email, _password);
-              print('Entrar Email:$_email, Senha:$_password');
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MainScreen()));
+
+              userController
+                  .login(_email, _password)
+                  .then((resposta) => mudaTela(resposta));
             }),
             Text('OU\n'),
             MyWidgets().button('Registre-se', 200.0, 50.0, 16, gangGray, () {
