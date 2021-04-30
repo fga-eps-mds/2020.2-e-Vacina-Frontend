@@ -62,7 +62,6 @@ abstract class UserControllerBase with Store {
       Response rProfile = await profileController.createProfile(
           userId, name, cpf, sex, birthDate);
       print("resposta profile");
-
       changeEmail(email);
       changePassword(password);
     } catch (e) {
