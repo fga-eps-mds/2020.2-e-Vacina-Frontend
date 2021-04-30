@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 class MyWidgets {
   final Color gangGray = Color.fromRGBO(51, 51, 51, 1.0);
 
-  Widget caixaTexto(
-    String texto,
-    final inputCon, {
-    bool numberPad = false,
-    bool isObscure = false,
-    int maxLength = TextField.noMaxLength,
-    TextInputType textInput = TextInputType.text,
-  }) {
+  Widget caixaTexto(String texto, final inputCon,
+      {bool numberPad = false,
+      bool isObscure = false,
+      int maxLength = TextField.noMaxLength,
+      TextInputType textInput = TextInputType.text,
+      String errorText}) {
     return Container(
       padding: EdgeInsets.only(bottom: 11.5),
       child: TextField(
@@ -21,6 +19,7 @@ class MyWidgets {
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           labelText: texto,
+          errorText: errorText,
         ),
         //controller: _textEditingController,
       ),
@@ -36,7 +35,7 @@ class MyWidgets {
         height: altura,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(primary: cor),
-          onPressed: ()  {
+          onPressed: () {
             onPressedAction();
           },
           child: Text(
