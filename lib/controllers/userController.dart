@@ -35,19 +35,13 @@ abstract class UserControllerBase with Store {
   changeUserId(String value) => userId = value;
 
   @observable
-  String phoneNumber;
-
-  @action
-  changePhoneNumber(String value) => phoneNumber = value;
-
-  @observable
   dynamic token;
 
   @action
   changeToken(String value) => token = value;
 
   @action
-  Future<dynamic> login(String email, String password) async {
+  login(String email, String password) async {
     var resposta = true;
     try {
       Response response = await api.auth(email, password);
@@ -64,7 +58,6 @@ abstract class UserControllerBase with Store {
     }
     return resposta;
   }
-
 
   @action
   logout() async {
