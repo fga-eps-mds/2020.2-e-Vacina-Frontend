@@ -29,6 +29,12 @@ abstract class UserControllerBase with Store {
   changeUserId(String value) => userId = value;
 
   @observable
+  String phoneNumber;
+
+  @action
+  changePhoneNumber(String value) => phoneNumber = value;
+
+  @observable
   dynamic token;
 
   @action
@@ -39,10 +45,12 @@ abstract class UserControllerBase with Store {
     var resposta = true;
     try {
       Response response = await api.auth(email, password);
-      //print(response.data.toString());
+    
 
       changeToken(response.data['token']);
       changeUserId(response.data['user']['_id']);
+      changeEmail(response.data['user']['email']);
+      changePhoneNumber(response.data['user']['phoneNumber']);
       // await _storage.write(key: 'token', value: token);
       // await _storage.write(key: 'userId', value: userId);
       print('$token');

@@ -56,14 +56,7 @@ class _LoginMenuState extends State<LoginMenu> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             MyWidgets().caixaTexto('Email', emailCon, errorText: _wrongEmail),
-            MyWidgets().caixaTexto('Senha', passwordCon, errorText: _wrongPassword),
-            /*Column(children: [
-              if (_errorLogin == true)
-                Text("Email e/ou senha inválidos",
-                    style: TextStyle(
-                      color: Color.fromRGBO(100, 0, 0, 1),
-                    )),
-            ]),*/
+            MyWidgets().caixaTexto('Senha', passwordCon,isObscure: true, errorText: _wrongPassword),
             MyWidgets().textButton('Esqueci a senha', 200, 40, 20, gangGray,
                 () {
               api.testConnection();
