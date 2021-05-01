@@ -17,13 +17,19 @@ abstract class UserControllerBase with Store {
   changeEmail(String value) => email = value;
 
   @observable
+  String phoneNumber;
+
+  @action
+  changePhoneNumber(String value) => phoneNumber = value;
+
+  @observable
   String password;
 
   @action
   changePassword(String value) => password = value;
 
   @observable
-  dynamic userId;
+  String userId = '';
 
   @action
   changeUserId(String value) => userId = value;
@@ -45,8 +51,6 @@ abstract class UserControllerBase with Store {
     var resposta = true;
     try {
       Response response = await api.auth(email, password);
-    
-
       changeToken(response.data['token']);
       changeUserId(response.data['user']['_id']);
       changeEmail(response.data['user']['email']);
@@ -61,25 +65,33 @@ abstract class UserControllerBase with Store {
     return resposta;
   }
 
+
   @action
   logout() async {
     changeToken('');
     changeUserId('');
-    await _storage.deleteAll();
+    // await _storage.deleteAll();
   }
 
   @action
-  register(String email, String phoneNumber, String password) async {
+  register(String email, String phoneNumber, String password, String name,
+      String cpf, String sex, String birthDate) async {
     if (email.isEmpty || phoneNumber.isEmpty || password.isEmpty) {
       print("deu erro");
     }
-    print("teste");
-    Response response = await api.registerUser(email, phoneNumber, password);
-    changeEmail(email);
-    changePassword(password);
-    changeUserId(response.data['savedUser']['_id']);
-    login(email, password);
-    print("deu certo");
+    try {
+      Response response = await api.registerUser(email, phoneNumber, password);
+      await login(email, password);
+      Response rProfile = await profileController.createProfile(
+          userId, name, cpf, sex, birthDate);
+      print("resposta profile");
+      changeEmail(email);
+      changePassword(password);
+      changePhoneNumber(phoneNumber);
+    } catch (e) {
+      print("deu exceção\n");
+      print(e);
+    }
   }
 
   @action
@@ -93,6 +105,8 @@ abstract class UserControllerBase with Store {
   update(String email, String phoneNumber, String password) async {
     Response response =
         await api.updateUser(email, phoneNumber, password, userId, token);
+    changeEmail(response.data['updtedUser']['email']);
+    changePhoneNumber(response.data['updtedUser']['phoneNumber']);
     print(response);
     print(response.statusCode);
   }

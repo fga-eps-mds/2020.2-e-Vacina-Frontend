@@ -24,6 +24,21 @@ mixin _$UserController on UserControllerBase, Store {
     });
   }
 
+  final _$phoneNumberAtom = Atom(name: 'UserControllerBase.phoneNumber');
+
+  @override
+  String get phoneNumber {
+    _$phoneNumberAtom.reportRead();
+    return super.phoneNumber;
+  }
+
+  @override
+  set phoneNumber(String value) {
+    _$phoneNumberAtom.reportWrite(value, super.phoneNumber, () {
+      super.phoneNumber = value;
+    });
+  }
+
   final _$passwordAtom = Atom(name: 'UserControllerBase.password');
 
   @override
@@ -42,13 +57,13 @@ mixin _$UserController on UserControllerBase, Store {
   final _$userIdAtom = Atom(name: 'UserControllerBase.userId');
 
   @override
-  dynamic get userId {
+  String get userId {
     _$userIdAtom.reportRead();
     return super.userId;
   }
 
   @override
-  set userId(dynamic value) {
+  set userId(String value) {
     _$userIdAtom.reportWrite(value, super.userId, () {
       super.userId = value;
     });
@@ -86,9 +101,10 @@ mixin _$UserController on UserControllerBase, Store {
   final _$registerAsyncAction = AsyncAction('UserControllerBase.register');
 
   @override
-  Future register(String email, String phoneNumber, String password) {
-    return _$registerAsyncAction
-        .run(() => super.register(email, phoneNumber, password));
+  Future register(String email, String phoneNumber, String password,
+      String name, String cpf, String sex, String birthDate) {
+    return _$registerAsyncAction.run(() => super
+        .register(email, phoneNumber, password, name, cpf, sex, birthDate));
   }
 
   final _$deleteAsyncAction = AsyncAction('UserControllerBase.delete');
@@ -115,6 +131,17 @@ mixin _$UserController on UserControllerBase, Store {
         name: 'UserControllerBase.changeEmail');
     try {
       return super.changeEmail(value);
+    } finally {
+      _$UserControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changePhoneNumber(String value) {
+    final _$actionInfo = _$UserControllerBaseActionController.startAction(
+        name: 'UserControllerBase.changePhoneNumber');
+    try {
+      return super.changePhoneNumber(value);
     } finally {
       _$UserControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -157,6 +184,7 @@ mixin _$UserController on UserControllerBase, Store {
   String toString() {
     return '''
 email: ${email},
+phoneNumber: ${phoneNumber},
 password: ${password},
 userId: ${userId},
 token: ${token}
