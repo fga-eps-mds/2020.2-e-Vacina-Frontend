@@ -24,6 +24,21 @@ mixin _$UserController on UserControllerBase, Store {
     });
   }
 
+  final _$phoneNumberAtom = Atom(name: 'UserControllerBase.phoneNumber');
+
+  @override
+  String get phoneNumber {
+    _$phoneNumberAtom.reportRead();
+    return super.phoneNumber;
+  }
+
+  @override
+  set phoneNumber(String value) {
+    _$phoneNumberAtom.reportWrite(value, super.phoneNumber, () {
+      super.phoneNumber = value;
+    });
+  }
+
   final _$passwordAtom = Atom(name: 'UserControllerBase.password');
 
   @override
@@ -122,6 +137,17 @@ mixin _$UserController on UserControllerBase, Store {
   }
 
   @override
+  dynamic changePhoneNumber(String value) {
+    final _$actionInfo = _$UserControllerBaseActionController.startAction(
+        name: 'UserControllerBase.changePhoneNumber');
+    try {
+      return super.changePhoneNumber(value);
+    } finally {
+      _$UserControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic changePassword(String value) {
     final _$actionInfo = _$UserControllerBaseActionController.startAction(
         name: 'UserControllerBase.changePassword');
@@ -158,6 +184,7 @@ mixin _$UserController on UserControllerBase, Store {
   String toString() {
     return '''
 email: ${email},
+phoneNumber: ${phoneNumber},
 password: ${password},
 userId: ${userId},
 token: ${token}

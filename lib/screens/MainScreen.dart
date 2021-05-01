@@ -1,3 +1,4 @@
+import 'package:e_vacina/globals.dart';
 import 'package:e_vacina/screens/UserConfig.dart';
 import 'package:e_vacina/screens/adminConfig_screen.dart';
 import 'package:flutter/material.dart';
@@ -121,6 +122,7 @@ class ConfigTab extends StatelessWidget {
               Icons.arrow_forward, () {}),
           MyWidgets().BorderButton(
               'Sair', 86, 25, Colors.black, Icons.arrow_forward, () {
+            userController.logout();
             Navigator.pop(context);
           }),
         ],

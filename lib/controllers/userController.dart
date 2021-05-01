@@ -17,6 +17,12 @@ abstract class UserControllerBase with Store {
   changeEmail(String value) => email = value;
 
   @observable
+  String phoneNumber;
+
+  @action
+  changePhoneNumber(String value) => phoneNumber = value;
+
+  @observable
   String password;
 
   @action
@@ -36,9 +42,17 @@ abstract class UserControllerBase with Store {
 
   @action
   login(String email, String password) async {
-    Response response = await api.auth(email, password);
-    changeToken(response.data['token']);
-    changeUserId(response.data['user']['_id']);
+    try {
+      Response response = await api.auth(email, password);
+      print(response.data.toString());
+      changeToken(response.data['token']);
+      changeUserId(response.data['user']['_id']);
+      changeEmail(response.data['user']['email']);
+      changePhoneNumber(response.data['user']['phoneNumber']);
+    } catch (error) {
+      print(error.error);
+      print(error['error']);
+    }
     // await _storage.write(key: 'token', value: token);
     // await _storage.write(key: 'userId', value: userId);
   }
@@ -47,7 +61,7 @@ abstract class UserControllerBase with Store {
   logout() async {
     changeToken('');
     changeUserId('');
-    await _storage.deleteAll();
+    // await _storage.deleteAll();
   }
 
   @action
@@ -64,6 +78,7 @@ abstract class UserControllerBase with Store {
       print("resposta profile");
       changeEmail(email);
       changePassword(password);
+      changePhoneNumber(phoneNumber);
     } catch (e) {
       print("deu exceção\n");
       print(e);
@@ -81,6 +96,8 @@ abstract class UserControllerBase with Store {
   update(String email, String phoneNumber, String password) async {
     Response response =
         await api.updateUser(email, phoneNumber, password, userId, token);
+    changeEmail(response.data['updtedUser']['email']);
+    changePhoneNumber(response.data['updtedUser']['phoneNumber']);
     print(response);
     print(response.statusCode);
   }
