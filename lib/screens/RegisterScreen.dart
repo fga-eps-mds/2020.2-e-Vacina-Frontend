@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:e_vacina/screens/LoginScreen.dart';
 import 'package:flutter/material.dart';
 import 'MyWidgets.dart';
 
@@ -71,12 +72,14 @@ class RegisterScreenState extends State<RegisterScreen> {
                   _password = passwordCon.text;
                   _phone = phoneCon.text;
                   _birthDate =
-                      '${monthCon.text}/${dayCon.text}/${yearCon.text}';
+                      '${yearCon.text}-${monthCon.text}-${dayCon.text}';
                   sexCon.text == '1'
                       ? (_sex = 'Masculino')
                       : (_sex = 'Feminino');
+                  userController.register(
+                      _email, _phone, _password, _name, _cpf, _sex, _birthDate);
+                  Navigator.pop(context);
                 });
-                userController.register(_email, _phone, _password);
               }),
             ]),
       ),

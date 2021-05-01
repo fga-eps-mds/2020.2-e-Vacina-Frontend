@@ -63,7 +63,7 @@ class _HelpScreenState extends State<HelpScreen> {
         child: Column(
           children: [
             MyWidgets().BorderButton(
-                'Adicionar Parfil', 72, 16, Colors.black, _arrow1, () {
+                'Adicionar Perfil', 72, 16, Colors.black, _arrow1, () {
               _addProfile == false
                   ? changes(addProfile: true, arrow1: Icons.arrow_upward)
                   : changes();
