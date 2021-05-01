@@ -35,12 +35,6 @@ abstract class UserControllerBase with Store {
   changeUserId(String value) => userId = value;
 
   @observable
-  String phoneNumber;
-
-  @action
-  changePhoneNumber(String value) => phoneNumber = value;
-
-  @observable
   dynamic token;
 
   @action
