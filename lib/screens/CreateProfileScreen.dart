@@ -71,9 +71,7 @@ class _CreateProfileState extends State<CreateProfile> {
                       sexCon.text == '1'
                           ? (_sex = 'Masculino')
                           : (_sex = 'Feminino');
-                      if (isEmpty(
-                              _name, _cpf, monthCon, dayCon, yearCon, sexCon) ==
-                          false) {
+                      if (isEmpty() == false) {
                         _error = false;
                         profileController
                             .createProfile(userController.userId, _name, _cpf,
@@ -159,29 +157,23 @@ class _CreateProfileState extends State<CreateProfile> {
     }
   }
 
-  bool isEmpty(
-      var name,
-      var cpf,
-      TextEditingController daycon,
-      TextEditingController monthcon,
-      TextEditingController yearcon,
-      TextEditingController sexcon) {
+  bool isEmpty() {
     String text = "";
     bool empty = false;
     setState(() {
-      name.isEmpty ? _wrongName = text : _wrongName = null;
-      cpf.isEmpty ? _wrongCpf = text : _wrongCpf = null;
-      daycon.text.isEmpty ? _wrongDay = text : _wrongDay = null;
-      monthcon.text.isEmpty ? _wrongMonth = text : _wrongMonth = null;
-      yearcon.text.isEmpty ? _wrongYear = text : _wrongYear = null;
-      sexcon.text.isEmpty ? _wrongSex = text : _wrongSex = null;
+      _name.isEmpty ? _wrongName = text : _wrongName = null;
+      _cpf.isEmpty ? _wrongCpf = text : _wrongCpf = null;
+      dayCon.text.isEmpty ? _wrongDay = text : _wrongDay = null;
+      monthCon.text.isEmpty ? _wrongMonth = text : _wrongMonth = null;
+      yearCon.text.isEmpty ? _wrongYear = text : _wrongYear = null;
+      sexCon.text.isEmpty ? _wrongSex = text : _wrongSex = null;
     });
-    if (name.isEmpty ||
-        cpf.isEmpty ||
+    if (_name.isEmpty ||
+        _cpf.isEmpty ||
         dayCon.text.isEmpty ||
         monthCon.text.isEmpty ||
         yearCon.text.isEmpty ||
-        sexcon.text.isEmpty) {
+        sexCon.text.isEmpty) {
       empty = true;
     }
     return empty;
