@@ -1,5 +1,7 @@
+import 'package:e_vacina/screens/MainScreen.dart';
 import 'package:flutter/material.dart';
 
+import '../globals.dart';
 import 'MyWidgets.dart';
 
 class CreateProfile extends StatefulWidget {
@@ -19,6 +21,14 @@ class _CreateProfileState extends State<CreateProfile> {
   var _cpf;
   var _birthDate;
   var _sex;
+
+  String _wrongName;
+  String _wrongCpf;
+  String _wrongDay;
+  String _wrongMonth;
+  String _wrongYear;
+  String _wrongSex;
+  bool _error = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +51,8 @@ class _CreateProfileState extends State<CreateProfile> {
               child: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
-                  print('voltar');
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MainScreen()));
                 },
                 alignment: Alignment.centerRight,
               ),
@@ -60,6 +71,16 @@ class _CreateProfileState extends State<CreateProfile> {
                       sexCon.text == '1'
                           ? (_sex = 'Masculino')
                           : (_sex = 'Feminino');
+                      if (isEmpty(
+                              _name, _cpf, monthCon, dayCon, yearCon, sexCon) ==
+                          false) {
+                        _error = false;
+                        profileController
+                            .createProfile(userController.userId, _name, _cpf,
+                                _sex, _birthDate)
+                            .then((resposta) => validate(resposta));
+                      } else
+                        _error = true;
                     });
 
                     print('Sexo:$_sex');
@@ -90,12 +111,12 @@ class _CreateProfileState extends State<CreateProfile> {
                       width: 2.0, color: const Color.fromRGBO(20, 20, 20, 1)),
                   borderRadius: BorderRadius.circular(150),
                   image: DecorationImage(
-                      image: AssetImage("assets/Carlos.jpeg"),
+                      image: AssetImage("assets/EmptyProfile.png"),
                       fit: BoxFit.cover), //http rquest in future.
                 ),
               ),
               Container(
-                  margin: EdgeInsets.only(bottom: 36),
+                  margin: EdgeInsets.only(bottom: 26),
                   child: TextButton(
                     onPressed: () {
                       print("Mudar");
@@ -109,12 +130,60 @@ class _CreateProfileState extends State<CreateProfile> {
                       ),
                     ),
                   )),
-              MyWidgets().caixaTexto('Nome:', nameCon),
-              MyWidgets().caixaTexto('CPF:', cpfCon),
-              DatePick(dayCon, monthCon, yearCon),
-              GenderPicker(sexCon),
+              errorText(_error),
+              MyWidgets().caixaTexto('Nome:', nameCon, errorText: _wrongName),
+              MyWidgets().caixaTexto('CPF:', cpfCon, errorText: _wrongCpf),
+              DatePick(dayCon, monthCon, yearCon,
+                  errorTextDay: _wrongDay,
+                  errorTextMonth: _wrongMonth,
+                  errorTextYear: _wrongYear),
+              GenderPicker(sexCon, errorText: _wrongSex),
             ],
           ),
         ));
+  }
+
+  void validate(bool resposta) {
+    if (resposta == false) {
+      setState(() {
+        _wrongCpf = "CPF já cadastrado.";
+      });
+    } else {
+      setState(() {
+        _wrongCpf = null;
+      });
+      showDialog(
+        context: context,
+        builder: (_) => alertDialog("Perfil criado com sucesso."),
+      );
+    }
+  }
+
+  bool isEmpty(
+      var name,
+      var cpf,
+      TextEditingController daycon,
+      TextEditingController monthcon,
+      TextEditingController yearcon,
+      TextEditingController sexcon) {
+    String text = "";
+    bool empty = false;
+    setState(() {
+      name.isEmpty ? _wrongName = text : _wrongName = null;
+      cpf.isEmpty ? _wrongCpf = text : _wrongCpf = null;
+      daycon.text.isEmpty ? _wrongDay = text : _wrongDay = null;
+      monthcon.text.isEmpty ? _wrongMonth = text : _wrongMonth = null;
+      yearcon.text.isEmpty ? _wrongYear = text : _wrongYear = null;
+      sexcon.text.isEmpty ? _wrongSex = text : _wrongSex = null;
+    });
+    if (name.isEmpty ||
+        cpf.isEmpty ||
+        dayCon.text.isEmpty ||
+        monthCon.text.isEmpty ||
+        yearCon.text.isEmpty ||
+        sexcon.text.isEmpty) {
+      empty = true;
+    }
+    return empty;
   }
 }
