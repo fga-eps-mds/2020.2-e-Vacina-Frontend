@@ -87,7 +87,7 @@ class _UserConfigState extends State<UserConfig> {
                       width: 2.0, color: const Color.fromRGBO(20, 20, 20, 1)),
                   borderRadius: BorderRadius.circular(150),
                   image: DecorationImage(
-                      image: AssetImage("assets/Carlos.jpeg"),
+                      image: AssetImage("assets/EmptyProfile.png"),
                       fit: BoxFit.cover), //http rquest in future.
                 ),
               ),

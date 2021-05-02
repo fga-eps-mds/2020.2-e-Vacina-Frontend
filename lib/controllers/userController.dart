@@ -41,7 +41,7 @@ abstract class UserControllerBase with Store {
   changeToken(String value) => token = value;
 
   @action
-  Future<dynamic> login(String email, String password) async {
+  login(String email, String password) async {
     var resposta = true;
     try {
       Response response = await api.auth(email, password);
@@ -58,7 +58,6 @@ abstract class UserControllerBase with Store {
     }
     return resposta;
   }
-
 
   @action
   logout() async {

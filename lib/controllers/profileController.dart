@@ -44,10 +44,18 @@ abstract class ProfileControllerBase with Store {
   @action
   createProfile(String userId, String name, String cpf, String sex,
       String birthDate) async {
-    Response response =
-        await api.createProfile(userId, name, cpf, sex, birthDate);
-    changeCurrentId(response.data['newProfile']['_id']);
-    return response;
+    bool profile = true;
+    try {
+      Response response =
+          await api.createProfile(userId, name, cpf, sex, birthDate);
+      changeCurrentId(response.data['newProfile']['_id']);
+      //return response;
+    } catch (err) {
+      print("deu exceção\n");
+      print(err);
+      profile = false;
+    }
+    return profile;
   }
 
   @action
