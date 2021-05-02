@@ -107,6 +107,80 @@ class MyWidgets {
   }
 }
 
+class alertDialog extends StatefulWidget {
+  final String label;
+
+  const alertDialog(this.label, {Key key}) : super(key: key);
+  @override
+  _alertDialogState createState() => _alertDialogState();
+}
+
+class _alertDialogState extends State<alertDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: Text(
+        widget.label,
+        style: TextStyle(
+          fontSize: 16,
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text(
+            "Ok",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class errorText extends StatefulWidget {
+  final bool error;
+
+  const errorText(this.error, {Key key}) : super(key: key);
+  @override
+  _errorTextState createState() => _errorTextState();
+}
+
+class _errorTextState extends State<errorText> {
+  Color mostraTexto() {
+    Color color;
+    widget.error
+        ? color = Color.fromRGBO(200, 0, 0, 1)
+        : color = Color.fromRGBO(200, 0, 0, 0);
+    return color;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(bottom: 15),
+      width: 20000,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Preencha todos os campos obrigatórios.",
+            style: TextStyle(
+              fontSize: 15,
+              color: mostraTexto(),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
 class textSwitch extends StatefulWidget {
   final String label;
   final double altura, fontSize;
@@ -163,7 +237,9 @@ class _textSwitchState extends State<textSwitch> {
 
 class GenderPicker extends StatefulWidget {
   final TextEditingController controller;
-  const GenderPicker(this.controller, {Key key}) : super(key: key);
+  final String errorText;
+  const GenderPicker(this.controller, {Key key, this.errorText})
+      : super(key: key);
 
   @override
   _GenderPickerState createState() => _GenderPickerState();
@@ -177,8 +253,7 @@ class _GenderPickerState extends State<GenderPicker> {
       padding: EdgeInsets.only(bottom: 31.5),
       child: DropdownButtonFormField<String>(
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
+              border: OutlineInputBorder(), errorText: widget.errorText),
           hint: Text('Sexo'),
           value: dropdownValue,
           isExpanded: true,
@@ -207,9 +282,12 @@ class DatePick extends StatefulWidget {
   final TextEditingController dayController;
   final TextEditingController monthController;
   final TextEditingController yearController;
+  final String errorTextDay;
+  final String errorTextMonth;
+  final String errorTextYear;
 
   const DatePick(this.dayController, this.monthController, this.yearController,
-      {Key key})
+      {Key key, this.errorTextDay, this.errorTextMonth, this.errorTextYear})
       : super(key: key);
   @override
   _DatePickState createState() => _DatePickState();
@@ -219,19 +297,41 @@ class _DatePickState extends State<DatePick> {
   String dropdownDay;
   String dropdownMonth;
   String dropdownYear;
+  double altura = 88;
+
+  double mudaAltura(double altura) {
+    if (widget.errorTextDay != null ||
+        widget.errorTextMonth != null ||
+        widget.errorTextYear != null) {
+      altura = 83;
+    } else
+      altura = 88;
+    return altura;
+  }
+
+  EdgeInsets mudaPadding() {
+    EdgeInsets padding;
+    if (widget.errorTextDay != null ||
+        widget.errorTextMonth != null ||
+        widget.errorTextYear != null) {
+      padding = EdgeInsets.only(bottom: 4.5);
+    } else
+      padding = EdgeInsets.only(bottom: 31.5);
+    return padding;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          padding: EdgeInsets.only(bottom: 31.5),
+          padding: mudaPadding(),
           width: 95,
-          height: 88,
+          height: mudaAltura(altura),
           child: DropdownButtonFormField<String>(
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
-              ),
+                  border: OutlineInputBorder(), errorText: widget.errorTextDay),
               hint: Text('Dia'),
               value: dropdownDay,
               //isExpanded: true,
@@ -281,13 +381,13 @@ class _DatePickState extends State<DatePick> {
               }).toList()),
         ),
         Container(
-          padding: EdgeInsets.only(bottom: 31.5),
+          padding: mudaPadding(),
           width: 95,
-          height: 88,
+          height: mudaAltura(altura),
           child: DropdownButtonFormField<String>(
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
-              ),
+                  border: OutlineInputBorder(),
+                  errorText: widget.errorTextMonth),
               hint: Text('Mês'),
               value: dropdownMonth,
               //isExpanded: true,
@@ -318,13 +418,13 @@ class _DatePickState extends State<DatePick> {
               }).toList()),
         ),
         Container(
-          padding: EdgeInsets.only(bottom: 31.5),
+          padding: mudaPadding(),
           width: 105,
-          height: 88,
+          height: mudaAltura(altura),
           child: DropdownButtonFormField<String>(
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
-              ),
+                  border: OutlineInputBorder(),
+                  errorText: widget.errorTextYear),
               hint: Text('Ano'),
               value: dropdownYear,
               //isExpanded: true,
