@@ -1,4 +1,5 @@
 import 'package:e_vacina/globals.dart';
+import 'package:e_vacina/screens/CreateProfileScreen.dart';
 import 'package:e_vacina/screens/UserConfig.dart';
 import 'package:e_vacina/screens/adminConfig_screen.dart';
 import 'package:flutter/material.dart';
@@ -118,8 +119,11 @@ class ConfigTab extends StatelessWidget {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => UserConfig()));
           }),
-          MyWidgets().BorderButton('Termos de Uso', 86, 25, Colors.black,
-              Icons.arrow_forward, () {}),
+          MyWidgets().BorderButton(
+              'Termos de Uso', 86, 25, Colors.black, Icons.arrow_forward, () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CreateProfile()));
+          }),
           MyWidgets().BorderButton(
               'Sair', 86, 25, Colors.black, Icons.arrow_forward, () {
             userController.logout();
