@@ -56,7 +56,7 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
-    - assets/Carlos.jpeg
+    - assets/EmptyProfile.png
     - assets/fonts/
 
   fonts:
