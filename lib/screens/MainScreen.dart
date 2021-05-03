@@ -115,7 +115,8 @@ class ConfigTab extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => GeneralScreen()));
           }),
           MyWidgets().BorderButton(
-              'Perfis', 86, 25, Colors.black, Icons.arrow_forward, () {
+              'Perfis', 86, 25, Colors.black, Icons.arrow_forward, () async {
+            await profileController.getById("608f44d8a2cf85001e81ae0c");
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => UserConfig()));
           }),
