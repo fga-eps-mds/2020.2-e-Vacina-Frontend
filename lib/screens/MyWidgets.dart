@@ -238,7 +238,9 @@ class _textSwitchState extends State<textSwitch> {
 class GenderPicker extends StatefulWidget {
   final TextEditingController controller;
   final String errorText;
-  const GenderPicker(this.controller, {Key key, this.errorText})
+  final String dropdownValue;
+  const GenderPicker(this.controller,
+      {Key key, this.errorText, this.dropdownValue})
       : super(key: key);
 
   @override
@@ -255,7 +257,7 @@ class _GenderPickerState extends State<GenderPicker> {
           decoration: InputDecoration(
               border: OutlineInputBorder(), errorText: widget.errorText),
           hint: Text('Sexo'),
-          value: dropdownValue,
+          value: widget.dropdownValue,
           isExpanded: true,
           onChanged: (String newValue) {
             setState(() {
@@ -285,9 +287,13 @@ class DatePick extends StatefulWidget {
   final String errorTextDay;
   final String errorTextMonth;
   final String errorTextYear;
+  final String dropdownDay;
+  final String dropdownMonth;
+  final String dropdownYear;
+  
 
   const DatePick(this.dayController, this.monthController, this.yearController,
-      {Key key, this.errorTextDay, this.errorTextMonth, this.errorTextYear})
+      {Key key, this.errorTextDay, this.errorTextMonth, this.errorTextYear, this.dropdownDay, this.dropdownMonth, this.dropdownYear})
       : super(key: key);
   @override
   _DatePickState createState() => _DatePickState();
@@ -333,7 +339,7 @@ class _DatePickState extends State<DatePick> {
               decoration: InputDecoration(
                   border: OutlineInputBorder(), errorText: widget.errorTextDay),
               hint: Text('Dia'),
-              value: dropdownDay,
+              value: widget.dropdownDay,
               //isExpanded: true,
               onChanged: (String newValue) {
                 setState(() {
@@ -389,7 +395,7 @@ class _DatePickState extends State<DatePick> {
                   border: OutlineInputBorder(),
                   errorText: widget.errorTextMonth),
               hint: Text('Mês'),
-              value: dropdownMonth,
+              value: widget.dropdownMonth,
               //isExpanded: true,
               onChanged: (String newValue) {
                 setState(() {
@@ -426,7 +432,7 @@ class _DatePickState extends State<DatePick> {
                   border: OutlineInputBorder(),
                   errorText: widget.errorTextYear),
               hint: Text('Ano'),
-              value: dropdownYear,
+              value: widget.dropdownYear,
               //isExpanded: true,
               onChanged: (String newValue) {
                 setState(() {
