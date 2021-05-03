@@ -1,0 +1,41 @@
+name: Flutter_CI
+
+on: 
+  pull_request:
+    branches:
+      - main
+      - devel
+  push:
+    branches:
+      - main
+      - devel
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+    
+    - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '2.0.1.x'
+    
+    - name: Getting the dependencies for the Flutter project
+      run: flutter pub get
+     
+    # - name: Run tests for Flutter
+    #   run: flutter test 
+      
+    # - name: Run tests for Flutter
+    #   run: flutter test --coverage
+
+    # - name: Sending the results to codecov
+    #   run: bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_TOKEN}}
+
+    - name: Running lint
+      run: flutter analyze

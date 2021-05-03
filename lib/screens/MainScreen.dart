@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:e_vacina/globals.dart';
 import 'package:e_vacina/screens/UserConfig.dart';
 import 'package:e_vacina/screens/adminConfig_screen.dart';
-import 'package:flutter/material.dart';
-import 'MyWidgets.dart';
+import 'package:e_vacina/component/MyWidgets.dart';
 import 'GeneralScreen.dart';
+import 'package:e_vacina/component/CardVaccine.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -134,20 +135,19 @@ class ConfigTab extends StatelessWidget {
 class MainTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: 90,
-        width: 90,
-        child: FloatingActionButton(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          onPressed: () {
-            print('Botão');
-          },
-          child: new Icon(Icons.add,
-              color: Theme.of(context).primaryColor, size: 80),
-        ),
-      ),
-    );
+    const resposta = {
+      111: { 
+        "val1": "teste",
+        "val2": "teste2"
+      },
+    };
+    return
+    ListView(
+          padding: EdgeInsets.all(16),
+          children: resposta.entries.map((entry) {
+            return buildVaccineCard(entry.value["val2"], entry.value["val1"]);
+            }
+          ).toList()
+        ); 
   }
 }

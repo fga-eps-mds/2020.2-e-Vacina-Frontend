@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'MyWidgets.dart';
+import 'package:e_vacina/component/MyWidgets.dart';
 
 class HelpScreen extends StatefulWidget {
   @override

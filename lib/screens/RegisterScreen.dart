@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:e_vacina/screens/LoginScreen.dart';
 import 'package:flutter/material.dart';
-import 'MyWidgets.dart';
+import 'package:e_vacina/component/MyWidgets.dart';
 
 import 'package:e_vacina/globals.dart';
 
