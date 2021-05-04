@@ -1,3 +1,4 @@
+import 'package:e_vacina/screens/MainScreen.dart';
 import 'package:flutter/material.dart';
 
 import '../globals.dart';
@@ -36,7 +37,6 @@ class _UserConfigState extends State<UserConfig> {
     dayCon.text = profileController.currentBirthDate.substring(8, 10);
     monthCon.text = profileController.currentBirthDate.substring(5, 7);
     yearCon.text = profileController.currentBirthDate.substring(0, 4);
-    //1926-04-09T00:00:00.000Z
     profileController.currentSex == 'Masculino'
         ? sexCon.text = '1'
         : sexCon.text = '2';
@@ -86,7 +86,9 @@ class _UserConfigState extends State<UserConfig> {
                           : (_sex = 'Feminino');
                       if (isEmpty() == false) {
                         _error = false;
-                        profileController.update(_name, _cpf, _sex, _birthDate);
+                        profileController
+                            .update(_name, _cpf, _sex, _birthDate)
+                            .then((resposta) => validate(resposta));
                       } else {
                         _error = true;
                       }
@@ -136,6 +138,7 @@ class _UserConfigState extends State<UserConfig> {
                       ),
                     ),
                   )),
+              errorText(_error),
               MyWidgets().caixaTexto('Nome:', nameCon, errorText: _wrongName),
               MyWidgets().caixaTexto('CPF:', cpfCon, errorText: _wrongCpf),
               DatePick(dayCon, monthCon, yearCon,
@@ -147,7 +150,13 @@ class _UserConfigState extends State<UserConfig> {
                   'Excluir Usuário', 150, 45, 17, Color.fromRGBO(255, 0, 0, 1),
                   () {
                 setState(() {
-                  profileController.delete(profileController.currentId);
+                  if (userController.profiles.length == 1) {
+                    validateDelete(false);
+                  } else {
+                    profileController
+                        .delete(profileController.currentId)
+                        .then((resposta) => validateDelete(resposta));
+                  }
                 });
               }),
             ],
@@ -166,5 +175,52 @@ class _UserConfigState extends State<UserConfig> {
       empty = true;
     }
     return empty;
+  }
+
+  void validate(bool resposta) {
+    if (resposta == false) {
+      setState(() {
+        _wrongCpf = "CPF já cadastrado.";
+      });
+    } else {
+      setState(() {
+        _wrongCpf = null;
+      });
+      showDialog(
+          context: context,
+          builder: (_) => alertDialog(
+                "Perfil atualizado com sucesso.",
+                onPressed: () async {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MainScreen()));
+                  await profileController.getById(profileController.currentId);
+                },
+              ));
+    }
+  }
+
+  void validateDelete(bool resposta) async {
+    if (resposta == false) {
+      showDialog(
+        context: context,
+        builder: (_) =>
+            alertDialog("Impossivel excluir todos os perfis", onPressed: () {
+          Navigator.of(context).pop();
+        }),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (_) => alertDialog(
+          "Perfil deletado com sucesso.",
+          onPressed: () async {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MainScreen()));
+            await userController.getProfiles(userController.userId);
+            await profileController.getById(userController.profiles[0]);
+          },
+        ),
+      );
+    }
   }
 }
