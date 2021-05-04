@@ -12,9 +12,7 @@ class CreateProfile extends StatefulWidget {
 class _CreateProfileState extends State<CreateProfile> {
   final nameCon = new TextEditingController();
   final cpfCon = new TextEditingController();
-  final dayCon = new TextEditingController();
-  final monthCon = new TextEditingController();
-  final yearCon = new TextEditingController();
+  final birthDateCon = new TextEditingController();
   final sexCon = new TextEditingController();
 
   var _name;
@@ -24,9 +22,7 @@ class _CreateProfileState extends State<CreateProfile> {
 
   String _wrongName;
   String _wrongCpf;
-  String _wrongDay;
-  String _wrongMonth;
-  String _wrongYear;
+  String _wrongBirthDate;
   String _wrongSex;
   bool _error = false;
 
@@ -66,8 +62,7 @@ class _CreateProfileState extends State<CreateProfile> {
                     setState(() {
                       _name = nameCon.text;
                       _cpf = cpfCon.text;
-                      _birthDate =
-                          '${monthCon.text}/${dayCon.text}/${yearCon.text}';
+                      _birthDate = birthDateCon.text;
                       sexCon.text == '1'
                           ? (_sex = 'Masculino')
                           : (_sex = 'Feminino');
@@ -131,10 +126,7 @@ class _CreateProfileState extends State<CreateProfile> {
               errorText(_error),
               MyWidgets().caixaTexto('Nome:', nameCon, errorText: _wrongName),
               MyWidgets().caixaTexto('CPF:', cpfCon, errorText: _wrongCpf),
-              DatePick(dayCon, monthCon, yearCon,
-                  errorTextDay: _wrongDay,
-                  errorTextMonth: _wrongMonth,
-                  errorTextYear: _wrongYear),
+              DatePick(birthDateCon, errorText: _wrongBirthDate),
               GenderPicker(sexCon, errorText: _wrongSex),
             ],
           ),
@@ -163,16 +155,14 @@ class _CreateProfileState extends State<CreateProfile> {
     setState(() {
       _name.isEmpty ? _wrongName = text : _wrongName = null;
       _cpf.isEmpty ? _wrongCpf = text : _wrongCpf = null;
-      dayCon.text.isEmpty ? _wrongDay = text : _wrongDay = null;
-      monthCon.text.isEmpty ? _wrongMonth = text : _wrongMonth = null;
-      yearCon.text.isEmpty ? _wrongYear = text : _wrongYear = null;
+      birthDateCon.text.isEmpty
+          ? _wrongBirthDate = text
+          : _wrongBirthDate = null;
       sexCon.text.isEmpty ? _wrongSex = text : _wrongSex = null;
     });
     if (_name.isEmpty ||
         _cpf.isEmpty ||
-        dayCon.text.isEmpty ||
-        monthCon.text.isEmpty ||
-        yearCon.text.isEmpty ||
+        birthDateCon.text.isEmpty ||
         sexCon.text.isEmpty) {
       empty = true;
     }
