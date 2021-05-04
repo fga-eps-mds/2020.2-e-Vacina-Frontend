@@ -40,6 +40,12 @@ abstract class UserControllerBase with Store {
   @action
   changeToken(String value) => token = value;
 
+  @observable
+  List profiles;
+
+  @action
+  changeProfiles(List value) => profiles = value;
+
   @action
   login(String email, String password) async {
     var resposta = true;
@@ -49,6 +55,7 @@ abstract class UserControllerBase with Store {
       changeUserId(response.data['user']['_id']);
       changeEmail(response.data['user']['email']);
       changePhoneNumber(response.data['user']['phoneNumber']);
+      await getProfiles(userId);
       // await _storage.write(key: 'token', value: token);
       // await _storage.write(key: 'userId', value: userId);
       print('$token');
@@ -102,5 +109,12 @@ abstract class UserControllerBase with Store {
     changePhoneNumber(response.data['updtedUser']['phoneNumber']);
     print(response);
     print(response.statusCode);
+  }
+
+  @action
+  getProfiles(String userId) async {
+    Response response = await api.getProfilesByUserId(userId);
+    changeProfiles(response.data['user']['profilesIds']);
+    print(profiles);
   }
 }
