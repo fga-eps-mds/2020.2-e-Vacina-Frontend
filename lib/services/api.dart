@@ -1,6 +1,5 @@
 import 'package:mobx/mobx.dart';
 import 'package:dio/dio.dart';
-import 'dart:convert';
 import 'package:e_vacina/globals.dart';
 
 part 'api.g.dart';
@@ -65,9 +64,6 @@ abstract class ApiBase with Store {
   createProfile(String userId, String name, String cpf, String sex,
       String birthDate) async {
     var token = userController.token;
-    print("dentro apiprofile");
-    print(userId);
-    print("cabou create-------------------");
     Response response = await dio.post('/profile/$userId',
         data: {'name': name, 'cpf': cpf, 'birthDate': birthDate, 'sex': sex},
         options: Options(
@@ -108,6 +104,17 @@ abstract class ApiBase with Store {
   getProfile(String profileId) async {
     var token = userController.token;
     Response response = await dio.get('/profile/$profileId',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ));
+    return response;
+  }
+
+  @action
+  getTakenVaccines()async {
+    var token = userController.token;
+    var currentProfile = profileController.currentId;
+    Response response = await dio.get('/taken/p/$currentProfile',
         options: Options(
           headers: {'Authorization': 'Bearer $token'},
         ));

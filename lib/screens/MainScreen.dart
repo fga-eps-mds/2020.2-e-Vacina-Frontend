@@ -19,6 +19,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+        vaccineController.getTakenVaccine();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appBar(),
@@ -135,19 +136,38 @@ class ConfigTab extends StatelessWidget {
 class MainTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    const resposta = {
-      111: { 
-        "val1": "teste",
-        "val2": "teste2"
-      },
-    };
-    return
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~");
+        print(vaccineController.takenVaccines);
+    return Container(
+      child: (vaccineController.takenVaccines.isEmpty || vaccineController.takenVaccines == null)?
+     Center(
+      child: SizedBox(
+        height: 90,
+        width: 90,
+        child: FloatingActionButton(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          onPressed: () {
+            print('Botão');
+          },
+          child: new Icon(Icons.add,
+              color: Theme.of(context).primaryColor, size: 80),
+        ),
+      ),
+    )
+    :
     ListView(
           padding: EdgeInsets.all(16),
-          children: resposta.entries.map((entry) {
-            return buildVaccineCard(entry.value["val2"], entry.value["val1"]);
-            }
+          children: 
+
+          //  vaccineController.takenVaccines.map((e)=> print(e["_id"]) ),
+          vaccineController.takenVaccines.map((entry) {
+           return buildVaccineCard(entry["vaccineId"]["name"], entry["numberOfDosesTaken"], entry["vaccineId"]["numberOfDoses"]);
+           }
           ).toList()
-        ); 
+       ) ,
+
+    );
+    
   }
 }

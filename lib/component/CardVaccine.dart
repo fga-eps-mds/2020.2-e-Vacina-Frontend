@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 
-Widget buildVaccineCard(String title, String description) => Card(
+Widget buildVaccineCard(String title, int dosesTaken, int numberOfDoses) => Card(
         shadowColor: Colors.red,
         elevation: 8,
         clipBehavior: Clip.antiAlias,
@@ -9,13 +9,12 @@ Widget buildVaccineCard(String title, String description) => Card(
           borderRadius: BorderRadius.circular(24),
         ),
         child: Container(
-          height: 105,
+          height: 100,
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.blue, Colors.red],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
+            color:
+            (dosesTaken==0)?Colors.yellow:
+            (dosesTaken==numberOfDoses)?Colors.green:
+            Colors.blue,
           ),
           padding: EdgeInsets.all(16),
           child: Column(
@@ -25,16 +24,16 @@ Widget buildVaccineCard(String title, String description) => Card(
                 '$title',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.white,
+                  color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 4),
               Text(
-                '$description',
+                'Doses tomadas $dosesTaken/$numberOfDoses',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ),
             ],

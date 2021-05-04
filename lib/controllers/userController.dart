@@ -49,6 +49,7 @@ abstract class UserControllerBase with Store {
       changeUserId(response.data['user']['_id']);
       changeEmail(response.data['user']['email']);
       changePhoneNumber(response.data['user']['phoneNumber']);
+      await profileController.changeCurrentId('6091b6e1ef0b20001ffa8673');
     } catch (error) {
       print(error.error);
       print(error['error']);

@@ -86,6 +86,13 @@ mixin _$Api on ApiBase, Store {
     return _$getProfileAsyncAction.run(() => super.getProfile(profileId));
   }
 
+  final _$getTakenVaccinesAsyncAction = AsyncAction('ApiBase.getTakenVaccines');
+
+  @override
+  Future getTakenVaccines() {
+    return _$getTakenVaccinesAsyncAction.run(() => super.getTakenVaccines());
+  }
+
   @override
   String toString() {
     return '''
