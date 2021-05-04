@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 class MyWidgets {
   final Color gangGray = Color.fromRGBO(51, 51, 51, 1.0);
 
-  Widget caixaTexto(String texto, final inputCon,
-      {bool numberPad = false,
-      bool isObscure = false,
-      int maxLength = TextField.noMaxLength,
-      TextInputType textInput = TextInputType.text,
-      String errorText}) {
+  Widget caixaTexto(
+    String texto,
+    final inputCon, {
+    bool numberPad = false,
+    bool isObscure = false,
+    int maxLength = TextField.noMaxLength,
+    TextInputType textInput = TextInputType.text,
+    String errorText,
+  }) {
     return Container(
       padding: EdgeInsets.only(bottom: 11.5),
       child: TextField(
@@ -109,8 +112,9 @@ class MyWidgets {
 
 class alertDialog extends StatefulWidget {
   final String label;
+  final Function onPressed;
 
-  const alertDialog(this.label, {Key key}) : super(key: key);
+  const alertDialog(this.label, {Key key, this.onPressed}) : super(key: key);
   @override
   _alertDialogState createState() => _alertDialogState();
 }
@@ -127,9 +131,7 @@ class _alertDialogState extends State<alertDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          onPressed: widget.onPressed,
           child: Text(
             "Ok",
             style: TextStyle(
@@ -290,10 +292,15 @@ class DatePick extends StatefulWidget {
   final String dropdownDay;
   final String dropdownMonth;
   final String dropdownYear;
-  
 
   const DatePick(this.dayController, this.monthController, this.yearController,
-      {Key key, this.errorTextDay, this.errorTextMonth, this.errorTextYear, this.dropdownDay, this.dropdownMonth, this.dropdownYear})
+      {Key key,
+      this.errorTextDay,
+      this.errorTextMonth,
+      this.errorTextYear,
+      this.dropdownDay,
+      this.dropdownMonth,
+      this.dropdownYear})
       : super(key: key);
   @override
   _DatePickState createState() => _DatePickState();
