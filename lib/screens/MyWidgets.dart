@@ -279,272 +279,69 @@ class _GenderPickerState extends State<GenderPicker> {
 }
 
 class DatePick extends StatefulWidget {
-  final TextEditingController dayController;
-  final TextEditingController monthController;
-  final TextEditingController yearController;
-  final String errorTextDay;
-  final String errorTextMonth;
-  final String errorTextYear;
+  final TextEditingController birthDateController;
+  final String errorText;
 
-  const DatePick(this.dayController, this.monthController, this.yearController,
-      {Key key, this.errorTextDay, this.errorTextMonth, this.errorTextYear})
+  const DatePick(this.birthDateController, {Key key, this.errorText})
       : super(key: key);
   @override
   _DatePickState createState() => _DatePickState();
 }
 
 class _DatePickState extends State<DatePick> {
-  String dropdownDay;
-  String dropdownMonth;
-  String dropdownYear;
-  double altura = 88;
+  DateTime _dateTime;
+  String _date;
 
-  double mudaAltura(double altura) {
-    if (widget.errorTextDay != null ||
-        widget.errorTextMonth != null ||
-        widget.errorTextYear != null) {
-      altura = 83;
-    } else
-      altura = 88;
-    return altura;
-  }
-
-  EdgeInsets mudaPadding() {
-    EdgeInsets padding;
-    if (widget.errorTextDay != null ||
-        widget.errorTextMonth != null ||
-        widget.errorTextYear != null) {
-      padding = EdgeInsets.only(bottom: 4.5);
-    } else
-      padding = EdgeInsets.only(bottom: 31.5);
-    return padding;
+  String setDate(String dateTime) {
+    setState(() {
+      _date =
+          "${dateTime.substring(8, 10)}/${dateTime.substring(5, 7)}/${dateTime.substring(0, 4)}";
+    });
+    return _date;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          padding: mudaPadding(),
-          width: 95,
-          height: mudaAltura(altura),
-          child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), errorText: widget.errorTextDay),
-              hint: Text('Dia'),
-              value: dropdownDay,
-              //isExpanded: true,
-              onChanged: (String newValue) {
-                setState(() {
-                  dropdownDay = newValue;
-                  widget.dayController.text = newValue;
-                });
-              },
-              items: <String>[
-                "01",
-                "02",
-                "03",
-                "04",
-                "05",
-                "06",
-                "07",
-                "08",
-                "09",
-                "10",
-                "11",
-                "12",
-                "13",
-                "14",
-                "15",
-                "16",
-                "17",
-                "18",
-                "19",
-                "20",
-                "21",
-                "22",
-                "23",
-                "24",
-                "25",
-                "26",
-                "27",
-                "28",
-                "29",
-                "30",
-                "31"
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList()),
+    return Container(
+      padding: EdgeInsets.only(bottom: 31.5),
+      height: 92,
+      child: SizedBox(
+        child: OutlinedButton(
+          style: OutlinedButton.styleFrom(
+              side: BorderSide(
+            color:
+                widget.errorText == null ? Colors.grey[500] : Colors.red[600],
+          )),
+          onPressed: () {
+            showDatePicker(
+                    context: context,
+                    initialDate: _dateTime == null ? DateTime.now() : _dateTime,
+                    firstDate: DateTime(1920),
+                    lastDate: DateTime(2022))
+                .then((date) {
+              setState(() {
+                _dateTime = date;
+                widget.birthDateController.text = date.toIso8601String();
+              });
+            });
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                _dateTime == null
+                    ? "Data de nascimento"
+                    : setDate(_dateTime.toString()),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                ),
+              ),
+              Icon(Icons.arrow_drop_down, size: 23, color: Colors.grey[700]),
+            ],
+          ),
         ),
-        Container(
-          padding: mudaPadding(),
-          width: 95,
-          height: mudaAltura(altura),
-          child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  errorText: widget.errorTextMonth),
-              hint: Text('Mês'),
-              value: dropdownMonth,
-              //isExpanded: true,
-              onChanged: (String newValue) {
-                setState(() {
-                  dropdownMonth = newValue;
-                  widget.monthController.text = newValue;
-                });
-              },
-              items: <String>[
-                "01",
-                "02",
-                "03",
-                "04",
-                "05",
-                "06",
-                "07",
-                "08",
-                "09",
-                "10",
-                "11",
-                "12"
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList()),
-        ),
-        Container(
-          padding: mudaPadding(),
-          width: 105,
-          height: mudaAltura(altura),
-          child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  errorText: widget.errorTextYear),
-              hint: Text('Ano'),
-              value: dropdownYear,
-              //isExpanded: true,
-              onChanged: (String newValue) {
-                setState(() {
-                  dropdownYear = newValue;
-                  widget.yearController.text = newValue;
-                });
-              },
-              items: <String>[
-                "1920",
-                "1921",
-                "1922",
-                "1923",
-                "1924",
-                "1925",
-                "1926",
-                "1927",
-                "1928",
-                "1929",
-                "1930",
-                "1931",
-                "1932",
-                "1933",
-                "1934",
-                "1935",
-                "1936",
-                "1937",
-                "1938",
-                "1939",
-                "1940",
-                "1941",
-                "1942",
-                "1943",
-                "1944",
-                "1945",
-                "1946",
-                "1947",
-                "1948",
-                "1949",
-                "1950",
-                "1951",
-                "1952",
-                "1953",
-                "1954",
-                "1955",
-                "1956",
-                "1957",
-                "1958",
-                "1959",
-                "1960",
-                "1961",
-                "1962",
-                "1963",
-                "1964",
-                "1965",
-                "1966",
-                "1967",
-                "1968",
-                "1969",
-                "1970",
-                "1971",
-                "1972",
-                "1973",
-                "1974",
-                "1975",
-                "1976",
-                "1977",
-                "1978",
-                "1979",
-                "1980",
-                "1981",
-                "1982",
-                "1983",
-                "1984",
-                "1985",
-                "1986",
-                "1987",
-                "1988",
-                "1989",
-                "1990",
-                "1991",
-                "1992",
-                "1993",
-                "1994",
-                "1995",
-                "1996",
-                "1997",
-                "1998",
-                "1999",
-                "2000",
-                "2001",
-                "2002",
-                "2003",
-                "2004",
-                "2005",
-                "2006",
-                "2007",
-                "2008",
-                "2009",
-                "2010",
-                "2011",
-                "2012",
-                "2013",
-                "2014",
-                "2015",
-                "2016",
-                "2017",
-                "2018",
-                "2019",
-                "2020",
-                "2021"
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList()),
-        ),
-      ],
+      ),
     );
   }
 }
