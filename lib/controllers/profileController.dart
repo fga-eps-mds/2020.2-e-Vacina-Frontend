@@ -64,24 +64,27 @@ abstract class ProfileControllerBase with Store {
 
   @action
   delete(String profileId) async {
-    try{
-    Response response = await api.deleteProfile(profileId);
-    print(response);
-    print(response.statusCode);
-    }catch (err){
+    bool resposta = true;
+    try {
+      Response response = await api.deleteProfile(profileId);
+      print(response);
+      print(response.statusCode);
+    } catch (err) {
       print("deu exceção\n");
+      resposta = false;
     }
+    return resposta;
   }
 
   @action
   update(String name, String cpf, String sex, String birthDate) async {
     bool profile = true;
-    try{
+    try {
       Response response =
-        await api.updateProfile(currentId, name, cpf, sex, birthDate);
-    print(response);
-    print(response.statusCode);
-    }catch (err){
+          await api.updateProfile(currentId, name, cpf, sex, birthDate);
+      print(response);
+      print(response.statusCode);
+    } catch (err) {
       print("deu exceção\n");
       print(err);
       profile = false;
@@ -91,11 +94,16 @@ abstract class ProfileControllerBase with Store {
 
   @action
   getById(String profileId) async {
-    Response response = await api.getProfile(profileId);
-    changeCurrentId(response.data['profile']['_id']);
-    changeCurrentName(response.data['profile']['name']);
-    changeCurrentCpf(response.data['profile']['cpf']);
-    changeCurrentBirthDate(response.data['profile']['birthDate']);
-    changeCurrentSex(response.data['profile']['sex']);
+    try {
+      Response response = await api.getProfile(profileId);
+      changeCurrentId(response.data['profile']['_id']);
+      changeCurrentName(response.data['profile']['name']);
+      changeCurrentCpf(response.data['profile']['cpf']);
+      changeCurrentBirthDate(response.data['profile']['birthDate']);
+      changeCurrentSex(response.data['profile']['sex']);
+      print(response);
+    } catch (err) {
+      print(err);
+    }
   }
 }
