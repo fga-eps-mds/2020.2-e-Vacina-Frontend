@@ -113,4 +113,13 @@ abstract class ApiBase with Store {
         ));
     return response;
   }
+
+  getProfilesByUserId(String userId) async {
+    var token = userController.token;
+    Response response = await dio.get('/user/$userId',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ));
+    return response;
+  }
 }

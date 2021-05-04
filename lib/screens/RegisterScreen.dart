@@ -11,10 +11,6 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class RegisterScreenState extends State<RegisterScreen> {
-  String dropdownDay;
-  String dropdownMonth;
-  String dropdownYear;
-
   var _email;
   var _password;
   var _phone;
@@ -28,9 +24,7 @@ class RegisterScreenState extends State<RegisterScreen> {
   final phoneCon = new TextEditingController();
   final cpfCon = new TextEditingController();
   final nameCon = new TextEditingController();
-  final dayCon = new TextEditingController();
-  final monthCon = new TextEditingController();
-  final yearCon = new TextEditingController();
+  final birthDateCon = new TextEditingController();
   final sexCon = new TextEditingController();
 
   @override
@@ -57,7 +51,7 @@ class RegisterScreenState extends State<RegisterScreen> {
             children: [
               MyWidgets().caixaTexto('Nome', nameCon),
               MyWidgets().caixaTexto('CPF', cpfCon, maxLength: 11),
-              DatePick(dayCon, monthCon, yearCon),
+              DatePick(birthDateCon),
               GenderPicker(sexCon),
               MyWidgets().caixaTexto('Telefone', phoneCon),
               MyWidgets().caixaTexto('Email', emailCon),
@@ -71,8 +65,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                   _name = nameCon.text;
                   _password = passwordCon.text;
                   _phone = phoneCon.text;
-                  _birthDate =
-                      '${yearCon.text}-${monthCon.text}-${dayCon.text}';
+                  _birthDate = birthDateCon.text;
                   sexCon.text == '1'
                       ? (_sex = 'Masculino')
                       : (_sex = 'Feminino');
