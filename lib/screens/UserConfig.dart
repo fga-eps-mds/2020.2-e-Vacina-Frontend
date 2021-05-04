@@ -1,5 +1,7 @@
+import 'package:e_vacina/screens/MainScreen.dart';
 import 'package:flutter/material.dart';
 
+import '../globals.dart';
 import 'MyWidgets.dart';
 
 class UserConfig extends StatefulWidget {
@@ -13,10 +15,30 @@ class _UserConfigState extends State<UserConfig> {
   final birthDateCon = new TextEditingController();
   final sexCon = new TextEditingController();
 
+  String _wrongName;
+  String _wrongCpf;
+  String _wrongBirthDate;
+  bool _error = false;
+
   var _name;
   var _cpf;
   var _birthDate;
   var _sex;
+  var _id;
+  var dropdownValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _id = profileController.currentId;
+    nameCon.text = profileController.currentName;
+    cpfCon.text = profileController.currentCpf;
+    birthDateCon.text = profileController.currentBirthDate;
+    profileController.currentSex == 'Masculino'
+        ? sexCon.text = '1'
+        : sexCon.text = '2';
+    print(birthDateCon.text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +79,14 @@ class _UserConfigState extends State<UserConfig> {
                       sexCon.text == '1'
                           ? (_sex = 'Masculino')
                           : (_sex = 'Feminino');
+                      if (isEmpty() == false) {
+                        _error = false;
+                        profileController
+                            .update(_name, _cpf, _sex, _birthDate)
+                            .then((resposta) => validate(resposta));
+                      } else {
+                        _error = true;
+                      }
                     });
                   },
                   child: Text(
@@ -103,19 +133,86 @@ class _UserConfigState extends State<UserConfig> {
                       ),
                     ),
                   )),
-              MyWidgets().caixaTexto('Nome:', null),
-              MyWidgets().caixaTexto('CPF:', null),
-              DatePick(birthDateCon),
-              GenderPicker(sexCon),
+              errorText(_error),
+              MyWidgets().caixaTexto('Nome:', nameCon, errorText: _wrongName),
+              MyWidgets().caixaTexto('CPF:', cpfCon, errorText: _wrongCpf),
+              DatePick(birthDateCon, errorText: _wrongBirthDate),
+              GenderPicker(sexCon, dropdownValue: sexCon.text),
               MyWidgets().button(
                   'Excluir Usuário', 150, 45, 17, Color.fromRGBO(255, 0, 0, 1),
                   () {
                 setState(() {
-                  print('Excluir');
+                  if (userController.profiles.length == 1) {
+                    validateDelete(false);
+                  } else {
+                    profileController
+                        .delete(profileController.currentId)
+                        .then((resposta) => validateDelete(resposta));
+                  }
                 });
               }),
             ],
           ),
         ));
+  }
+
+  bool isEmpty() {
+    String text = "";
+    bool empty = false;
+    setState(() {
+      _name.isEmpty ? _wrongName = text : _wrongName = null;
+      _cpf.isEmpty ? _wrongCpf = text : _wrongCpf = null;
+    });
+    if (_name.isEmpty || _cpf.isEmpty) {
+      empty = true;
+    }
+    return empty;
+  }
+
+  void validate(bool resposta) {
+    if (resposta == false) {
+      setState(() {
+        _wrongCpf = "CPF já cadastrado.";
+      });
+    } else {
+      setState(() {
+        _wrongCpf = null;
+      });
+      showDialog(
+          context: context,
+          builder: (_) => alertDialog(
+                "Perfil atualizado com sucesso.",
+                onPressed: () async {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MainScreen()));
+                  await profileController.getById(profileController.currentId);
+                },
+              ));
+    }
+  }
+
+  void validateDelete(bool resposta) async {
+    if (resposta == false) {
+      showDialog(
+        context: context,
+        builder: (_) =>
+            alertDialog("Impossivel excluir todos os perfis", onPressed: () {
+          Navigator.of(context).pop();
+        }),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (_) => alertDialog(
+          "Perfil deletado com sucesso.",
+          onPressed: () async {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MainScreen()));
+            await userController.getProfiles(userController.userId);
+            await profileController.getById(userController.profiles[0]);
+          },
+        ),
+      );
+    }
   }
 }

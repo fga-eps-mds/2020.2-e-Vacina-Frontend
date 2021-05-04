@@ -17,12 +17,14 @@ class _LoginMenuState extends State<LoginMenu> {
 
   var _email;
   var _password;
-
+  List profiles;
   String _wrongEmail = null;
   String _wrongPassword = null;
 
-  void mudaTela(bool resposta) {
+  void mudaTela(bool resposta) async {
     if (resposta == true) {
+      profiles = userController.profiles;
+      await profileController.getById(profiles[0]);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => MainScreen()));
     } else {
@@ -56,7 +58,8 @@ class _LoginMenuState extends State<LoginMenu> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             MyWidgets().caixaTexto('Email', emailCon, errorText: _wrongEmail),
-            MyWidgets().caixaTexto('Senha', passwordCon,isObscure: true, errorText: _wrongPassword),
+            MyWidgets().caixaTexto('Senha', passwordCon,
+                isObscure: true, errorText: _wrongPassword),
             MyWidgets().textButton('Esqueci a senha', 200, 40, 20, gangGray,
                 () {
               api.testConnection();

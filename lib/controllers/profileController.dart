@@ -49,7 +49,11 @@ abstract class ProfileControllerBase with Store {
       Response response =
           await api.createProfile(userId, name, cpf, sex, birthDate);
       changeCurrentId(response.data['newProfile']['_id']);
-      //return response;
+      changeCurrentName(response.data['newProfile']['name']);
+      changeCurrentCpf(response.data['newProfile']['cpf']);
+      changeCurrentBirthDate(response.data['newProfile']['birthDate']);
+      changeCurrentSex(response.data['newProfile']['sex']);
+      print(response);
     } catch (err) {
       print("deu exceção\n");
       print(err);
@@ -60,16 +64,46 @@ abstract class ProfileControllerBase with Store {
 
   @action
   delete(String profileId) async {
-    Response response = await api.deleteProfile(profileId);
-    print(response);
-    print(response.statusCode);
+    bool resposta = true;
+    try {
+      Response response = await api.deleteProfile(profileId);
+      print(response);
+      print(response.statusCode);
+    } catch (err) {
+      print("deu exceção\n");
+      resposta = false;
+    }
+    return resposta;
   }
 
   @action
   update(String name, String cpf, String sex, String birthDate) async {
-    Response response =
-        await api.updateProfile(currentId, name, cpf, sex, birthDate);
-    print(response);
-    print(response.statusCode);
+    bool profile = true;
+    try {
+      Response response =
+          await api.updateProfile(currentId, name, cpf, sex, birthDate);
+      print(response);
+      print(response.statusCode);
+    } catch (err) {
+      print("deu exceção\n");
+      print(err);
+      profile = false;
+    }
+    return profile;
+  }
+
+  @action
+  getById(String profileId) async {
+    try {
+      Response response = await api.getProfile(profileId);
+      changeCurrentId(response.data['profile']['_id']);
+      changeCurrentName(response.data['profile']['name']);
+      changeCurrentCpf(response.data['profile']['cpf']);
+      changeCurrentBirthDate(response.data['profile']['birthDate']);
+      changeCurrentSex(response.data['profile']['sex']);
+      print(response);
+    } catch (err) {
+      print(err);
+    }
   }
 }

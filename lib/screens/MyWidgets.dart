@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 class MyWidgets {
   final Color gangGray = Color.fromRGBO(51, 51, 51, 1.0);
 
-  Widget caixaTexto(String texto, final inputCon,
-      {bool numberPad = false,
-      bool isObscure = false,
-      int maxLength = TextField.noMaxLength,
-      TextInputType textInput = TextInputType.text,
-      String errorText}) {
+  Widget caixaTexto(
+    String texto,
+    final inputCon, {
+    bool numberPad = false,
+    bool isObscure = false,
+    int maxLength = TextField.noMaxLength,
+    TextInputType textInput = TextInputType.text,
+    String errorText,
+  }) {
     return Container(
       padding: EdgeInsets.only(bottom: 11.5),
       child: TextField(
@@ -109,8 +112,9 @@ class MyWidgets {
 
 class alertDialog extends StatefulWidget {
   final String label;
+  final Function onPressed;
 
-  const alertDialog(this.label, {Key key}) : super(key: key);
+  const alertDialog(this.label, {Key key, this.onPressed}) : super(key: key);
   @override
   _alertDialogState createState() => _alertDialogState();
 }
@@ -127,9 +131,7 @@ class _alertDialogState extends State<alertDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          onPressed: widget.onPressed,
           child: Text(
             "Ok",
             style: TextStyle(
@@ -238,7 +240,9 @@ class _textSwitchState extends State<textSwitch> {
 class GenderPicker extends StatefulWidget {
   final TextEditingController controller;
   final String errorText;
-  const GenderPicker(this.controller, {Key key, this.errorText})
+  final String dropdownValue;
+  const GenderPicker(this.controller,
+      {Key key, this.errorText, this.dropdownValue})
       : super(key: key);
 
   @override
@@ -255,7 +259,7 @@ class _GenderPickerState extends State<GenderPicker> {
           decoration: InputDecoration(
               border: OutlineInputBorder(), errorText: widget.errorText),
           hint: Text('Sexo'),
-          value: dropdownValue,
+          value: widget.dropdownValue,
           isExpanded: true,
           onChanged: (String newValue) {
             setState(() {
@@ -313,6 +317,7 @@ class _DatePickState extends State<DatePick> {
                 widget.errorText == null ? Colors.grey[500] : Colors.red[600],
           )),
           onPressed: () {
+            print(widget.birthDateController.text);
             showDatePicker(
                     context: context,
                     initialDate: _dateTime == null ? DateTime.now() : _dateTime,
@@ -321,7 +326,8 @@ class _DatePickState extends State<DatePick> {
                 .then((date) {
               setState(() {
                 _dateTime = date;
-                widget.birthDateController.text = date.toIso8601String();
+                if (date != null)
+                  widget.birthDateController.text = date.toString();
               });
             });
           },
@@ -329,12 +335,14 @@ class _DatePickState extends State<DatePick> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                _dateTime == null
+                widget.birthDateController.text.isEmpty
                     ? "Data de nascimento"
-                    : setDate(_dateTime.toString()),
+                    : setDate(widget.birthDateController.text),
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.grey[700],
+                  color: widget.birthDateController.text.isEmpty
+                      ? Colors.grey[700]
+                      : Colors.black,
                 ),
               ),
               Icon(Icons.arrow_drop_down, size: 23, color: Colors.grey[700]),
