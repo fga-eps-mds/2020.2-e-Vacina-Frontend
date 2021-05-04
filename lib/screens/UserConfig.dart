@@ -10,9 +10,7 @@ class UserConfig extends StatefulWidget {
 class _UserConfigState extends State<UserConfig> {
   final nameCon = new TextEditingController();
   final cpfCon = new TextEditingController();
-  final dayCon = new TextEditingController();
-  final monthCon = new TextEditingController();
-  final yearCon = new TextEditingController();
+  final birthDateCon = new TextEditingController();
   final sexCon = new TextEditingController();
 
   var _name;
@@ -55,8 +53,7 @@ class _UserConfigState extends State<UserConfig> {
                     setState(() {
                       _name = nameCon.text;
                       _cpf = cpfCon.text;
-                      _birthDate =
-                          '${monthCon.text}/${dayCon.text}/${yearCon.text}';
+                      _birthDate = birthDateCon.text;
                       sexCon.text == '1'
                           ? (_sex = 'Masculino')
                           : (_sex = 'Feminino');
@@ -108,7 +105,7 @@ class _UserConfigState extends State<UserConfig> {
                   )),
               MyWidgets().caixaTexto('Nome:', null),
               MyWidgets().caixaTexto('CPF:', null),
-              DatePick(dayCon, monthCon, yearCon),
+              DatePick(birthDateCon),
               GenderPicker(sexCon),
               MyWidgets().button(
                   'Excluir Usuário', 150, 45, 17, Color.fromRGBO(255, 0, 0, 1),
