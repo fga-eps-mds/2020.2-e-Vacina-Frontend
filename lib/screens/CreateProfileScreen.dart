@@ -152,7 +152,15 @@ class _CreateProfileState extends State<CreateProfile> {
       });
       showDialog(
         context: context,
-        builder: (_) => alertDialog("Perfil criado com sucesso."),
+        builder: (_) => alertDialog(
+          "Perfil criado com sucesso.",
+          onPressed: () async {
+            await userController.getProfiles(userController.userId);
+            await profileController.getById(
+                userController.profiles[userController.profiles.length - 1]);
+            Navigator.of(context).pop();
+          },
+        ),
       );
     }
   }
