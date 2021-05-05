@@ -1,4 +1,5 @@
 import 'package:e_vacina/screens/MainScreen.dart';
+import 'package:e_vacina/screens/ProfilesScreen.dart';
 import 'package:flutter/material.dart';
 
 import '../globals.dart';
@@ -48,7 +49,7 @@ class _CreateProfileState extends State<CreateProfile> {
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MainScreen()));
+                      MaterialPageRoute(builder: (context) => ProfileScreen()));
                 },
                 alignment: Alignment.centerRight,
               ),
