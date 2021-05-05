@@ -23,6 +23,7 @@ abstract class VaccineControllerBase with Store {
       print("-----------------------------------------");
       await changeTakenVaccine(response.data["takenVaccine"]);
       print("mudado");
-   
+      return response.data["takenVaccine"];
   }
+
 }

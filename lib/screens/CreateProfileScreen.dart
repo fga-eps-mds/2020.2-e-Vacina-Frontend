@@ -1,5 +1,8 @@
+import 'package:e_vacina/screens/MainScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_vacina/component/MyWidgets.dart';
+import '../globals.dart';
+
 
 class CreateProfile extends StatefulWidget {
   @override
@@ -9,15 +12,19 @@ class CreateProfile extends StatefulWidget {
 class _CreateProfileState extends State<CreateProfile> {
   final nameCon = new TextEditingController();
   final cpfCon = new TextEditingController();
-  final dayCon = new TextEditingController();
-  final monthCon = new TextEditingController();
-  final yearCon = new TextEditingController();
+  final birthDateCon = new TextEditingController();
   final sexCon = new TextEditingController();
 
   var _name;
   var _cpf;
   var _birthDate;
   var _sex;
+
+  String _wrongName;
+  String _wrongCpf;
+  String _wrongBirthDate;
+  String _wrongSex;
+  bool _error = false;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +47,8 @@ class _CreateProfileState extends State<CreateProfile> {
               child: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
-                  print('voltar');
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MainScreen()));
                 },
                 alignment: Alignment.centerRight,
               ),
@@ -54,11 +62,18 @@ class _CreateProfileState extends State<CreateProfile> {
                     setState(() {
                       _name = nameCon.text;
                       _cpf = cpfCon.text;
-                      _birthDate =
-                          '${monthCon.text}/${dayCon.text}/${yearCon.text}';
+                      _birthDate = birthDateCon.text;
                       sexCon.text == '1'
                           ? (_sex = 'Masculino')
                           : (_sex = 'Feminino');
+                      if (isEmpty() == false) {
+                        _error = false;
+                        profileController
+                            .createProfile(userController.userId, _name, _cpf,
+                                _sex, _birthDate)
+                            .then((resposta) => validate(resposta));
+                      } else
+                        _error = true;
                     });
 
                     print('Sexo:$_sex');
@@ -89,12 +104,12 @@ class _CreateProfileState extends State<CreateProfile> {
                       width: 2.0, color: const Color.fromRGBO(20, 20, 20, 1)),
                   borderRadius: BorderRadius.circular(150),
                   image: DecorationImage(
-                      image: AssetImage("assets/Carlos.jpeg"),
+                      image: AssetImage("assets/EmptyProfile.png"),
                       fit: BoxFit.cover), //http rquest in future.
                 ),
               ),
               Container(
-                  margin: EdgeInsets.only(bottom: 36),
+                  margin: EdgeInsets.only(bottom: 26),
                   child: TextButton(
                     onPressed: () {
                       print("Mudar");
@@ -108,12 +123,57 @@ class _CreateProfileState extends State<CreateProfile> {
                       ),
                     ),
                   )),
-              MyWidgets().caixaTexto('Nome:', nameCon),
-              MyWidgets().caixaTexto('CPF:', cpfCon),
-              DatePick(dayCon, monthCon, yearCon),
-              GenderPicker(sexCon),
+              errorText(_error),
+              MyWidgets().caixaTexto('Nome:', nameCon, errorText: _wrongName),
+              MyWidgets().caixaTexto('CPF:', cpfCon, errorText: _wrongCpf),
+              DatePick(birthDateCon, errorText: _wrongBirthDate),
+              GenderPicker(sexCon, errorText: _wrongSex),
             ],
           ),
         ));
+  }
+
+  void validate(bool resposta) {
+    if (resposta == false) {
+      setState(() {
+        _wrongCpf = "CPF já cadastrado.";
+      });
+    } else {
+      setState(() {
+        _wrongCpf = null;
+      });
+      showDialog(
+        context: context,
+        builder: (_) => alertDialog(
+          "Perfil criado com sucesso.",
+          onPressed: () async {
+            await userController.getProfiles(userController.userId);
+            await profileController.getById(
+                userController.profiles[userController.profiles.length - 1]);
+            Navigator.of(context).pop();
+          },
+        ),
+      );
+    }
+  }
+
+  bool isEmpty() {
+    String text = "";
+    bool empty = false;
+    setState(() {
+      _name.isEmpty ? _wrongName = text : _wrongName = null;
+      _cpf.isEmpty ? _wrongCpf = text : _wrongCpf = null;
+      birthDateCon.text.isEmpty
+          ? _wrongBirthDate = text
+          : _wrongBirthDate = null;
+      sexCon.text.isEmpty ? _wrongSex = text : _wrongSex = null;
+    });
+    if (_name.isEmpty ||
+        _cpf.isEmpty ||
+        birthDateCon.text.isEmpty ||
+        sexCon.text.isEmpty) {
+      empty = true;
+    }
+    return empty;
   }
 }

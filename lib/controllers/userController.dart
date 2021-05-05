@@ -40,22 +40,31 @@ abstract class UserControllerBase with Store {
   @action
   changeToken(String value) => token = value;
 
+  @observable
+  List profiles;
+
+  @action
+  changeProfiles(List value) => profiles = value;
+
   @action
   login(String email, String password) async {
+    var resposta = true;
     try {
       Response response = await api.auth(email, password);
-      print(response.data.toString());
       changeToken(response.data['token']);
       changeUserId(response.data['user']['_id']);
       changeEmail(response.data['user']['email']);
       changePhoneNumber(response.data['user']['phoneNumber']);
-      await profileController.changeCurrentId('6091b6e1ef0b20001ffa8673');
-    } catch (error) {
-      print(error.error);
-      print(error['error']);
+      await getProfiles(userId);
+      await profileController.changeCurrentId(profiles[0]);
+      // await _storage.write(key: 'token', value: token);
+      // await _storage.write(key: 'userId', value: userId);
+      print('$token');
+    } on DioError catch (err) {
+      print("Erro: ${err.response.statusCode}");
+      resposta = false;
     }
-    // await _storage.write(key: 'token', value: token);
-    // await _storage.write(key: 'userId', value: userId);
+    return resposta;
   }
 
   @action
@@ -101,5 +110,12 @@ abstract class UserControllerBase with Store {
     changePhoneNumber(response.data['updtedUser']['phoneNumber']);
     print(response);
     print(response.statusCode);
+  }
+
+  @action
+  getProfiles(String userId) async {
+    Response response = await api.getProfilesByUserId(userId);
+    changeProfiles(response.data['user']['profilesIds']);
+    print(profiles);
   }
 }

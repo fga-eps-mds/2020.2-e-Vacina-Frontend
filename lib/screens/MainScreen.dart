@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:e_vacina/globals.dart';
+import 'package:e_vacina/screens/CreateProfileScreen.dart';
 import 'package:e_vacina/screens/UserConfig.dart';
 import 'package:e_vacina/screens/adminConfig_screen.dart';
 import 'package:e_vacina/component/MyWidgets.dart';
@@ -16,6 +17,8 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedItem = 1;
 
   final tabs = [ConfigTab(), MainTab(), Center(child: Text('Adicionar aqui'))];
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -120,8 +123,11 @@ class ConfigTab extends StatelessWidget {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => UserConfig()));
           }),
-          MyWidgets().BorderButton('Termos de Uso', 86, 25, Colors.black,
-              Icons.arrow_forward, () {}),
+          MyWidgets().BorderButton(
+              'Termos de Uso', 86, 25, Colors.black, Icons.arrow_forward, () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CreateProfile()));
+          }),
           MyWidgets().BorderButton(
               'Sair', 86, 25, Colors.black, Icons.arrow_forward, () {
             userController.logout();
@@ -136,37 +142,46 @@ class ConfigTab extends StatelessWidget {
 class MainTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~");
-        print(vaccineController.takenVaccines);
     return Container(
-      child: (vaccineController.takenVaccines.isEmpty || vaccineController.takenVaccines == null)?
-     Center(
-      child: SizedBox(
-        height: 90,
-        width: 90,
-        child: FloatingActionButton(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          onPressed: () {
-            print('Botão');
-          },
-          child: new Icon(Icons.add,
-              color: Theme.of(context).primaryColor, size: 80),
-        ),
-      ),
-    )
-    :
-    ListView(
-          padding: EdgeInsets.all(16),
-          children: 
-
-          //  vaccineController.takenVaccines.map((e)=> print(e["_id"]) ),
-          vaccineController.takenVaccines.map((entry) {
-           return buildVaccineCard(entry["vaccineId"]["name"], entry["numberOfDosesTaken"], entry["vaccineId"]["numberOfDoses"]);
-           }
-          ).toList()
-       ) ,
-
+      child: FutureBuilder(
+        future: vaccineController.getTakenVaccine(),
+        builder: (context, projectSnap){
+        if(projectSnap.data.isEmpty || projectSnap.data == null){
+           return Center(
+              child: SizedBox(
+                height: 90,
+                width: 90,
+                child: FloatingActionButton(
+                  elevation: 0,
+                  backgroundColor: Colors.white,
+                  onPressed: () {
+                    print('Botão');
+                  },
+                  child: new Icon(Icons.add,
+                      color: Theme.of(context).primaryColor, size: 80),
+                ),
+              ),
+            );
+         } else if(projectSnap.hasData){
+           return ListView.builder(
+              itemCount: projectSnap.data.length,
+              padding: EdgeInsets.all(16),
+              itemBuilder: (context, index){
+                 Map list = projectSnap.data[index];
+                 return buildVaccineCard(list["vaccineId"]["name"], list["numberOfDosesTaken"], list["vaccineId"]["numberOfDoses"]); 
+              }
+               );
+          }else{
+            return Center(
+              child: SizedBox(
+                child: CircularProgressIndicator(),
+                width: 60,
+                height: 60,
+              ),
+            );
+          }
+        }
+        )
     );
     
   }

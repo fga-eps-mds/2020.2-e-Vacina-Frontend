@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 
 Widget buildVaccineCard(String title, int dosesTaken, int numberOfDoses) => Card(
-        shadowColor: Colors.red,
+        shadowColor: Colors.black,
         elevation: 8,
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
