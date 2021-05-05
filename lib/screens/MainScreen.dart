@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:e_vacina/globals.dart';
 import 'package:e_vacina/screens/CreateProfileScreen.dart';
 import 'package:e_vacina/screens/UserConfig.dart';
 import 'package:e_vacina/screens/adminConfig_screen.dart';
-import 'package:flutter/material.dart';
-import 'MyWidgets.dart';
+import 'package:e_vacina/component/MyWidgets.dart';
 import 'GeneralScreen.dart';
+import 'package:e_vacina/component/CardVaccine.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -17,8 +18,11 @@ class _MainScreenState extends State<MainScreen> {
 
   final tabs = [ConfigTab(), MainTab(), Center(child: Text('Adicionar aqui'))];
 
+
+
   @override
   Widget build(BuildContext context) {
+        vaccineController.getTakenVaccine();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appBar(),
@@ -138,20 +142,47 @@ class ConfigTab extends StatelessWidget {
 class MainTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: 90,
-        width: 90,
-        child: FloatingActionButton(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          onPressed: () {
-            print('Botão');
-          },
-          child: new Icon(Icons.add,
-              color: Theme.of(context).primaryColor, size: 80),
-        ),
-      ),
+    return Container(
+      child: FutureBuilder(
+        future: vaccineController.getTakenVaccine(),
+        builder: (context, projectSnap){
+        if(projectSnap.data.isEmpty || projectSnap.data == null){
+           return Center(
+              child: SizedBox(
+                height: 90,
+                width: 90,
+                child: FloatingActionButton(
+                  elevation: 0,
+                  backgroundColor: Colors.white,
+                  onPressed: () {
+                    print('Botão');
+                  },
+                  child: new Icon(Icons.add,
+                      color: Theme.of(context).primaryColor, size: 80),
+                ),
+              ),
+            );
+         } else if(projectSnap.hasData){
+           return ListView.builder(
+              itemCount: projectSnap.data.length,
+              padding: EdgeInsets.all(16),
+              itemBuilder: (context, index){
+                 Map list = projectSnap.data[index];
+                 return buildVaccineCard(list["vaccineId"]["name"], list["numberOfDosesTaken"], list["vaccineId"]["numberOfDoses"]); 
+              }
+               );
+          }else{
+            return Center(
+              child: SizedBox(
+                child: CircularProgressIndicator(),
+                width: 60,
+                height: 60,
+              ),
+            );
+          }
+        }
+        )
     );
+    
   }
 }

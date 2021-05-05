@@ -56,6 +56,7 @@ abstract class UserControllerBase with Store {
       changeEmail(response.data['user']['email']);
       changePhoneNumber(response.data['user']['phoneNumber']);
       await getProfiles(userId);
+      await profileController.changeCurrentId(profiles[0]);
       // await _storage.write(key: 'token', value: token);
       // await _storage.write(key: 'userId', value: userId);
       print('$token');

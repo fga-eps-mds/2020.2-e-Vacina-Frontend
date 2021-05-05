@@ -1,8 +1,8 @@
 import 'package:e_vacina/screens/MainScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:e_vacina/component/MyWidgets.dart';
 
 import '../globals.dart';
-import 'MyWidgets.dart';
 
 class UserConfig extends StatefulWidget {
   @override
