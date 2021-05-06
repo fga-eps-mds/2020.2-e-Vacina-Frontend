@@ -12,6 +12,8 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
+bool _isLoading = true;
+
 class _MainScreenState extends State<MainScreen> {
   String _nome = 'Exemplo';
   int _selectedItem = 1;
@@ -80,6 +82,7 @@ class _MainScreenState extends State<MainScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedItem = index;
+      _isLoading = true;
     });
   }
 }
@@ -138,7 +141,7 @@ class ConfigTab extends StatelessWidget {
 }
 
 class MainTab extends StatelessWidget {
-  bool _isLoading = true;
+  //bool _isLoading = true;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -147,7 +150,6 @@ class MainTab extends StatelessWidget {
             builder: (context, projectSnap) {
               if (projectSnap.hasData) {
                 _isLoading = false;
-                print(_isLoading);
               }
               if (_isLoading == true) {
                 return Center(

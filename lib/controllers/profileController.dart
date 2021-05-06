@@ -60,7 +60,7 @@ abstract class ProfileControllerBase with Store {
       changeCurrentSex(response.data['newProfile']['sex']);
       print(response);
     } catch (err) {
-      print("deu exceção\n");
+      print("deu exceção crateProfile\n");
       print(err);
       profile = false;
     }
@@ -106,7 +106,6 @@ abstract class ProfileControllerBase with Store {
       changeCurrentCpf(response.data['profile']['cpf']);
       changeCurrentBirthDate(response.data['profile']['birthDate']);
       changeCurrentSex(response.data['profile']['sex']);
-      print(response);
     } catch (err) {
       print(err);
     }
