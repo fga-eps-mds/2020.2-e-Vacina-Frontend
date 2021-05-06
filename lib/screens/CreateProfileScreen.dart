@@ -1,44 +1,30 @@
 import 'package:e_vacina/screens/MainScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_vacina/component/MyWidgets.dart';
-
 import '../globals.dart';
 
-class UserConfig extends StatefulWidget {
+
+class CreateProfile extends StatefulWidget {
   @override
-  _UserConfigState createState() => _UserConfigState();
+  _CreateProfileState createState() => _CreateProfileState();
 }
 
-class _UserConfigState extends State<UserConfig> {
+class _CreateProfileState extends State<CreateProfile> {
   final nameCon = new TextEditingController();
   final cpfCon = new TextEditingController();
   final birthDateCon = new TextEditingController();
   final sexCon = new TextEditingController();
 
-  String _wrongName;
-  String _wrongCpf;
-  String _wrongBirthDate;
-  bool _error = false;
-
   var _name;
   var _cpf;
   var _birthDate;
   var _sex;
-  var _id;
-  var dropdownValue;
 
-  @override
-  void initState() {
-    super.initState();
-    _id = profileController.currentId;
-    nameCon.text = profileController.currentName;
-    cpfCon.text = profileController.currentCpf;
-    birthDateCon.text = profileController.currentBirthDate;
-    profileController.currentSex == 'Masculino'
-        ? sexCon.text = '1'
-        : sexCon.text = '2';
-    print(birthDateCon.text);
-  }
+  String _wrongName;
+  String _wrongCpf;
+  String _wrongBirthDate;
+  String _wrongSex;
+  bool _error = false;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +47,8 @@ class _UserConfigState extends State<UserConfig> {
               child: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MainScreen()));
                 },
                 alignment: Alignment.centerRight,
               ),
@@ -82,12 +69,15 @@ class _UserConfigState extends State<UserConfig> {
                       if (isEmpty() == false) {
                         _error = false;
                         profileController
-                            .update(_name, _cpf, _sex, _birthDate)
+                            .createProfile(userController.userId, _name, _cpf,
+                                _sex, _birthDate)
                             .then((resposta) => validate(resposta));
-                      } else {
+                      } else
                         _error = true;
-                      }
                     });
+
+                    print('Sexo:$_sex');
+                    print('Data: $_birthDate');
                   },
                   child: Text(
                     "Salvar",
@@ -119,13 +109,13 @@ class _UserConfigState extends State<UserConfig> {
                 ),
               ),
               Container(
-                  margin: EdgeInsets.only(bottom: 36),
+                  margin: EdgeInsets.only(bottom: 26),
                   child: TextButton(
                     onPressed: () {
                       print("Mudar");
                     },
                     child: Text(
-                      "Mudar Avatar",
+                      "Selecionar Avatar",
                       style: TextStyle(
                         fontSize: 16,
                         fontFamily: 'Roboto',
@@ -137,36 +127,10 @@ class _UserConfigState extends State<UserConfig> {
               MyWidgets().caixaTexto('Nome:', nameCon, errorText: _wrongName),
               MyWidgets().caixaTexto('CPF:', cpfCon, errorText: _wrongCpf),
               DatePick(birthDateCon, errorText: _wrongBirthDate),
-              GenderPicker(sexCon, dropdownValue: sexCon.text),
-              MyWidgets().button(
-                  'Excluir Usuário', 150, 45, 17, Color.fromRGBO(255, 0, 0, 1),
-                  () {
-                setState(() {
-                  if (userController.profiles.length == 1) {
-                    validateDelete(false);
-                  } else {
-                    profileController
-                        .delete(profileController.currentId)
-                        .then((resposta) => validateDelete(resposta));
-                  }
-                });
-              }),
+              GenderPicker(sexCon, errorText: _wrongSex),
             ],
           ),
         ));
-  }
-
-  bool isEmpty() {
-    String text = "";
-    bool empty = false;
-    setState(() {
-      _name.isEmpty ? _wrongName = text : _wrongName = null;
-      _cpf.isEmpty ? _wrongCpf = text : _wrongCpf = null;
-    });
-    if (_name.isEmpty || _cpf.isEmpty) {
-      empty = true;
-    }
-    return empty;
   }
 
   void validate(bool resposta) {
@@ -179,40 +143,37 @@ class _UserConfigState extends State<UserConfig> {
         _wrongCpf = null;
       });
       showDialog(
-          context: context,
-          builder: (_) => alertDialog(
-                "Perfil atualizado com sucesso.",
-                onPressed: () async {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MainScreen()));
-                  await profileController.getById(profileController.currentId);
-                },
-              ));
-    }
-  }
-
-  void validateDelete(bool resposta) async {
-    if (resposta == false) {
-      showDialog(
-        context: context,
-        builder: (_) =>
-            alertDialog("Impossivel excluir todos os perfis", onPressed: () {
-          Navigator.of(context).pop();
-        }),
-      );
-    } else {
-      showDialog(
         context: context,
         builder: (_) => alertDialog(
-          "Perfil deletado com sucesso.",
+          "Perfil criado com sucesso.",
           onPressed: () async {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MainScreen()));
             await userController.getProfiles(userController.userId);
-            await profileController.getById(userController.profiles[0]);
+            await profileController.getById(
+                userController.profiles[userController.profiles.length - 1]);
+            Navigator.of(context).pop();
           },
         ),
       );
     }
+  }
+
+  bool isEmpty() {
+    String text = "";
+    bool empty = false;
+    setState(() {
+      _name.isEmpty ? _wrongName = text : _wrongName = null;
+      _cpf.isEmpty ? _wrongCpf = text : _wrongCpf = null;
+      birthDateCon.text.isEmpty
+          ? _wrongBirthDate = text
+          : _wrongBirthDate = null;
+      sexCon.text.isEmpty ? _wrongSex = text : _wrongSex = null;
+    });
+    if (_name.isEmpty ||
+        _cpf.isEmpty ||
+        birthDateCon.text.isEmpty ||
+        sexCon.text.isEmpty) {
+      empty = true;
+    }
+    return empty;
   }
 }

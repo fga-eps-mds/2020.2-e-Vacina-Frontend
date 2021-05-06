@@ -1,6 +1,7 @@
 import 'package:e_vacina/globals.dart';
+import 'package:e_vacina/screens/LoginScreen.dart';
 import 'package:flutter/material.dart';
-import 'MyWidgets.dart';
+import 'package:e_vacina/component/MyWidgets.dart';
 
 class AdminConfig extends StatefulWidget {
   @override
@@ -17,6 +18,13 @@ class AdminConfigState extends State<AdminConfig> {
   var _password;
 
   @override
+  void initState() {
+    super.initState();
+    emailCon.text = userController.email;
+    phoneCon.text = userController.phoneNumber;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(255, 255, 255, 1),
@@ -25,11 +33,14 @@ class AdminConfigState extends State<AdminConfig> {
         elevation: 5,
         shadowColor: Color.fromRGBO(0, 0, 0, 1),
         centerTitle: true,
-        title: Text(
-          'Configurações',
-          style: TextStyle(
-            fontFamily: 'Roboto',
-            fontSize: 15,
+        title: Center(
+          child: Text(
+            'Informações\nusuario',
+            style: TextStyle(
+              fontFamily: 'Roboto',
+              fontSize: 15,
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
         leading: Builder(builder: (BuildContext context) {
@@ -55,15 +66,20 @@ class AdminConfigState extends State<AdminConfig> {
                     _password = passwordCon.text;
                     _phone = phoneCon.text;
                   });
-                  userController.update(_email, _phone, _password);
+                  userController.delete();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginMenu()));
+                  print(
+                      "Excluir Conta Email:$_email, Telefone:$_phone, Password: $_password");
                 },
                 child: Text(
-                  "Salvar",
+                  "Excluir\nUsuário",
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 15,
-                    color: Color.fromRGBO(42, 174, 198, 1),
+                    color: Colors.red,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               )),
         ],
@@ -78,17 +94,21 @@ class AdminConfigState extends State<AdminConfig> {
               MyWidgets().caixaTexto('Email', emailCon),
               MyWidgets().caixaTexto('Telefone', phoneCon),
               MyWidgets().caixaTexto('Senha', passwordCon, isObscure: true),
-              MyWidgets().button('Excluir Usuário', 200, 50, 17,
-                  Color.fromARGB(0xFF, 255, 66, 66), () {
-                setState(() {
-                  _email = emailCon.text;
-                  _password = passwordCon.text;
-                  _phone = phoneCon.text;
-                });
-                userController.delete();
-                print(
-                    "Excluir Conta Email:$_email, Telefone:$_phone, Senha:$_password");
-              }),
+              MyWidgets().button(
+                'Salvar',
+                200,
+                50,
+                17,
+                Theme.of(context).primaryColor,
+                () async {
+                  setState(() {
+                    _email = emailCon.text;
+                    _phone = phoneCon.text;
+                    _password = passwordCon.text;
+                  });
+                  await userController.update(_email, _phone, _password);
+                },
+              ),
               Padding(
                 padding: EdgeInsets.only(right: 248),
               ),

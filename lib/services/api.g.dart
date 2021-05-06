@@ -54,6 +54,45 @@ mixin _$Api on ApiBase, Store {
         () => super.updateUser(email, phoneNumber, password, userId, token));
   }
 
+  final _$createProfileAsyncAction = AsyncAction('ApiBase.createProfile');
+
+  @override
+  Future createProfile(
+      String userId, String name, String cpf, String sex, String birthDate) {
+    return _$createProfileAsyncAction
+        .run(() => super.createProfile(userId, name, cpf, sex, birthDate));
+  }
+
+  final _$updateProfileAsyncAction = AsyncAction('ApiBase.updateProfile');
+
+  @override
+  Future updateProfile(
+      String profileId, String name, String cpf, String sex, String birthDate) {
+    return _$updateProfileAsyncAction
+        .run(() => super.updateProfile(profileId, name, cpf, sex, birthDate));
+  }
+
+  final _$deleteProfileAsyncAction = AsyncAction('ApiBase.deleteProfile');
+
+  @override
+  Future deleteProfile(String profileId) {
+    return _$deleteProfileAsyncAction.run(() => super.deleteProfile(profileId));
+  }
+
+  final _$getProfileAsyncAction = AsyncAction('ApiBase.getProfile');
+
+  @override
+  Future getProfile(String profileId) {
+    return _$getProfileAsyncAction.run(() => super.getProfile(profileId));
+  }
+
+  final _$getTakenVaccinesAsyncAction = AsyncAction('ApiBase.getTakenVaccines');
+
+  @override
+  Future getTakenVaccines() {
+    return _$getTakenVaccinesAsyncAction.run(() => super.getTakenVaccines());
+  }
+
   @override
   String toString() {
     return '''

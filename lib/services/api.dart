@@ -1,6 +1,5 @@
 import 'package:mobx/mobx.dart';
 import 'package:dio/dio.dart';
-import 'dart:convert';
 import 'package:e_vacina/globals.dart';
 
 part 'api.g.dart';
@@ -55,6 +54,76 @@ abstract class ApiBase with Store {
           'phoneNumber': phoneNumber,
           'password': password
         },
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ));
+    return response;
+  }
+
+  @action
+  createProfile(String userId, String name, String cpf, String sex,
+      String birthDate) async {
+    var token = userController.token;
+    Response response = await dio.post('/profile/$userId',
+        data: {'name': name, 'cpf': cpf, 'birthDate': birthDate, 'sex': sex},
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ));
+    return response;
+  }
+
+  @action
+  updateProfile(String profileId, String name, String cpf, String sex,
+      String birthDate) async {
+    var token = userController.token;
+    Response response = await dio.put('/profile/$profileId',
+        data: {
+          'name': name,
+          'cpf': cpf,
+          'birthDate': birthDate,
+          'sex': sex,
+        },
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ));
+    return response;
+  }
+
+  @action
+  deleteProfile(String profileId) async {
+    var token = userController.token;
+    var userId = userController.userId;
+    Response response = await dio.delete('/profile/$profileId/user/$userId',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ));
+    return response;
+  }
+
+  @action
+  getProfile(String profileId) async {
+    var token = userController.token;
+    Response response = await dio.get('/profile/$profileId',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ));
+    return response;
+  }
+
+  @action
+  getTakenVaccines()async {
+    var token = userController.token;
+    var currentProfile = profileController.currentId;
+    Response response = await dio.get('/taken/p/$currentProfile',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ));
+    return response;
+  }
+  @action
+  getProfilesByUserId(String userId) async {
+    var token = userController.token;
+    Response response = await dio.get('/user/$userId',
         options: Options(
           headers: {'Authorization': 'Bearer $token'},
         ));
