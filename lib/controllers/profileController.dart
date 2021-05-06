@@ -40,12 +40,6 @@ abstract class ProfileControllerBase with Store {
   @action
   changeCurrentBirthDate(String value) => currentBirthDate = value;
 
-  @observable
-  List names;
-
-  @action
-  changeCurrentNames(List value) => names = value;
-
   @action
   createProfile(String userId, String name, String cpf, String sex,
       String birthDate) async {
@@ -60,7 +54,7 @@ abstract class ProfileControllerBase with Store {
       changeCurrentSex(response.data['newProfile']['sex']);
       print(response);
     } catch (err) {
-      print("deu exceção crateProfile\n");
+      print("deu exceção\n");
       print(err);
       profile = false;
     }
@@ -106,6 +100,7 @@ abstract class ProfileControllerBase with Store {
       changeCurrentCpf(response.data['profile']['cpf']);
       changeCurrentBirthDate(response.data['profile']['birthDate']);
       changeCurrentSex(response.data['profile']['sex']);
+      print(response);
     } catch (err) {
       print(err);
     }
