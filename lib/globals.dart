@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:e_vacina/controllers/userController.dart';
+import 'package:e_vacina/controllers/vaccineController.dart';
 import 'package:e_vacina/controllers/profileController.dart';
 import 'package:e_vacina/services/api.dart';
 
 UserController userController = new UserController();
 ProfileController profileController = new ProfileController();
+VaccineController vaccineController = new VaccineController();
 Api api = new Api();
 
 var options = BaseOptions(

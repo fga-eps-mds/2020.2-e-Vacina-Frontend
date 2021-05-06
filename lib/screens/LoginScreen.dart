@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'MyWidgets.dart';
+import 'package:e_vacina/component/MyWidgets.dart';
 import 'RegisterScreen.dart';
 import 'MainScreen.dart';
 
@@ -24,7 +24,7 @@ class _LoginMenuState extends State<LoginMenu> {
   void mudaTela(bool resposta) async {
     if (resposta == true) {
       profiles = userController.profiles;
-      await profileController.getById(profiles[0]);
+      await profileController.getById(profiles[0]["_id"]);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => MainScreen()));
     } else {

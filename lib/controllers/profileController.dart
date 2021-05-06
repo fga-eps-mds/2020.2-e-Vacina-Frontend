@@ -1,7 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:dio/dio.dart';
 import 'package:e_vacina/globals.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 part 'profileController.g.dart';
@@ -40,6 +39,12 @@ abstract class ProfileControllerBase with Store {
 
   @action
   changeCurrentBirthDate(String value) => currentBirthDate = value;
+
+  @observable
+  List names;
+
+  @action
+  changeCurrentNames(List value) => names = value;
 
   @action
   createProfile(String userId, String name, String cpf, String sex,

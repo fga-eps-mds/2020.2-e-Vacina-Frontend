@@ -1,8 +1,8 @@
 import 'package:e_vacina/screens/MainScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:e_vacina/component/MyWidgets.dart';
 
 import '../globals.dart';
-import 'MyWidgets.dart';
 
 class UserConfig extends StatefulWidget {
   @override
@@ -142,6 +142,7 @@ class _UserConfigState extends State<UserConfig> {
                   'Excluir Usuário', 150, 45, 17, Color.fromRGBO(255, 0, 0, 1),
                   () {
                 setState(() {
+                  print(userController.profiles.length);
                   if (userController.profiles.length == 1) {
                     validateDelete(false);
                   } else {
@@ -194,6 +195,7 @@ class _UserConfigState extends State<UserConfig> {
   void validateDelete(bool resposta) async {
     if (resposta == false) {
       showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (_) =>
             alertDialog("Impossivel excluir todos os perfis", onPressed: () {
@@ -202,6 +204,7 @@ class _UserConfigState extends State<UserConfig> {
       );
     } else {
       showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (_) => alertDialog(
           "Perfil deletado com sucesso.",
@@ -209,7 +212,7 @@ class _UserConfigState extends State<UserConfig> {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => MainScreen()));
             await userController.getProfiles(userController.userId);
-            await profileController.getById(userController.profiles[0]);
+            await profileController.getById(userController.profiles[0]['_id']);
           },
         ),
       );

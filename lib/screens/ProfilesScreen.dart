@@ -1,8 +1,8 @@
 import 'package:e_vacina/controllers/profileController.dart';
 import 'package:e_vacina/screens/CreateProfileScreen.dart';
+import 'package:e_vacina/screens/UserConfig.dart';
 import 'package:flutter/material.dart';
 import 'MainScreen.dart';
-import 'MyWidgets.dart';
 import '../globals.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -12,16 +12,16 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   String _nome = "Ana Maria";
-  /*void values() async {
-    for (int i = 0; i < profiles.length; i++) {
-      await profileController.getById(profiles[i]);
-      setState(() {
-        _name[i] = profileController.currentName;
-      });
-    }
-  }*/
+  bool _isLoading = true;
 
-  final itens = List<String>.generate(20, (i) => "Perfil $i");
+  void setLoading(bool isLoading) {
+    setState(() {
+      _isLoading = isLoading;
+    });
+  }
+
+  final itens =
+      List<String>.generate(userController.profiles.length, (i) => "$i");
 
   @override
   Widget build(BuildContext context) {
@@ -97,84 +97,80 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
             ),
-            ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: itens.length,
-                itemBuilder: (context, i) {
-                  return GestureDetector(
-                    onTap: () {
-                      print("Perfil $i selecionado");
-                    },
-                    child: Container(
-                      height: 70,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1.0, color: Colors.black),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(children: [
-                              CircleAvatar(
-                                radius: 20.0,
-                                backgroundImage:
-                                    AssetImage("assets/EmptyProfile.png"),
+            FutureBuilder(
+                future: userController.getProfiles(userController.userId),
+                builder: (context, projectSnaps) {
+                  print("PROJETO ${projectSnaps.data}");
+                  if (projectSnaps.hasData) {
+                    _isLoading = false;
+                    print(_isLoading);
+                  }
+                  if (_isLoading == true) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: projectSnaps.data.length,
+                      itemBuilder: (context, i) {
+                        List names = projectSnaps.data;
+                        return GestureDetector(
+                          onTap: () async {
+                            await profileController.getById(names[i]['_id']);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MainScreen()));
+                          },
+                          child: Container(
+                            height: 70,
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    top: BorderSide(
+                                        color: Colors.black, width: 1.0),
+                                    bottom: BorderSide(
+                                        color: Colors.black, width: 1.0))
+                                //Border.all(width: 1.0, color: Colors.black),
+                                ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(children: [
+                                    CircleAvatar(
+                                      radius: 20.0,
+                                      backgroundImage:
+                                          AssetImage("assets/EmptyProfile.png"),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: Text("${names[i]['name']}"),
+                                    ),
+                                  ]),
+                                  IconButton(
+                                      icon: const Icon(Icons.settings_outlined),
+                                      onPressed: () async {
+                                        await profileController
+                                            .getById(names[i]['_id']);
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    UserConfig()));
+                                      })
+                                ],
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 10),
-                                child: Text("${itens[i]}"),
-                              ),
-                            ]),
-                            IconButton(
-                                icon: const Icon(Icons.settings_outlined),
-                                onPressed: () {
-                                  print("Configuração $i selecionada");
-                                })
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                  /*ListTile(
-                    leading: CircleAvatar(
-                      radius: 20.0,
-                      backgroundImage: AssetImage("assets/EmptyProfile.png"),
-                    ),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("${itens[i]}"),
-                        IconButton(
-                            icon: const Icon(Icons.settings_outlined),
-                            onPressed: () {
-                              print("Configuração $i selecionado");
-                            })
-                      ],
-                    ),
-                    onTap: () {
-                      debugPrint("perfil $i selecionado");
-                    },
-                  );*/
-                }),
+                            ),
+                          ),
+                        );
+                      });
+                })
           ],
         ),
       ),
-      /*MyWidgets().BorderButton(
-              'name', 72, 16, Colors.black, Icons.arrow_forward, () {},
-              icon: Icon(
-                Icons.vpn_key_outlined,
-                color: Colors.black,
-              )),
-          MyWidgets().BorderButton(
-              'Ajuda', 72, 16, Colors.black, Icons.arrow_forward, () {},
-              icon: Icon(
-                Icons.help_outline_outlined,
-                color: Colors.black,
-              )),*/
-      //  ],
-      // ),
     );
   }
 }
