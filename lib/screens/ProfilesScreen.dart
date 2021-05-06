@@ -1,3 +1,4 @@
+import 'package:e_vacina/component/ListProfiles.dart';
 import 'package:e_vacina/controllers/profileController.dart';
 import 'package:e_vacina/screens/CreateProfileScreen.dart';
 import 'package:e_vacina/screens/UserConfig.dart';
@@ -13,15 +14,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   String _nome = "Ana Maria";
   bool _isLoading = true;
-
-  void setLoading(bool isLoading) {
-    setState(() {
-      _isLoading = isLoading;
-    });
-  }
-
-  final itens =
-      List<String>.generate(userController.profiles.length, (i) => "$i");
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: SingleChildScrollView(
         physics: ScrollPhysics(),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               //alignment: Alignment.centerRight,
@@ -106,66 +99,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     print(_isLoading);
                   }
                   if (_isLoading == true) {
-                    return Center(child: CircularProgressIndicator());
+                    return Container(
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      child: Center(
+                        child: SizedBox(
+                          child: CircularProgressIndicator(),
+                          width: 60,
+                          height: 60,
+                        ),
+                      ),
+                    );
                   }
                   return ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: projectSnaps.data.length,
                       itemBuilder: (context, i) {
-                        List names = projectSnaps.data;
-                        return GestureDetector(
-                          onTap: () async {
-                            await profileController.getById(names[i]['_id']);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MainScreen()));
-                          },
-                          child: Container(
-                            height: 70,
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    top: BorderSide(
-                                        color: Colors.black, width: 1.0),
-                                    bottom: BorderSide(
-                                        color: Colors.black, width: 1.0))
-                                //Border.all(width: 1.0, color: Colors.black),
-                                ),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(children: [
-                                    CircleAvatar(
-                                      radius: 20.0,
-                                      backgroundImage:
-                                          AssetImage("assets/EmptyProfile.png"),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 10),
-                                      child: Text("${names[i]['name']}"),
-                                    ),
-                                  ]),
-                                  IconButton(
-                                      icon: const Icon(Icons.settings_outlined),
-                                      onPressed: () async {
-                                        await profileController
-                                            .getById(names[i]['_id']);
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    UserConfig()));
-                                      })
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
+                        List profile = projectSnaps.data;
+                        return buildListProfiles(
+                            context, profile[i]['name'], profile[i]['_id']);
                       });
                 })
           ],
