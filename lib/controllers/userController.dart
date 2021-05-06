@@ -46,6 +46,12 @@ abstract class UserControllerBase with Store {
   @action
   changeProfiles(List value) => profiles = value;
 
+  @observable
+  bool _isRegister = false;
+
+  @action
+  changeRegister(bool value) => _isRegister = value;
+
   @action
   login(String email, String password) async {
     var resposta = true;
@@ -56,7 +62,8 @@ abstract class UserControllerBase with Store {
       changeEmail(response.data['user']['email']);
       changePhoneNumber(response.data['user']['phoneNumber']);
       await getProfiles(userId);
-      await profileController.changeCurrentId(profiles[0]);
+      if (!_isRegister)
+        await profileController.changeCurrentId(profiles[0]['_id']);
       // await _storage.write(key: 'token', value: token);
       // await _storage.write(key: 'userId', value: userId);
       print('$token');
@@ -82,13 +89,14 @@ abstract class UserControllerBase with Store {
     }
     try {
       Response response = await api.registerUser(email, phoneNumber, password);
+      changeRegister(true);
       await login(email, password);
-      Response rProfile = await profileController.createProfile(
-          userId, name, cpf, sex, birthDate);
+      await profileController.createProfile(userId, name, cpf, sex, birthDate);
       print("resposta profile");
       changeEmail(email);
       changePassword(password);
       changePhoneNumber(phoneNumber);
+      changeRegister(false);
     } catch (e) {
       print("deu exceção\n");
       print(e);
@@ -115,7 +123,7 @@ abstract class UserControllerBase with Store {
   @action
   getProfiles(String userId) async {
     Response response = await api.getProfilesByUserId(userId);
-    changeProfiles(response.data['user']['profilesIds']);
-    print(profiles);
+    await changeProfiles(response.data['user']['profilesIds']);
+    return response.data['user']['profilesIds'];
   }
 }

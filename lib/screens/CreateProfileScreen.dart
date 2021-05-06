@@ -1,8 +1,8 @@
 import 'package:e_vacina/screens/MainScreen.dart';
+import 'package:e_vacina/screens/ProfilesScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_vacina/component/MyWidgets.dart';
 import '../globals.dart';
-
 
 class CreateProfile extends StatefulWidget {
   @override
@@ -48,7 +48,7 @@ class _CreateProfileState extends State<CreateProfile> {
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MainScreen()));
+                      MaterialPageRoute(builder: (context) => ProfileScreen()));
                 },
                 alignment: Alignment.centerRight,
               ),
@@ -143,13 +143,14 @@ class _CreateProfileState extends State<CreateProfile> {
         _wrongCpf = null;
       });
       showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (_) => alertDialog(
           "Perfil criado com sucesso.",
           onPressed: () async {
             await userController.getProfiles(userController.userId);
-            await profileController.getById(
-                userController.profiles[userController.profiles.length - 1]);
+            await profileController.getById(userController
+                .profiles[userController.profiles.length - 1]['_id']);
             Navigator.of(context).pop();
           },
         ),
