@@ -1,7 +1,5 @@
 import 'package:e_vacina/component/ListProfiles.dart';
-import 'package:e_vacina/controllers/profileController.dart';
 import 'package:e_vacina/screens/CreateProfileScreen.dart';
-import 'package:e_vacina/screens/UserConfig.dart';
 import 'package:flutter/material.dart';
 import 'MainScreen.dart';
 import '../globals.dart';
@@ -12,8 +10,20 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String _nome = "Ana Maria";
+  List array = profileController.currentName.split(' ');
+  String _nome = profileController.currentName;
   bool _isLoading = true;
+  
+
+  String splitName(List array){
+    String name;
+    if (array.length > 1){
+      name = array[0].substring(0, 1).toUpperCase() + array[1].substring(0,1).toUpperCase();
+    }else{
+      name = array[0].substring(0, 1).toUpperCase();
+    }
+    return name;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 radius: 17.5,
                 backgroundColor: Theme.of(context).primaryColor,
                 child: Text(
-                  _nome.substring(0, 2).toUpperCase(),
+                  splitName(array),
                   style: TextStyle(color: Colors.white),
                 ),
               ),

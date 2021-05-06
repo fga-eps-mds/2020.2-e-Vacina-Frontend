@@ -15,28 +15,14 @@ class _GeneralScreenState extends State<GeneralScreen> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.white,
-        title: Padding(
-          padding: EdgeInsets.only(right: 30),
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: CircleAvatar(
-                radius: 17.5,
-                backgroundColor: Theme.of(context).primaryColor,
-                child: Text(
-                  _nome.substring(0, 2).toUpperCase(),
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-            Text(
-              _nome,
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: 16,
-              ),
-            ),
-          ]),
+        elevation: 5,
+        shadowColor: Color.fromRGBO(0, 0, 0, 1),
+        title: Text(
+          'e-Vacina',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize: 25,
+          ),
         ),
       ),
       body: Column(

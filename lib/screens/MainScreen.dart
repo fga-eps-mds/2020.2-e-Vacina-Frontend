@@ -15,8 +15,20 @@ class MainScreen extends StatefulWidget {
 bool _isLoading = true;
 
 class _MainScreenState extends State<MainScreen> {
-  String _nome = 'Exemplo';
+  List array = profileController.currentName.split(' ');
+  String _nome = profileController.currentName;
   int _selectedItem = 1;
+
+  String splitName(List array) {
+    String name;
+    if (array.length > 1) {
+      name = array[0].substring(0, 1).toUpperCase() +
+          array[1].substring(0, 1).toUpperCase();
+    } else {
+      name = array[0].substring(0, 1).toUpperCase();
+    }
+    return name;
+  }
 
   final tabs = [ConfigTab(), MainTab(), Center(child: Text('Adicionar aqui'))];
 
@@ -35,28 +47,37 @@ class _MainScreenState extends State<MainScreen> {
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              radius: 17.5,
-              backgroundColor: Theme.of(context).primaryColor,
-              child: Text(
-                _nome.substring(0, 2).toUpperCase(),
-                style: TextStyle(color: Colors.white),
+      title: GestureDetector(
+        onTap: () {
+          setState(() {
+            _isLoading = true;
+          });
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ProfileScreen()));
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                radius: 17.5,
+                backgroundColor: Theme.of(context).primaryColor,
+                child: Text(
+                  splitName(array),
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
-          ),
-          Text(
-            _nome,
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 16,
+            Text(
+              _nome,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontSize: 16,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
