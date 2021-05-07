@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 
-Widget buildVaccineCard(String title, int dosesTaken, int numberOfDoses) => Card(
+Widget buildVaccineCard(String title, String subtitle, {int numberOfDosesTaken, int numberOfDoses}) => Card(
         shadowColor: Colors.black,
         elevation: 8,
         clipBehavior: Clip.antiAlias,
@@ -11,10 +11,10 @@ Widget buildVaccineCard(String title, int dosesTaken, int numberOfDoses) => Card
         child: Container(
           height: 100,
           decoration: BoxDecoration(
-            color:
-            (dosesTaken==0)?Colors.yellow:
-            (dosesTaken==numberOfDoses)?Colors.green:
-            Colors.blue,
+            color: numberOfDosesTaken != null? ((numberOfDosesTaken==0)?Color.fromRGBO(232, 202, 2, 1.0):
+            (numberOfDosesTaken==numberOfDoses)?Color.fromRGBO(50, 198, 42, 1.0):
+            Color.fromRGBO(42, 174, 198, 1.0)):Color.fromRGBO(42, 174, 198, 1.0),
+            
           ),
           padding: EdgeInsets.all(16),
           child: Column(
@@ -30,7 +30,7 @@ Widget buildVaccineCard(String title, int dosesTaken, int numberOfDoses) => Card
               ),
               const SizedBox(height: 4),
               Text(
-                'Doses tomadas $dosesTaken/$numberOfDoses',
+                '$subtitle',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.black,

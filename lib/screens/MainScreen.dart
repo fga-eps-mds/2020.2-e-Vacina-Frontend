@@ -30,7 +30,7 @@ class _MainScreenState extends State<MainScreen> {
     return name;
   }
 
-  final tabs = [ConfigTab(), MainTab(), Center(child: Text('Adicionar aqui'))];
+  final tabs = [ConfigTab(), MainTab(), SearchTab()];
 
   @override
   Widget build(BuildContext context) {
@@ -203,11 +203,68 @@ class MainTab extends StatelessWidget {
                     itemBuilder: (context, index) {
                       Map list = projectSnap.data[index];
                       return buildVaccineCard(
-                          list["vaccineId"]["name"],
-                          list["numberOfDosesTaken"],
-                          list["vaccineId"]["numberOfDoses"]);
+                        list["vaccineId"]["name"],
+                        "Doses tomadas: ${list["numberOfDosesTaken"]}/${list["vaccineId"]["numberOfDoses"]}",
+                        numberOfDosesTaken: list["numberOfDosesTaken"],
+                        numberOfDoses: list["vaccineId"]["numberOfDoses"],
+                      );
                     });
               }
             }));
+  }
+}
+
+class SearchTab extends StatelessWidget {
+  //bool _isLoading = true;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        
+        SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 130.0),
+            child: Container(
+                child: FutureBuilder(
+                    future: vaccineController.getVaccines(),
+                    builder: (context, projectSnap) {
+                      // print(projectSnap);
+                      if (projectSnap.hasData) {
+                        _isLoading = false;
+                      }
+                      if (_isLoading == true) {
+                        return Center(
+                          child: SizedBox(
+                            child: CircularProgressIndicator(),
+                            width: 60,
+                            height: 60,
+                          ),
+                        );
+                      } else {
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            physics: ScrollPhysics(),
+                            itemCount: projectSnap.data.length,
+                            // padding: EdgeInsets.all(16),
+                            itemBuilder: (context, index) {
+                              Map list = projectSnap.data[index];
+                              return buildVaccineCard(
+                                list["name"],
+                                "Número de doses: ${list["numberOfDoses"]}",
+                              );
+                            });
+                      }
+                    })),
+          ),
+        ),
+        Container(
+          color: Colors.white,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
+            child: MyWidgets().caixaTexto("Pesquisar", null),
+          ),
+        ),
+      ],
+    );
   }
 }

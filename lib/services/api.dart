@@ -120,6 +120,13 @@ abstract class ApiBase with Store {
         ));
     return response;
   }
+
+  @action
+  getVaccines() async {
+    Response response = await dio.get('/vaccine/');
+    return response;
+  }
+
   @action
   getProfilesByUserId(String userId) async {
     var token = userController.token;

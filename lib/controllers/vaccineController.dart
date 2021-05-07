@@ -23,4 +23,9 @@ abstract class VaccineControllerBase with Store {
     await changeTakenVaccine(response.data["takenVaccine"]);
     return response.data["takenVaccine"];
   }
+  @action
+  getVaccines() async {
+    Response response = await api.getVaccines(); 
+    return response.data["vaccines"];
+  }
 }
