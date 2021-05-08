@@ -214,13 +214,22 @@ class MainTab extends StatelessWidget {
   }
 }
 
-class SearchTab extends StatelessWidget {
+class SearchTab extends StatefulWidget {
   //bool _isLoading = true;
+  @override
+  _SearchTabState createState() => _SearchTabState();
+}
+
+class _SearchTabState extends State<SearchTab> {
+  String search = '';
+  int i = 0;
+  List items = List();
+  
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        
         SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(top: 130.0),
@@ -229,39 +238,77 @@ class SearchTab extends StatelessWidget {
                     future: vaccineController.getVaccines(),
                     builder: (context, projectSnap) {
                       // print(projectSnap);
-                      if (projectSnap.hasData) {
-                        _isLoading = false;
-                      }
-                      if (_isLoading == true) {
-                        return Center(
-                          child: SizedBox(
-                            child: CircularProgressIndicator(),
-                            width: 60,
-                            height: 60,
-                          ),
-                        );
-                      } else {
+                      if (projectSnap.hasError) {
+                        return Text("Something went wrong");
+                      } else if (projectSnap.connectionState ==
+                          ConnectionState.done) {    
+                        if (search.isNotEmpty) {
+                          for (dynamic item in projectSnap.data) {
+                            String name = item["name"].toString().toLowerCase();
+                            if (name.contains(search.toLowerCase())) {
+                              items.add(item);
+                            }
+                          }
+                        } else{
+                           items.addAll(projectSnap.data);
+                        }
+                        if (items.isEmpty) {
+                          return ListView(
+                            shrinkWrap: true,
+                            children: <Widget>[
+                              ListTile(
+                                  title: Text('Nenhum item encontrado...')),
+                            ],
+                          );
+                        }
                         return ListView.builder(
                             shrinkWrap: true,
                             physics: ScrollPhysics(),
-                            itemCount: projectSnap.data.length,
+                            itemCount: items.length,
                             // padding: EdgeInsets.all(16),
                             itemBuilder: (context, index) {
-                              Map list = projectSnap.data[index];
+                              Map list = items[index];
                               return buildVaccineCard(
                                 list["name"],
                                 "Número de doses: ${list["numberOfDoses"]}",
                               );
                             });
+                      } else {
+                        return Center(child: CircularProgressIndicator());
                       }
                     })),
           ),
         ),
         Container(
           color: Colors.white,
+          height: 120,
           child: Padding(
             padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
-            child: MyWidgets().caixaTexto("Pesquisar", null),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Pesquisar",
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor, fontSize: 15)),
+                TextField(
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          color: Color.fromRGBO(42, 174, 198, 1.0), width: 1.0),
+                    ),
+                    border: OutlineInputBorder(),
+                    hintText: "Pesquise sua vacina",
+                  ),
+                  onChanged: (text) {
+                    setState(() {
+                      items = List();
+                      search = text;
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ],
