@@ -1,3 +1,5 @@
+import 'package:e_vacina/screens/AddVacinaScreen.dart';
+import 'package:e_vacina/screens/LoginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_vacina/globals.dart';
 import 'package:e_vacina/screens/UserConfig.dart';
@@ -30,7 +32,7 @@ class _MainScreenState extends State<MainScreen> {
     return name;
   }
 
-  final tabs = [ConfigTab(), MainTab(), Center(child: Text('Adicionar aqui'))];
+  final tabs = [ConfigTab(), MainTab(), SearchTab()];
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +155,8 @@ class ConfigTab extends StatelessWidget {
           MyWidgets().BorderButton(
               'Sair', 86, 25, Colors.black, Icons.arrow_forward, () {
             userController.logout();
-            Navigator.pop(context);
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => LoginMenu()));
           }),
         ],
       ),
@@ -203,11 +206,124 @@ class MainTab extends StatelessWidget {
                     itemBuilder: (context, index) {
                       Map list = projectSnap.data[index];
                       return buildVaccineCard(
-                          list["vaccineId"]["name"],
-                          list["numberOfDosesTaken"],
-                          list["vaccineId"]["numberOfDoses"]);
+                        list["vaccineId"]["name"],
+                        "Doses tomadas: ${list["numberOfDosesTaken"]}/${list["vaccineId"]["numberOfDoses"]}",
+                        numberOfDosesTaken: list["numberOfDosesTaken"],
+                        numberOfDoses: list["vaccineId"]["numberOfDoses"],
+                      );
                     });
               }
             }));
+  }
+}
+
+class SearchTab extends StatefulWidget {
+  //bool _isLoading = true;
+  @override
+  _SearchTabState createState() => _SearchTabState();
+}
+
+class _SearchTabState extends State<SearchTab> {
+  String search = '';
+  int i = 0;
+  List items = List();
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 130.0),
+            child: Container(
+                child: FutureBuilder(
+                    future: vaccineController.getVaccines(),
+                    builder: (context, projectSnap) {
+                      // print(projectSnap);
+                      if (projectSnap.hasError) {
+                        return Text("Something went wrong");
+                      } else if (projectSnap.connectionState ==
+                          ConnectionState.done) {
+                        if (search.isNotEmpty) {
+                          for (dynamic item in projectSnap.data) {
+                            String name = item["name"].toString().toLowerCase();
+                            if (name.contains(search.toLowerCase())) {
+                              items.add(item);
+                            }
+                          }
+                        } else {
+                          items.addAll(projectSnap.data);
+                        }
+                        if (items.isEmpty) {
+                          return ListView(
+                            shrinkWrap: true,
+                            children: <Widget>[
+                              ListTile(
+                                  title: Text('Nenhum item encontrado...')),
+                            ],
+                          );
+                        }
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            physics: ScrollPhysics(),
+                            itemCount: items.length,
+                            // padding: EdgeInsets.all(16),
+                            itemBuilder: (context, index) {
+                              Map list = items[index];
+                              return GestureDetector(
+                                child: buildVaccineCard(
+                                  list["name"],
+                                  "Número de doses: ${list["numberOfDoses"]}",
+                                ),
+                                onTap: () async {
+                                  String vacina = list["_id"];
+                                  await vaccineController.chosenVaccine(vacina);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AddVacina()));
+                                },
+                              );
+                            });
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    })),
+          ),
+        ),
+        Container(
+          color: Colors.white,
+          height: 120,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Pesquisar",
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor, fontSize: 15)),
+                TextField(
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          color: Color.fromRGBO(42, 174, 198, 1.0), width: 1.0),
+                    ),
+                    border: OutlineInputBorder(),
+                    hintText: "Pesquise sua vacina",
+                  ),
+                  onChanged: (text) {
+                    setState(() {
+                      items = List();
+                      search = text;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
