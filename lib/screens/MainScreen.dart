@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:e_vacina/globals.dart';
-import 'package:e_vacina/screens/CreateProfileScreen.dart';
 import 'package:e_vacina/screens/UserConfig.dart';
 import 'package:e_vacina/screens/adminConfig_screen.dart';
 import 'package:e_vacina/component/MyWidgets.dart';
 import 'GeneralScreen.dart';
+import 'package:e_vacina/screens/ProfilesScreen.dart';
 import 'package:e_vacina/component/CardVaccine.dart';
 
 class MainScreen extends StatefulWidget {
@@ -12,17 +12,29 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
+bool _isLoading = true;
+
 class _MainScreenState extends State<MainScreen> {
-  String _nome = 'Exemplo';
+  List array = profileController.currentName.split(' ');
+  String _nome = profileController.currentName;
   int _selectedItem = 1;
+
+  String splitName(List array) {
+    String name;
+    if (array.length > 1) {
+      name = array[0].substring(0, 1).toUpperCase() +
+          array[1].substring(0, 1).toUpperCase();
+    } else {
+      name = array[0].substring(0, 1).toUpperCase();
+    }
+    return name;
+  }
 
   final tabs = [ConfigTab(), MainTab(), Center(child: Text('Adicionar aqui'))];
 
-
-
   @override
   Widget build(BuildContext context) {
-        vaccineController.getTakenVaccine();
+    vaccineController.getTakenVaccine();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appBar(),
@@ -35,28 +47,37 @@ class _MainScreenState extends State<MainScreen> {
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              radius: 17.5,
-              backgroundColor: Theme.of(context).primaryColor,
-              child: Text(
-                _nome.substring(0, 2).toUpperCase(),
-                style: TextStyle(color: Colors.white),
+      title: GestureDetector(
+        onTap: () {
+          setState(() {
+            _isLoading = true;
+          });
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ProfileScreen()));
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                radius: 17.5,
+                backgroundColor: Theme.of(context).primaryColor,
+                child: Text(
+                  splitName(array),
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
-          ),
-          Text(
-            _nome,
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 16,
+            Text(
+              _nome,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontSize: 16,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -82,6 +103,7 @@ class _MainScreenState extends State<MainScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedItem = index;
+      _isLoading = true;
     });
   }
 }
@@ -120,13 +142,13 @@ class ConfigTab extends StatelessWidget {
           }),
           MyWidgets().BorderButton(
               'Perfis', 86, 25, Colors.black, Icons.arrow_forward, () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => UserConfig()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ProfileScreen()));
           }),
           MyWidgets().BorderButton(
               'Termos de Uso', 86, 25, Colors.black, Icons.arrow_forward, () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => CreateProfile()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => UserConfig()));
           }),
           MyWidgets().BorderButton(
               'Sair', 86, 25, Colors.black, Icons.arrow_forward, () {
@@ -140,49 +162,52 @@ class ConfigTab extends StatelessWidget {
 }
 
 class MainTab extends StatelessWidget {
+  //bool _isLoading = true;
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: FutureBuilder(
-        future: vaccineController.getTakenVaccine(),
-        builder: (context, projectSnap){
-        if(projectSnap.data.isEmpty || projectSnap.data == null){
-           return Center(
-              child: SizedBox(
-                height: 90,
-                width: 90,
-                child: FloatingActionButton(
-                  elevation: 0,
-                  backgroundColor: Colors.white,
-                  onPressed: () {
-                    print('Botão');
-                  },
-                  child: new Icon(Icons.add,
-                      color: Theme.of(context).primaryColor, size: 80),
-                ),
-              ),
-            );
-         } else if(projectSnap.hasData){
-           return ListView.builder(
-              itemCount: projectSnap.data.length,
-              padding: EdgeInsets.all(16),
-              itemBuilder: (context, index){
-                 Map list = projectSnap.data[index];
-                 return buildVaccineCard(list["vaccineId"]["name"], list["numberOfDosesTaken"], list["vaccineId"]["numberOfDoses"]); 
+        child: FutureBuilder(
+            future: vaccineController.getTakenVaccine(),
+            builder: (context, projectSnap) {
+              if (projectSnap.hasData) {
+                _isLoading = false;
               }
-               );
-          }else{
-            return Center(
-              child: SizedBox(
-                child: CircularProgressIndicator(),
-                width: 60,
-                height: 60,
-              ),
-            );
-          }
-        }
-        )
-    );
-    
+              if (_isLoading == true) {
+                return Center(
+                  child: SizedBox(
+                    child: CircularProgressIndicator(),
+                    width: 60,
+                    height: 60,
+                  ),
+                );
+              } else if (projectSnap.data.isEmpty || projectSnap.data == null) {
+                return Center(
+                  child: SizedBox(
+                    height: 90,
+                    width: 90,
+                    child: FloatingActionButton(
+                      elevation: 0,
+                      backgroundColor: Colors.white,
+                      onPressed: () {
+                        print('Botão');
+                      },
+                      child: new Icon(Icons.add,
+                          color: Theme.of(context).primaryColor, size: 80),
+                    ),
+                  ),
+                );
+              } else {
+                return ListView.builder(
+                    itemCount: projectSnap.data.length,
+                    padding: EdgeInsets.all(16),
+                    itemBuilder: (context, index) {
+                      Map list = projectSnap.data[index];
+                      return buildVaccineCard(
+                          list["vaccineId"]["name"],
+                          list["numberOfDosesTaken"],
+                          list["vaccineId"]["numberOfDoses"]);
+                    });
+              }
+            }));
   }
 }

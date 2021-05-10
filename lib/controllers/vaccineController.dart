@@ -13,17 +13,14 @@ abstract class VaccineControllerBase with Store {
   @observable
   List takenVaccines = [];
 
-  @action 
+  @action
   changeTakenVaccine(List value) => takenVaccines = value;
 
-  @action 
+  @action
   getTakenVaccine() async {
-      Response response = await api.getTakenVaccines();
-      print(response.data["takenVaccine"]);
-      print("-----------------------------------------");
-      await changeTakenVaccine(response.data["takenVaccine"]);
-      print("mudado");
-      return response.data["takenVaccine"];
+    Response response = await api.getTakenVaccines();
+    print(response.data["takenVaccine"]);
+    await changeTakenVaccine(response.data["takenVaccine"]);
+    return response.data["takenVaccine"];
   }
-
 }

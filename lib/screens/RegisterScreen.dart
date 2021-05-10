@@ -66,9 +66,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                   _password = passwordCon.text;
                   _phone = phoneCon.text;
                   _birthDate = birthDateCon.text;
-                  sexCon.text == '1'
-                      ? (_sex = 'Masculino')
-                      : (_sex = 'Feminino');
+                  sexCon.text == '1' ? _sex = 'Masculino' : _sex = 'Feminino';
                   userController.register(
                       _email, _phone, _password, _name, _cpf, _sex, _birthDate);
                   Navigator.pop(context);

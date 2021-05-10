@@ -35,28 +35,12 @@ class _HelpScreenState extends State<HelpScreen> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.white,
-        title: Padding(
-          padding: EdgeInsets.only(right: 60),
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: CircleAvatar(
-                radius: 17.5,
-                backgroundColor: Theme.of(context).primaryColor,
-                child: Text(
-                  _nome.substring(0, 2).toUpperCase(),
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-            Text(
-              _nome,
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: 16,
-              ),
-            ),
-          ]),
+        title: Text(
+          'e-Vacina',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize: 25,
+          ),
         ),
       ),
       body: SingleChildScrollView(
