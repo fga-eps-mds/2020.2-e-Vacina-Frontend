@@ -120,7 +120,17 @@ class RegisterScreenState extends State<RegisterScreen> {
         _wrongEmail = null;
         _wrongPhoneNumber = null;
         _wrongCpf = null;
-        Navigator.pop(context);
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => alertDialog(
+            "Registro realizado com sucesso.",
+            onPressed: () async {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginMenu()));
+            },
+          ),
+        );
       }
     });
   }
