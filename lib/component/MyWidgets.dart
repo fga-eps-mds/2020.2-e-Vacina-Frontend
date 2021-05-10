@@ -255,7 +255,10 @@ class _GenderPickerState extends State<GenderPicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 31.5),
+      height: 92,
+      padding: widget.errorText == null
+          ? EdgeInsets.only(bottom: 31.5)
+          : EdgeInsets.only(bottom: 10.5),
       child: DropdownButtonFormField<String>(
           decoration: InputDecoration(
             border: OutlineInputBorder(),
