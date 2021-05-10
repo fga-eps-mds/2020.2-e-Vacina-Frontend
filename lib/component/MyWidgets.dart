@@ -258,7 +258,9 @@ class _GenderPickerState extends State<GenderPicker> {
       padding: EdgeInsets.only(bottom: 31.5),
       child: DropdownButtonFormField<String>(
           decoration: InputDecoration(
-              border: OutlineInputBorder(), errorText: widget.errorText),
+            border: OutlineInputBorder(),
+            errorText: widget.errorText,
+          ),
           hint: Text('Sexo'),
           value: widget.dropdownValue,
           isExpanded: true,
