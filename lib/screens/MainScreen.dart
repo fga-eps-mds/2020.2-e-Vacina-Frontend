@@ -1,3 +1,4 @@
+import 'package:e_vacina/screens/AddVacinaScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_vacina/globals.dart';
 import 'package:e_vacina/screens/UserConfig.dart';
@@ -224,7 +225,6 @@ class _SearchTabState extends State<SearchTab> {
   String search = '';
   int i = 0;
   List items = List();
-  
 
   @override
   Widget build(BuildContext context) {
@@ -241,7 +241,7 @@ class _SearchTabState extends State<SearchTab> {
                       if (projectSnap.hasError) {
                         return Text("Something went wrong");
                       } else if (projectSnap.connectionState ==
-                          ConnectionState.done) {    
+                          ConnectionState.done) {
                         if (search.isNotEmpty) {
                           for (dynamic item in projectSnap.data) {
                             String name = item["name"].toString().toLowerCase();
@@ -249,8 +249,8 @@ class _SearchTabState extends State<SearchTab> {
                               items.add(item);
                             }
                           }
-                        } else{
-                           items.addAll(projectSnap.data);
+                        } else {
+                          items.addAll(projectSnap.data);
                         }
                         if (items.isEmpty) {
                           return ListView(
@@ -268,9 +268,19 @@ class _SearchTabState extends State<SearchTab> {
                             // padding: EdgeInsets.all(16),
                             itemBuilder: (context, index) {
                               Map list = items[index];
-                              return buildVaccineCard(
-                                list["name"],
-                                "Número de doses: ${list["numberOfDoses"]}",
+                              return GestureDetector(
+                                child: buildVaccineCard(
+                                  list["name"],
+                                  "Número de doses: ${list["numberOfDoses"]}",
+                                ),
+                                onTap: () async {
+                                  String vacina = list["_id"];
+                                  await vaccineController.chosenVaccine(vacina);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AddVacina()));
+                                },
                               );
                             });
                       } else {

@@ -110,6 +110,14 @@ abstract class ApiBase with Store {
     return response;
   }
 
+    @action
+  postTakenVaccine(String profileId, String vaccineId, String numberOfDosesTaken) async {
+    Response response = await dio.post('/taken',
+        data: {'profileId': profileId, 'vaccineId': vaccineId, 'numberOfDosesTaken': numberOfDosesTaken},
+      );
+    return response;
+  }
+
   @action
   getTakenVaccines()async {
     var token = userController.token;
@@ -124,6 +132,13 @@ abstract class ApiBase with Store {
   @action
   getVaccines() async {
     Response response = await dio.get('/vaccine/');
+    return response;
+  }
+
+  @action
+  getVaccineById(String vacinaId) async{
+    print(vacinaId);
+    Response response = await dio.get('/vaccine/$vacinaId');
     return response;
   }
 
