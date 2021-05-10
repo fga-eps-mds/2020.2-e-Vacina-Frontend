@@ -1,4 +1,5 @@
 import 'package:e_vacina/screens/AddVacinaScreen.dart';
+import 'package:e_vacina/screens/LoginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_vacina/globals.dart';
 import 'package:e_vacina/screens/UserConfig.dart';
@@ -154,7 +155,8 @@ class ConfigTab extends StatelessWidget {
           MyWidgets().BorderButton(
               'Sair', 86, 25, Colors.black, Icons.arrow_forward, () {
             userController.logout();
-            Navigator.pop(context);
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => LoginMenu()));
           }),
         ],
       ),
