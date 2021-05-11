@@ -11,19 +11,19 @@ final _storage = new FlutterSecureStorage();
 
 abstract class UserControllerBase with Store {
   @observable
-  String email;
+  String email='';
 
   @action
   changeEmail(String value) => email = value;
 
   @observable
-  String phoneNumber;
+  String phoneNumber= '';
 
   @action
   changePhoneNumber(String value) => phoneNumber = value;
 
   @observable
-  String password;
+  String password= '';
 
   @action
   changePassword(String value) => password = value;
@@ -35,7 +35,7 @@ abstract class UserControllerBase with Store {
   changeUserId(String value) => userId = value;
 
   @observable
-  dynamic token;
+  dynamic token='';
 
   @action
   changeToken(String value) => token = value;
@@ -47,10 +47,10 @@ abstract class UserControllerBase with Store {
   changeProfiles(List value) => profiles = value;
 
   @observable
-  bool _isRegister = false;
+  bool isRegister = false;
 
   @action
-  changeRegister(bool value) => _isRegister = value;
+  changeRegister(bool value) => isRegister = value;
 
   @action
   login(String email, String password) async {
@@ -62,7 +62,7 @@ abstract class UserControllerBase with Store {
       changeEmail(response.data['user']['email']);
       changePhoneNumber(response.data['user']['phoneNumber']);
       await getProfiles(userId);
-      if (!_isRegister)
+      if (!isRegister)
         await profileController.changeCurrentId(profiles[0]['_id']);
       // await _storage.write(key: 'token', value: token);
       // await _storage.write(key: 'userId', value: userId);

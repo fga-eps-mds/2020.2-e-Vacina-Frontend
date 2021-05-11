@@ -41,6 +41,7 @@ dev_dependencies:
     sdk: flutter
   mobx_codegen: ^2.0.0
   build_runner: ^1.12.2
+  test:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

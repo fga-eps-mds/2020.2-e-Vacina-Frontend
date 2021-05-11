@@ -84,6 +84,36 @@ mixin _$UserController on UserControllerBase, Store {
     });
   }
 
+  final _$profilesAtom = Atom(name: 'UserControllerBase.profiles');
+
+  @override
+  List<dynamic> get profiles {
+    _$profilesAtom.reportRead();
+    return super.profiles;
+  }
+
+  @override
+  set profiles(List<dynamic> value) {
+    _$profilesAtom.reportWrite(value, super.profiles, () {
+      super.profiles = value;
+    });
+  }
+
+  final _$isRegisterAtom = Atom(name: 'UserControllerBase.isRegister');
+
+  @override
+  bool get isRegister {
+    _$isRegisterAtom.reportRead();
+    return super.isRegister;
+  }
+
+  @override
+  set isRegister(bool value) {
+    _$isRegisterAtom.reportWrite(value, super.isRegister, () {
+      super.isRegister = value;
+    });
+  }
+
   final _$loginAsyncAction = AsyncAction('UserControllerBase.login');
 
   @override
@@ -120,6 +150,14 @@ mixin _$UserController on UserControllerBase, Store {
   Future update(String email, String phoneNumber, String password) {
     return _$updateAsyncAction
         .run(() => super.update(email, phoneNumber, password));
+  }
+
+  final _$getProfilesAsyncAction =
+      AsyncAction('UserControllerBase.getProfiles');
+
+  @override
+  Future getProfiles(String userId) {
+    return _$getProfilesAsyncAction.run(() => super.getProfiles(userId));
   }
 
   final _$UserControllerBaseActionController =
@@ -181,13 +219,37 @@ mixin _$UserController on UserControllerBase, Store {
   }
 
   @override
+  dynamic changeProfiles(List<dynamic> value) {
+    final _$actionInfo = _$UserControllerBaseActionController.startAction(
+        name: 'UserControllerBase.changeProfiles');
+    try {
+      return super.changeProfiles(value);
+    } finally {
+      _$UserControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeRegister(bool value) {
+    final _$actionInfo = _$UserControllerBaseActionController.startAction(
+        name: 'UserControllerBase.changeRegister');
+    try {
+      return super.changeRegister(value);
+    } finally {
+      _$UserControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 email: ${email},
 phoneNumber: ${phoneNumber},
 password: ${password},
 userId: ${userId},
-token: ${token}
+token: ${token},
+profiles: ${profiles},
+isRegister: ${isRegister}
     ''';
   }
 }
