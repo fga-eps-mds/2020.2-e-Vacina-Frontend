@@ -84,23 +84,33 @@ abstract class UserControllerBase with Store {
   @action
   register(String email, String phoneNumber, String password, String name,
       String cpf, String sex, String birthDate) async {
-    if (email.isEmpty || phoneNumber.isEmpty || password.isEmpty) {
-      print("deu erro");
-    }
+    String resposta = "true";
+    changeRegister(true);
     try {
       Response response = await api.registerUser(email, phoneNumber, password);
-      changeRegister(true);
       await login(email, password);
-      await profileController.createProfile(userId, name, cpf, sex, birthDate);
-      print("resposta profile");
-      changeEmail(email);
-      changePassword(password);
-      changePhoneNumber(phoneNumber);
-      changeRegister(false);
-    } catch (e) {
-      print("deu exceção\n");
-      print(e);
+      print(response.statusCode);
+    } catch (err) {
+      return err.response.data.toString();
     }
+    bool rProfile = await profileController.createProfile(
+        userId, name, cpf, sex, birthDate);
+    if (!rProfile) resposta = "false";
+    print("resposta profile");
+    changeEmail(email);
+    changePassword(password);
+    changePhoneNumber(phoneNumber);
+    if (resposta == "false") {
+      try {
+        print("userId: $userId, email: $email");
+        await delete();
+      } catch (e2) {
+        print("erro delete: $e2");
+      }
+    }
+    changeRegister(false);
+
+    return resposta;
   }
 
   @action

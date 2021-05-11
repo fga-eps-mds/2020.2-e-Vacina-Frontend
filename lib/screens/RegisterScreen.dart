@@ -27,6 +27,16 @@ class RegisterScreenState extends State<RegisterScreen> {
   final birthDateCon = new TextEditingController();
   final sexCon = new TextEditingController();
 
+  String _wrongName;
+  String _wrongCpf;
+  String _wrongBirthDate;
+  String _wrongSex;
+  String _wrongEmail;
+  String _wrongPhoneNumber;
+  String _wrongPassword;
+
+  bool _error = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,13 +59,23 @@ class RegisterScreenState extends State<RegisterScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              MyWidgets().caixaTexto('Nome', nameCon),
-              MyWidgets().caixaTexto('CPF', cpfCon, maxLength: 11),
-              DatePick(birthDateCon),
-              GenderPicker(sexCon),
-              MyWidgets().caixaTexto('Telefone', phoneCon),
-              MyWidgets().caixaTexto('Email', emailCon),
-              MyWidgets().caixaTexto('Senha', passwordCon, isObscure: true),
+              MyWidgets().caixaTexto('Nome', nameCon, errorText: _wrongName),
+              MyWidgets().caixaTexto('CPF', cpfCon,
+                  maxLength: 11, errorText: _wrongCpf),
+              DatePick(
+                birthDateCon,
+                errorText: _wrongBirthDate,
+              ),
+              GenderPicker(
+                sexCon,
+                errorText: _wrongSex,
+              ),
+              MyWidgets().caixaTexto('Telefone', phoneCon,
+                  errorText: _wrongPhoneNumber),
+              MyWidgets().caixaTexto('Email', emailCon, errorText: _wrongEmail),
+              MyWidgets().caixaTexto('Senha', passwordCon,
+                  isObscure: true, errorText: _wrongPassword),
+              errorText(_error),
               MyWidgets().button(
                   'Registrar', 300.0, 50.0, 26, Theme.of(context).primaryColor,
                   () {
@@ -67,13 +87,79 @@ class RegisterScreenState extends State<RegisterScreen> {
                   _phone = phoneCon.text;
                   _birthDate = birthDateCon.text;
                   sexCon.text == '1' ? _sex = 'Masculino' : _sex = 'Feminino';
-                  userController.register(
-                      _email, _phone, _password, _name, _cpf, _sex, _birthDate);
-                  Navigator.pop(context);
+                  if (!isEmpty()) {
+                    _error = false;
+                    userController
+                        .register(_email, _phone, _password, _name, _cpf, _sex,
+                            _birthDate)
+                        .then((resposta) => validate(resposta));
+                  } else
+                    _error = true;
                 });
               }),
             ]),
       ),
     );
+  }
+
+  void validate(String resposta) {
+    setState(() {
+      if (resposta == "{error: Email already exists}") {
+        _wrongEmail = "Email já cadastrado.";
+        _wrongPhoneNumber = null;
+        _wrongCpf = null;
+      } else if (resposta == "{error: PhoneNumber already exists}") {
+        _wrongEmail = null;
+        _wrongPhoneNumber = "Telefone já cadastrado.";
+        _wrongCpf = null;
+      } else if (resposta == "false") {
+        _wrongEmail = null;
+        _wrongPhoneNumber = null;
+        _wrongCpf = "CPF já cadastrado.";
+      } else {
+        _wrongEmail = null;
+        _wrongPhoneNumber = null;
+        _wrongCpf = null;
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => alertDialog(
+            "Registro realizado com sucesso.",
+            onPressed: () async {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginMenu()));
+            },
+          ),
+        );
+      }
+    });
+  }
+
+  bool isEmpty() {
+    String text = "";
+    bool empty = false;
+    setState(() {
+      _name.isEmpty ? _wrongName = text : _wrongName = null;
+      _cpf.isEmpty ? _wrongCpf = text : _wrongCpf = null;
+      birthDateCon.text.isEmpty
+          ? _wrongBirthDate = text
+          : _wrongBirthDate = null;
+      sexCon.text.isEmpty ? _wrongSex = text : _wrongSex = null;
+      emailCon.text.isEmpty ? _wrongEmail = text : _wrongEmail = null;
+      phoneCon.text.isEmpty
+          ? _wrongPhoneNumber = text
+          : _wrongPhoneNumber = null;
+      passwordCon.text.isEmpty ? _wrongPassword = text : _wrongPassword = null;
+    });
+    if (_name.isEmpty ||
+        _cpf.isEmpty ||
+        birthDateCon.text.isEmpty ||
+        sexCon.text.isEmpty ||
+        emailCon.text.isEmpty ||
+        phoneCon.text.isEmpty ||
+        passwordCon.text.isEmpty) {
+      empty = true;
+    }
+    return empty;
   }
 }
