@@ -53,7 +53,7 @@ abstract class VaccineControllerBase with Store {
   changePeriodicity(dynamic value) => periodicity = value;
 
   @observable
-  List takenVaccines = [];
+  List takenVaccines;
 
   @action
   changeTakenVaccine(List value) => takenVaccines = value;

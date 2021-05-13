@@ -86,11 +86,44 @@ mixin _$Api on ApiBase, Store {
     return _$getProfileAsyncAction.run(() => super.getProfile(profileId));
   }
 
+  final _$postTakenVaccineAsyncAction = AsyncAction('ApiBase.postTakenVaccine');
+
+  @override
+  Future postTakenVaccine(
+      String profileId, String vaccineId, String numberOfDosesTaken) {
+    return _$postTakenVaccineAsyncAction.run(
+        () => super.postTakenVaccine(profileId, vaccineId, numberOfDosesTaken));
+  }
+
   final _$getTakenVaccinesAsyncAction = AsyncAction('ApiBase.getTakenVaccines');
 
   @override
   Future getTakenVaccines() {
     return _$getTakenVaccinesAsyncAction.run(() => super.getTakenVaccines());
+  }
+
+  final _$getVaccinesAsyncAction = AsyncAction('ApiBase.getVaccines');
+
+  @override
+  Future getVaccines() {
+    return _$getVaccinesAsyncAction.run(() => super.getVaccines());
+  }
+
+  final _$getVaccineByIdAsyncAction = AsyncAction('ApiBase.getVaccineById');
+
+  @override
+  Future getVaccineById(String vacinaId) {
+    return _$getVaccineByIdAsyncAction
+        .run(() => super.getVaccineById(vacinaId));
+  }
+
+  final _$getProfilesByUserIdAsyncAction =
+      AsyncAction('ApiBase.getProfilesByUserId');
+
+  @override
+  Future getProfilesByUserId(String userId) {
+    return _$getProfilesByUserIdAsyncAction
+        .run(() => super.getProfilesByUserId(userId));
   }
 
   @override

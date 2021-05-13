@@ -85,6 +85,21 @@ mixin _$ProfileController on ProfileControllerBase, Store {
     });
   }
 
+  final _$namesAtom = Atom(name: 'ProfileControllerBase.names');
+
+  @override
+  List<dynamic> get names {
+    _$namesAtom.reportRead();
+    return super.names;
+  }
+
+  @override
+  set names(List<dynamic> value) {
+    _$namesAtom.reportWrite(value, super.names, () {
+      super.names = value;
+    });
+  }
+
   final _$createProfileAsyncAction =
       AsyncAction('ProfileControllerBase.createProfile');
 
@@ -108,6 +123,13 @@ mixin _$ProfileController on ProfileControllerBase, Store {
   Future update(String name, String cpf, String sex, String birthDate) {
     return _$updateAsyncAction
         .run(() => super.update(name, cpf, sex, birthDate));
+  }
+
+  final _$getByIdAsyncAction = AsyncAction('ProfileControllerBase.getById');
+
+  @override
+  Future getById(String profileId) {
+    return _$getByIdAsyncAction.run(() => super.getById(profileId));
   }
 
   final _$ProfileControllerBaseActionController =
@@ -169,13 +191,25 @@ mixin _$ProfileController on ProfileControllerBase, Store {
   }
 
   @override
+  dynamic changeCurrentNames(List<dynamic> value) {
+    final _$actionInfo = _$ProfileControllerBaseActionController.startAction(
+        name: 'ProfileControllerBase.changeCurrentNames');
+    try {
+      return super.changeCurrentNames(value);
+    } finally {
+      _$ProfileControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 currentId: ${currentId},
 currentCpf: ${currentCpf},
 currentName: ${currentName},
 currentSex: ${currentSex},
-currentBirthDate: ${currentBirthDate}
+currentBirthDate: ${currentBirthDate},
+names: ${names}
     ''';
   }
 }

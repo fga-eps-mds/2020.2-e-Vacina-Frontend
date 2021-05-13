@@ -5,7 +5,7 @@ import 'package:e_vacina/globals.dart';
 import 'package:e_vacina/screens/UserConfig.dart';
 import 'package:e_vacina/screens/adminConfig_screen.dart';
 import 'package:e_vacina/component/MyWidgets.dart';
-import 'GeneralScreen.dart';
+import 'package:e_vacina/screens/GeneralScreen.dart';
 import 'package:e_vacina/screens/ProfilesScreen.dart';
 import 'package:e_vacina/component/CardVaccine.dart';
 
