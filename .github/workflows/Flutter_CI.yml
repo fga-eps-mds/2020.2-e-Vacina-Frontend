@@ -34,7 +34,7 @@ jobs:
     - name: Run tests for Flutter
       run: flutter test --coverage
 
-     - name: Sending the results to codecov
+    - name: Sending the results to codecov
       run: bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_TOKEN}}
 
     - name: Running lint
