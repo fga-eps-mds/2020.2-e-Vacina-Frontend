@@ -74,7 +74,7 @@ class MyWidgets {
     );
   }
 
-  Widget BorderButton(String label, double altura, double fontSize, Color cor,
+  Widget borderButton(String label, double altura, double fontSize, Color cor,
       IconData arrow, Function onPressed,
       {Icon icon, CircleAvatar circle}) {
     return Padding(
@@ -111,16 +111,16 @@ class MyWidgets {
   }
 }
 
-class alertDialog extends StatefulWidget {
+class PopUpAlertDialog extends StatefulWidget {
   final String label;
   final Function onPressed;
 
-  const alertDialog(this.label, {Key key, this.onPressed}) : super(key: key);
+  const PopUpAlertDialog(this.label, {Key key, this.onPressed}) : super(key: key);
   @override
-  _alertDialogState createState() => _alertDialogState();
+  _PopUpAlertDialogState createState() => _PopUpAlertDialogState();
 }
 
-class _alertDialogState extends State<alertDialog> {
+class _PopUpAlertDialogState extends State<PopUpAlertDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -146,15 +146,15 @@ class _alertDialogState extends State<alertDialog> {
   }
 }
 
-class errorText extends StatefulWidget {
+class ErrorText extends StatefulWidget {
   final bool error;
 
-  const errorText(this.error, {Key key}) : super(key: key);
+  const ErrorText(this.error, {Key key}) : super(key: key);
   @override
-  _errorTextState createState() => _errorTextState();
+  _ErrorTextState createState() => _ErrorTextState();
 }
 
-class _errorTextState extends State<errorText> {
+class _ErrorTextState extends State<ErrorText> {
   Color mostraTexto() {
     Color color;
     widget.error
@@ -184,18 +184,18 @@ class _errorTextState extends State<errorText> {
   }
 }
 
-class textSwitch extends StatefulWidget {
+class TextSwitch extends StatefulWidget {
   final String label;
   final double altura, fontSize;
   final Icon icon;
 
-  const textSwitch(this.label, this.altura, this.fontSize, {Key key, this.icon})
+  const TextSwitch(this.label, this.altura, this.fontSize, {Key key, this.icon})
       : super(key: key);
   @override
-  _textSwitchState createState() => _textSwitchState();
+  _TextSwitchState createState() => _TextSwitchState();
 }
 
-class _textSwitchState extends State<textSwitch> {
+class _TextSwitchState extends State<TextSwitch> {
   bool _escolha = false;
 
   @override
