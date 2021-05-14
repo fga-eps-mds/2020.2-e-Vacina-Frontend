@@ -85,7 +85,7 @@ class _AddVacinaState extends State<AddVacina> {
       showDialog(
           barrierDismissible: false,
           context: context,
-          builder: (_) => alertDialog(
+          builder: (_) => PopUpAlertDialog(
                 "Vacina já foi inserida na carteira, impossivel inserir novamente",
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -95,7 +95,7 @@ class _AddVacinaState extends State<AddVacina> {
       showDialog(
         barrierDismissible: false,
         context: context,
-        builder: (_) => alertDialog(
+        builder: (_) => PopUpAlertDialog(
           "Vacina adicionada com sucesso.",
           onPressed: () {
             Navigator.push(
