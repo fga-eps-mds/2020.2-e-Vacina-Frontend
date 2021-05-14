@@ -1,13 +1,13 @@
 import 'package:mobx/mobx.dart';
 import 'package:dio/dio.dart';
 import 'package:e_vacina/globals.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 part 'profileController.g.dart';
 
 class ProfileController = ProfileControllerBase with _$ProfileController;
 
-final _storage = new FlutterSecureStorage();
+//final _storage = new FlutterSecureStorage();
 
 abstract class ProfileControllerBase with Store {
   @observable
