@@ -1,4 +1,3 @@
-import 'package:e_vacina/screens/MainScreen.dart';
 import 'package:e_vacina/screens/ProfilesScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_vacina/component/MyWidgets.dart';
@@ -64,8 +63,8 @@ class _CreateProfileState extends State<CreateProfile> {
                       _cpf = cpfCon.text;
                       _birthDate = birthDateCon.text;
                       sexCon.text == '1'
-                          ? (_sex = 'Masculino')
-                          : (_sex = 'Feminino');
+                          ? _sex = 'Masculino'
+                          : _sex = 'Feminino';
                       if (isEmpty() == false) {
                         _error = false;
                         profileController
@@ -123,7 +122,7 @@ class _CreateProfileState extends State<CreateProfile> {
                       ),
                     ),
                   )),
-              errorText(_error),
+              ErrorText(_error),
               MyWidgets().caixaTexto('Nome:', nameCon, errorText: _wrongName),
               MyWidgets().caixaTexto('CPF:', cpfCon, errorText: _wrongCpf),
               DatePick(birthDateCon, errorText: _wrongBirthDate),
@@ -145,7 +144,7 @@ class _CreateProfileState extends State<CreateProfile> {
       showDialog(
         barrierDismissible: false,
         context: context,
-        builder: (_) => alertDialog(
+        builder: (_) => PopUpAlertDialog(
           "Perfil criado com sucesso.",
           onPressed: () async {
             await userController.getProfiles(userController.userId);

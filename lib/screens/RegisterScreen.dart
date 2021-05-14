@@ -75,7 +75,7 @@ class RegisterScreenState extends State<RegisterScreen> {
               MyWidgets().caixaTexto('Email', emailCon, errorText: _wrongEmail),
               MyWidgets().caixaTexto('Senha', passwordCon,
                   isObscure: true, errorText: _wrongPassword),
-              errorText(_error),
+              ErrorText(_error),
               MyWidgets().button(
                   'Registrar', 300.0, 50.0, 26, Theme.of(context).primaryColor,
                   () {
@@ -123,7 +123,7 @@ class RegisterScreenState extends State<RegisterScreen> {
         showDialog(
           barrierDismissible: false,
           context: context,
-          builder: (_) => alertDialog(
+          builder: (_) => PopUpAlertDialog(
             "Registro realizado com sucesso.",
             onPressed: () async {
               Navigator.push(context,

@@ -18,8 +18,8 @@ class _LoginMenuState extends State<LoginMenu> {
   var _email;
   var _password;
   List profiles;
-  String _wrongEmail = null;
-  String _wrongPassword = null;
+  String _wrongEmail;
+  String _wrongPassword;
 
   void mudaTela(bool resposta) async {
     if (resposta == true) {

@@ -41,7 +41,7 @@ class _MainScreenState extends State<MainScreen> {
       backgroundColor: Colors.white,
       appBar: appBar(),
       body: tabs[_selectedItem],
-      bottomNavigationBar: BottomBar(),
+      bottomNavigationBar: bottomBar(),
     );
   }
 
@@ -84,7 +84,7 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget BottomBar() {
+  Widget bottomBar() {
     return BottomNavigationBar(
       selectedFontSize: 14,
       unselectedFontSize: 14,
@@ -131,28 +131,28 @@ class ConfigTab extends StatelessWidget {
               ),
             ),
           ),
-          MyWidgets().BorderButton(
+          MyWidgets().borderButton(
               'Informações de Login', 86, 25, Colors.black, Icons.arrow_forward,
               () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => AdminConfig()));
           }),
-          MyWidgets().BorderButton(
+          MyWidgets().borderButton(
               'Geral', 86, 25, Colors.black, Icons.arrow_forward, () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => GeneralScreen()));
           }),
-          MyWidgets().BorderButton(
+          MyWidgets().borderButton(
               'Perfis', 86, 25, Colors.black, Icons.arrow_forward, () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ProfileScreen()));
           }),
-          MyWidgets().BorderButton(
+          MyWidgets().borderButton(
               'Termos de Uso', 86, 25, Colors.black, Icons.arrow_forward, () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => UserConfig()));
           }),
-          MyWidgets().BorderButton(
+          MyWidgets().borderButton(
               'Sair', 86, 25, Colors.black, Icons.arrow_forward, () {
             userController.logout();
             Navigator.push(
@@ -226,7 +226,7 @@ class SearchTab extends StatefulWidget {
 class _SearchTabState extends State<SearchTab> {
   String search = '';
   int i = 0;
-  List items = List();
+  List items;
 
   @override
   Widget build(BuildContext context) {
@@ -314,7 +314,7 @@ class _SearchTabState extends State<SearchTab> {
                   ),
                   onChanged: (text) {
                     setState(() {
-                      items = List();
+                      items = [];
                       search = text;
                     });
                   },

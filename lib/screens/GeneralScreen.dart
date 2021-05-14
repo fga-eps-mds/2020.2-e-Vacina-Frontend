@@ -8,7 +8,6 @@ class GeneralScreen extends StatefulWidget {
 }
 
 class _GeneralScreenState extends State<GeneralScreen> {
-  String _nome = 'Ana Maria';
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,23 +26,23 @@ class _GeneralScreenState extends State<GeneralScreen> {
       ),
       body: Column(
         children: [
-          textSwitch("Tema Escuro", 72, 16,
+          TextSwitch("Tema Escuro", 72, 16,
               icon: Icon(
                 Icons.bedtime_outlined,
                 color: Colors.black,
               )),
-          textSwitch("Notificações", 72, 16,
+          TextSwitch("Notificações", 72, 16,
               icon: Icon(
                 Icons.notifications_none,
                 color: Colors.black,
               )),
-          MyWidgets().BorderButton(
+          MyWidgets().borderButton(
               'Permissões', 72, 16, Colors.black, Icons.arrow_forward, () {},
               icon: Icon(
                 Icons.vpn_key_outlined,
                 color: Colors.black,
               )),
-          MyWidgets().BorderButton(
+          MyWidgets().borderButton(
               'Ajuda', 72, 16, Colors.black, Icons.arrow_forward, () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => HelpScreen()));

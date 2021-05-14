@@ -24,13 +24,13 @@ class _UserConfigState extends State<UserConfig> {
   var _cpf;
   var _birthDate;
   var _sex;
-  var _id;
+  //var _id;
   var dropdownValue;
 
   @override
   void initState() {
     super.initState();
-    _id = profileController.currentId;
+    //_id = profileController.currentId;
     nameCon.text = profileController.currentName;
     cpfCon.text = profileController.currentCpf;
     birthDateCon.text = profileController.currentBirthDate;
@@ -77,8 +77,8 @@ class _UserConfigState extends State<UserConfig> {
                       _cpf = cpfCon.text;
                       _birthDate = birthDateCon.text;
                       sexCon.text == '1'
-                          ? (_sex = 'Masculino')
-                          : (_sex = 'Feminino');
+                          ? _sex = 'Masculino'
+                          : _sex = 'Feminino';
                       if (isEmpty() == false) {
                         _error = false;
                         profileController
@@ -133,7 +133,7 @@ class _UserConfigState extends State<UserConfig> {
                       ),
                     ),
                   )),
-              errorText(_error),
+              ErrorText(_error),
               MyWidgets().caixaTexto('Nome:', nameCon, errorText: _wrongName),
               MyWidgets().caixaTexto('CPF:', cpfCon, errorText: _wrongCpf),
               DatePick(birthDateCon, errorText: _wrongBirthDate),
@@ -181,7 +181,7 @@ class _UserConfigState extends State<UserConfig> {
       });
       showDialog(
           context: context,
-          builder: (_) => alertDialog(
+          builder: (_) => PopUpAlertDialog(
                 "Perfil atualizado com sucesso.",
                 onPressed: () async {
                   Navigator.push(context,
@@ -198,7 +198,7 @@ class _UserConfigState extends State<UserConfig> {
         barrierDismissible: false,
         context: context,
         builder: (_) =>
-            alertDialog("Impossivel excluir todos os perfis", onPressed: () {
+            PopUpAlertDialog("Impossivel excluir todos os perfis", onPressed: () {
           Navigator.of(context).pop();
         }),
       );
@@ -206,7 +206,7 @@ class _UserConfigState extends State<UserConfig> {
       showDialog(
         barrierDismissible: false,
         context: context,
-        builder: (_) => alertDialog(
+        builder: (_) => PopUpAlertDialog(
           "Perfil deletado com sucesso.",
           onPressed: () async {
             Navigator.push(

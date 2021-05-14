@@ -8,7 +8,6 @@ class HelpScreen extends StatefulWidget {
 
 class _HelpScreenState extends State<HelpScreen> {
   double size = 16;
-  String _nome = 'Ana Maria';
 
   IconData _arrow1 = Icons.arrow_downward;
   IconData _arrow2 = Icons.arrow_downward;
@@ -46,77 +45,77 @@ class _HelpScreenState extends State<HelpScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            MyWidgets().BorderButton(
+            MyWidgets().borderButton(
                 'Adicionar Perfil', 72, 16, Colors.black, _arrow1, () {
               _addProfile == false
                   ? changes(addProfile: true, arrow1: Icons.arrow_upward)
                   : changes();
             }),
-            if (_addProfile == true) AddProflile(),
-            MyWidgets().BorderButton(
+            if (_addProfile == true) addProflile(),
+            MyWidgets().borderButton(
                 'Remover Perfil', 72, 16, Colors.black, _arrow2, () {
               _deleteProfile == false
                   ? changes(deleteProfile: true, arrow2: Icons.arrow_upward)
                   : changes();
             }),
-            if (_deleteProfile == true) DeleteProfile(),
-            MyWidgets().BorderButton(
+            if (_deleteProfile == true) deleteProfile(),
+            MyWidgets().borderButton(
                 'Editar Perfil', 72, 16, Colors.black, _arrow3, () {
               _editProfile == false
                   ? changes(editProfile: true, arrow3: Icons.arrow_upward)
                   : changes();
             }),
-            if (_editProfile == true) EditProfile(),
-            MyWidgets().BorderButton(
+            if (_editProfile == true) editProfile(),
+            MyWidgets().borderButton(
                 'Mudar de Perfil', 72, 16, Colors.black, _arrow4, () {
               _changeProfile == false
                   ? changes(changeProfile: true, arrow4: Icons.arrow_upward)
                   : changes();
             }),
-            if (_changeProfile == true) ChangeProfile(),
-            MyWidgets().BorderButton(
+            if (_changeProfile == true) changeProfile(),
+            MyWidgets().borderButton(
                 'Editar informações de Login', 72, 16, Colors.black, _arrow5,
                 () {
               _editLogin == false
                   ? changes(editLogin: true, arrow5: Icons.arrow_upward)
                   : changes();
             }),
-            if (_editLogin == true) EditLogin(),
-            MyWidgets().BorderButton(
+            if (_editLogin == true) editLogin(),
+            MyWidgets().borderButton(
                 'Excluir conta', 72, 16, Colors.black, _arrow6, () {
               _deleteUser == false
                   ? changes(deleteUser: true, arrow6: Icons.arrow_upward)
                   : changes();
             }),
-            if (_deleteUser == true) DeleteUser(),
-            MyWidgets().BorderButton(
+            if (_deleteUser == true) deleteUser(),
+            MyWidgets().borderButton(
                 'Adicionar Vacina', 72, 16, Colors.black, _arrow7, () {
               _addVacine == false
                   ? changes(addVacine: true, arrow7: Icons.arrow_upward)
                   : changes();
             }),
-            if (_addVacine == true) AddVacine(),
-            MyWidgets().BorderButton(
+            if (_addVacine == true) addVacine(),
+            MyWidgets().borderButton(
                 'Remover Vacina', 72, 16, Colors.black, _arrow8, () {
               _deleteVacine == false
                   ? changes(deleteVacine: true, arrow8: Icons.arrow_upward)
                   : changes();
             }),
-            if (_deleteVacine == true) DeleteVacine(),
+            if (_deleteVacine == true) deleteVacine(),
             MyWidgets()
-                .BorderButton('Ver Vacina', 72, 16, Colors.black, _arrow9, () {
+                .borderButton('Ver Vacina', 72, 16, Colors.black, _arrow9, () {
               _viewVacine == false
                   ? changes(viewVacine: true, arrow9: Icons.arrow_upward)
                   : changes();
             }),
-            if (_viewVacine == true) ViewVacine(),
+            if (_viewVacine == true) viewVacine(),
           ],
         ),
       ),
     );
   }
 
-  Widget changes(
+  changes(
       {bool addProfile = false,
       bool deleteProfile = false,
       bool editProfile = false,
@@ -157,7 +156,7 @@ class _HelpScreenState extends State<HelpScreen> {
     });
   }
 
-  Widget AddProflile() {
+  Widget addProflile() {
     return Container(
       width: 10000,
       decoration: (BoxDecoration(
@@ -210,7 +209,7 @@ class _HelpScreenState extends State<HelpScreen> {
     );
   }
 
-  Widget DeleteProfile() {
+  Widget deleteProfile() {
     return Container(
       width: 10000,
       decoration: (BoxDecoration(
@@ -273,7 +272,7 @@ class _HelpScreenState extends State<HelpScreen> {
     );
   }
 
-  Widget EditProfile() {
+  Widget editProfile() {
     return Container(
       width: 10000,
       decoration: (BoxDecoration(
@@ -341,7 +340,7 @@ class _HelpScreenState extends State<HelpScreen> {
     );
   }
 
-  Widget ChangeProfile() {
+  Widget changeProfile() {
     return Container(
       width: 10000,
       decoration: (BoxDecoration(
@@ -389,7 +388,7 @@ class _HelpScreenState extends State<HelpScreen> {
     );
   }
 
-  Widget EditLogin() {
+  Widget editLogin() {
     return Container(
       width: 10000,
       decoration: (BoxDecoration(
@@ -442,7 +441,7 @@ class _HelpScreenState extends State<HelpScreen> {
     );
   }
 
-  Widget DeleteUser() {
+  Widget deleteUser() {
     return Container(
       width: 10000,
       decoration: (BoxDecoration(
@@ -490,7 +489,7 @@ class _HelpScreenState extends State<HelpScreen> {
     );
   }
 
-  Widget AddVacine() {
+  Widget addVacine() {
     return Container(
       width: 10000,
       decoration: (BoxDecoration(
@@ -542,7 +541,7 @@ class _HelpScreenState extends State<HelpScreen> {
     );
   }
 
-  Widget DeleteVacine() {
+  Widget deleteVacine() {
     return Container(
       width: 10000,
       decoration: (BoxDecoration(
@@ -574,7 +573,7 @@ class _HelpScreenState extends State<HelpScreen> {
     );
   }
 
-  Widget ViewVacine() {
+  Widget viewVacine() {
     return Container(
       width: 10000,
       decoration: (BoxDecoration(
