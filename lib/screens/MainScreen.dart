@@ -149,8 +149,16 @@ class ConfigTab extends StatelessWidget {
           }),
           MyWidgets().borderButton(
               'Termos de Uso', 86, 25, Colors.black, Icons.arrow_forward, () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => UserConfig()));
+            showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (_) => PopUpAlertDialog(
+                "Termos de uso em produção.",
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                },
+              ),
+            );
           }),
           MyWidgets().borderButton(
               'Sair', 86, 25, Colors.black, Icons.arrow_forward, () {
@@ -226,7 +234,7 @@ class SearchTab extends StatefulWidget {
 class _SearchTabState extends State<SearchTab> {
   String search = '';
   int i = 0;
-  List items;
+  List items = [];
 
   @override
   Widget build(BuildContext context) {
