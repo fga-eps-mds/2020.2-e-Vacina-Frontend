@@ -130,7 +130,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       itemBuilder: (context, i) {
                         List profile = projectSnaps.data;
                         return buildListProfiles(
-                            context, profile[i]['name'], profile[i]['_id']);
+                            context, i, profile[i]['name'], profile[i]['_id']);
                       });
                 })
           ],

@@ -126,7 +126,7 @@ abstract class ApiBase with Store {
 
   @action
   getTakenVaccines() async {
-    var token = userController.token;
+    //var token = userController.token;
     var currentProfile = profileController.currentId;
     Response response = await dio.get(
       '/taken/p/$currentProfile',

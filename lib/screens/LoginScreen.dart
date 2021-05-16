@@ -24,7 +24,8 @@ class _LoginMenuState extends State<LoginMenu> {
   void mudaTela(bool resposta) async {
     if (resposta == true) {
       profiles = userController.profiles;
-      await profileController.getById(profiles[0]["_id"]);
+      await profileController
+          .getById(profiles[profileController.currentIndex]["_id"]);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => MainScreen()));
     } else {

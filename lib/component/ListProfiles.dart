@@ -2,16 +2,21 @@ import 'package:e_vacina/component/MyWidgets.dart';
 import 'package:e_vacina/screens/MainScreen.dart';
 import 'package:e_vacina/screens/UserConfig.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../globals.dart';
 
-Widget buildListProfiles(BuildContext context, String name, String prifoleId) {
+final _storage = new FlutterSecureStorage();
+
+Widget buildListProfiles(
+    BuildContext context, int index, String name, String profileId) {
   return GestureDetector(
     onTap: () async {
+      await _storage.write(key: 'profileIndex', value: index.toString());
       userController
           .checkToken()
           .then((resposta) => MyWidgets().logout(context, resposta));
-      await profileController.getById(prifoleId);
+      //await profileController.getById(profileId);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => MainScreen()));
     },
@@ -41,7 +46,7 @@ Widget buildListProfiles(BuildContext context, String name, String prifoleId) {
                 onPressed: () async {
                   userController.checkToken().then(
                       (resposta) => MyWidgets().logout(context, resposta));
-                  await profileController.getById(prifoleId);
+                  await profileController.getById(profileId);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => UserConfig()));
                 })

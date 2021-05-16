@@ -17,7 +17,8 @@ class _SplashScreenState extends State<InitialSplashScreen> {
     bool resposta = await userController.persistLogin();
     if (resposta) {
       List profiles = userController.profiles;
-      await profileController.getById(profiles[0]["_id"]);
+      await profileController
+          .getById(profiles[profileController.currentIndex]["_id"]);
     }
     setState(() {
       isValid = resposta;
@@ -34,7 +35,7 @@ class _SplashScreenState extends State<InitialSplashScreen> {
   Widget build(BuildContext context) {
     print("isValid init: $isValid");
     return SplashScreen(
-      seconds: 5,
+      seconds: 10,
       backgroundColor: Colors.white,
       navigateAfterSeconds: isValid ? MainScreen() : LoginMenu(),
       loaderColor: Theme.of(context).primaryColor,

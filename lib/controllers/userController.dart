@@ -64,7 +64,8 @@ abstract class UserControllerBase with Store {
       changePhoneNumber(response.data['user']['phoneNumber']);
       await getProfiles(userId);
       if (!isRegister)
-        await profileController.changeCurrentId(profiles[0]['_id']);
+        await profileController
+            .changeCurrentId(profiles[profileController.currentIndex]['_id']);
       await _storage.write(key: 'email', value: email);
       await _storage.write(key: 'password', value: password);
       await _storage.write(key: 'token', value: token);
@@ -82,6 +83,9 @@ abstract class UserControllerBase with Store {
     try {
       String _password = await _storage.read(key: 'password');
       String _email = await _storage.read(key: 'email');
+      String _index = await _storage.read(key: 'profileIndex') ?? "0";
+      int intParse = int.parse(_index);
+      profileController.changeCurrentIndex(intParse);
       bool rLogin = await login(_email, _password);
       if (!rLogin) _resposta = false;
     } catch (err) {

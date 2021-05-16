@@ -1,13 +1,10 @@
 import 'package:mobx/mobx.dart';
 import 'package:dio/dio.dart';
 import 'package:e_vacina/globals.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 part 'profileController.g.dart';
 
 class ProfileController = ProfileControllerBase with _$ProfileController;
-
-//final _storage = new FlutterSecureStorage();
 
 abstract class ProfileControllerBase with Store {
   @observable
@@ -45,6 +42,12 @@ abstract class ProfileControllerBase with Store {
 
   @action
   changeCurrentNames(List value) => names = value;
+
+  @observable
+  int currentIndex = 0;
+
+  @action
+  changeCurrentIndex(int value) => currentIndex = value;
 
   @action
   createProfile(String userId, String name, String cpf, String sex,
