@@ -7,10 +7,10 @@ import 'package:flutter/cupertino.dart';
 
 class InitialSplashScreen extends StatefulWidget {
   @override
-  InitialSplashScreenState createState() => InitialSplashScreenState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class InitialSplashScreenState extends State<InitialSplashScreen> {
+class _SplashScreenState extends State<InitialSplashScreen> {
   bool isValid = false;
 
   void loadFromFuture() async {
@@ -28,14 +28,13 @@ class InitialSplashScreenState extends State<InitialSplashScreen> {
   void initState() {
     super.initState();
     loadFromFuture();
-    print("isValid: $isValid");
   }
 
   @override
   Widget build(BuildContext context) {
     print("isValid init: $isValid");
     return SplashScreen(
-      seconds: 3,
+      seconds: 5,
       backgroundColor: Colors.white,
       navigateAfterSeconds: isValid ? MainScreen() : LoginMenu(),
       loaderColor: Theme.of(context).primaryColor,
@@ -50,38 +49,3 @@ class InitialSplashScreenState extends State<InitialSplashScreen> {
     );
   }
 }
-
-/*Widget _introScreen(context) {
-  bool _isValid = false;
-  void chooseScreen(bool resposta) {
-    if (resposta) {
-      _isValid = true;
-    }
-    print("chooseScreen: $_isValid");
-  }
-
-  userController.persistLogin().then((resposta) => chooseScreen(resposta));
-  return Stack(
-    children: <Widget>[
-      SplashScreen(
-        seconds: 4,
-        backgroundColor: Colors.white,
-        navigateAfterSeconds: ,
-        loaderColor: Theme.of(context).primaryColor,
-        title: Text(
-          'e-Vacina',
-          style: TextStyle(
-            fontSize: 64,
-            fontFamily: 'SuezOne',
-            color: Theme.of(context).primaryColor,
-          ),
-        ),
-      ),
-    ],
-  );
-}
-
-changeScreen(bool isValid) {
-  if (isValid) return HelpScreen();
-  return LoginMenu();
-}*/

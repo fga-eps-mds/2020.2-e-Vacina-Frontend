@@ -80,11 +80,9 @@ abstract class UserControllerBase with Store {
     bool _resposta = true;
     try {
       String _password = await _storage.read(key: 'password');
-      await _storage.read(key: 'token');
       String _email = await _storage.read(key: 'email');
-      print(_password);
-      bool teste = await login(_email, _password);
-      if (!teste) _resposta = false;
+      bool rLogin = await login(_email, _password);
+      if (!rLogin) _resposta = false;
     } catch (err) {
       _resposta = false;
     }
