@@ -61,7 +61,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                print('voltar');
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => MainScreen()));
               },
@@ -106,10 +105,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             FutureBuilder(
                 future: userController.getProfiles(userController.userId),
                 builder: (context, projectSnaps) {
-                  print("PROJETO ${projectSnaps.data}");
                   if (projectSnaps.hasData) {
                     _isLoading = false;
-                    print(_isLoading);
                   }
                   if (_isLoading == true) {
                     return Container(

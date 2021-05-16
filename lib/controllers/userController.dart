@@ -107,22 +107,19 @@ abstract class UserControllerBase with Store {
     String resposta = "true";
     changeRegister(true);
     try {
-      Response response = await api.registerUser(email, phoneNumber, password);
+      await api.registerUser(email, phoneNumber, password);
       await login(email, password);
-      print(response.statusCode);
     } catch (err) {
       return err.response.data.toString();
     }
     bool rProfile = await profileController.createProfile(
         userId, name, cpf, sex, birthDate);
     if (!rProfile) resposta = "false";
-    print("resposta profile");
     changeEmail(email);
     changePassword(password);
     changePhoneNumber(phoneNumber);
     if (resposta == "false") {
       try {
-        print("userId: $userId, email: $email");
         await delete();
       } catch (e2) {
         print("erro delete: $e2");
@@ -135,9 +132,7 @@ abstract class UserControllerBase with Store {
 
   @action
   delete() async {
-    Response response = await api.deleteUser(userId, token);
-    print(response);
-    print(response.statusCode);
+    await api.deleteUser(userId, token);
   }
 
   @action
@@ -146,8 +141,6 @@ abstract class UserControllerBase with Store {
         await api.updateUser(email, phoneNumber, password, userId, token);
     changeEmail(response.data['updtedUser']['email']);
     changePhoneNumber(response.data['updtedUser']['phoneNumber']);
-    print(response);
-    print(response.statusCode);
   }
 
   @action
@@ -164,7 +157,6 @@ abstract class UserControllerBase with Store {
     if (hasExpired) {
       if (!await persistLogin()) _resposta = false;
     }
-    print("Resposta hasExpired $hasExpired");
     return _resposta;
   }
 }

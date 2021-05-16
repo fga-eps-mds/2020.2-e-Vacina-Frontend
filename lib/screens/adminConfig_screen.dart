@@ -49,7 +49,6 @@ class AdminConfigState extends State<AdminConfig> {
             child: IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                print('voltar');
                 Navigator.pop(context);
               },
               alignment: Alignment.centerRight,
@@ -71,8 +70,6 @@ class AdminConfigState extends State<AdminConfig> {
                   userController.delete();
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginMenu()));
-                  print(
-                      "Excluir Conta Email:$_email, Telefone:$_phone, Password: $_password");
                 },
                 child: Text(
                   "Excluir\nUsuário",

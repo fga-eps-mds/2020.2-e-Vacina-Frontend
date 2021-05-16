@@ -36,16 +36,6 @@ class _LoginMenuState extends State<LoginMenu> {
     }
   }
 
-  /*bool _isValid = false;
-  void chooseScreen(bool token) {
-    if (token == true) {
-      setState(() {
-        _isValid = true;
-      });
-    }
-    print(token);
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +78,6 @@ class _LoginMenuState extends State<LoginMenu> {
             }),
             Text('OU\n'),
             MyWidgets().button('Registre-se', 200.0, 50.0, 16, gangGray, () {
-              print('Registrar');
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => RegisterScreen()));
             }),

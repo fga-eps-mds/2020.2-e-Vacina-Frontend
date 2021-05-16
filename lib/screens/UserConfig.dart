@@ -37,7 +37,6 @@ class _UserConfigState extends State<UserConfig> {
     profileController.currentSex == 'Masculino'
         ? sexCon.text = '1'
         : sexCon.text = '2';
-    print(birthDateCon.text);
   }
 
   @override
@@ -147,7 +146,6 @@ class _UserConfigState extends State<UserConfig> {
                     .checkToken()
                     .then((resposta) => MyWidgets().logout(context, resposta));
                 setState(() {
-                  print(userController.profiles.length);
                   if (userController.profiles.length == 1) {
                     validateDelete(false);
                   } else {

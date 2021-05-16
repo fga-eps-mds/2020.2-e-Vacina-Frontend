@@ -145,7 +145,6 @@ abstract class ApiBase with Store {
 
   @action
   getVaccineById(String vacinaId) async {
-    print(vacinaId);
     Response response = await dio.get('/vaccine/$vacinaId');
     return response;
   }

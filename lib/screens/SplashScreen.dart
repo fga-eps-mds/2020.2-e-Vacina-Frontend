@@ -33,7 +33,6 @@ class _SplashScreenState extends State<InitialSplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("isValid init: $isValid");
     return SplashScreen(
       seconds: 10,
       backgroundColor: Colors.white,

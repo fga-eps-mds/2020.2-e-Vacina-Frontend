@@ -76,9 +76,6 @@ class _CreateProfileState extends State<CreateProfile> {
                       } else
                         _error = true;
                     });
-
-                    print('Sexo:$_sex');
-                    print('Data: $_birthDate');
                   },
                   child: Text(
                     "Salvar",

@@ -245,7 +245,6 @@ class _SearchTabState extends State<SearchTab> {
                 child: FutureBuilder(
                     future: vaccineController.getVaccines(),
                     builder: (context, projectSnap) {
-                      // print(projectSnap);
                       if (projectSnap.hasError) {
                         return Text("Something went wrong");
                       } else if (projectSnap.connectionState ==

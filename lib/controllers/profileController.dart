@@ -61,7 +61,6 @@ abstract class ProfileControllerBase with Store {
       changeCurrentCpf(response.data['newProfile']['cpf']);
       changeCurrentBirthDate(response.data['newProfile']['birthDate']);
       changeCurrentSex(response.data['newProfile']['sex']);
-      print(response);
     } catch (err) {
       print("deu exceção crateProfile\n");
       print(err);
@@ -74,9 +73,7 @@ abstract class ProfileControllerBase with Store {
   delete(String profileId) async {
     bool resposta = true;
     try {
-      Response response = await api.deleteProfile(profileId);
-      print(response);
-      print(response.statusCode);
+      await api.deleteProfile(profileId);
     } catch (err) {
       print("deu exceção\n");
       resposta = false;
@@ -88,10 +85,7 @@ abstract class ProfileControllerBase with Store {
   update(String name, String cpf, String sex, String birthDate) async {
     bool profile = true;
     try {
-      Response response =
-          await api.updateProfile(currentId, name, cpf, sex, birthDate);
-      print(response);
-      print(response.statusCode);
+      await api.updateProfile(currentId, name, cpf, sex, birthDate);
     } catch (err) {
       print("deu exceção\n");
       print(err);

@@ -292,7 +292,6 @@ class _GenderPickerState extends State<GenderPicker> {
             setState(() {
               dropdownValue = newValue;
               widget.controller.text = newValue;
-              print(newValue);
             });
           },
           items: [
@@ -344,7 +343,6 @@ class _DatePickState extends State<DatePick> {
                 widget.errorText == null ? Colors.grey[500] : Colors.red[600],
           )),
           onPressed: () {
-            print(widget.birthDateController.text);
             showDatePicker(
                     context: context,
                     initialDate: _dateTime == null ? DateTime.now() : _dateTime,
