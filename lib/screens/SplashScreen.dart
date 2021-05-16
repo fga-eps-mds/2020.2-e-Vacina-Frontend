@@ -13,30 +13,22 @@ class InitialSplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<InitialSplashScreen> {
   bool isValid = false;
 
-  void loadFromFuture() async {
+  Future<Widget> loadFromFuture() async {
     bool resposta = await userController.persistLogin();
     if (resposta) {
       List profiles = userController.profiles;
       await profileController
           .getById(profiles[profileController.currentIndex]["_id"]);
+      return Future.value(new MainScreen());
     }
-    setState(() {
-      isValid = resposta;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    loadFromFuture();
+    return Future.value(new LoginMenu());
   }
 
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
-      seconds: 10,
       backgroundColor: Colors.white,
-      navigateAfterSeconds: isValid ? MainScreen() : LoginMenu(),
+      navigateAfterFuture: loadFromFuture(),
       loaderColor: Theme.of(context).primaryColor,
       title: Text(
         'e-Vacina',
