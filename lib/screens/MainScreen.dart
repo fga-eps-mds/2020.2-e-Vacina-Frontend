@@ -1,5 +1,6 @@
 import 'package:e_vacina/screens/AddVacinaScreen.dart';
 import 'package:e_vacina/screens/LoginScreen.dart';
+import 'package:e_vacina/screens/TakenVaccinesScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_vacina/globals.dart';
 import 'package:e_vacina/screens/UserConfig.dart';
@@ -213,11 +214,23 @@ class MainTab extends StatelessWidget {
                     padding: EdgeInsets.all(16),
                     itemBuilder: (context, index) {
                       Map list = projectSnap.data[index];
-                      return buildVaccineCard(
-                        list["vaccineId"]["name"],
-                        "Doses tomadas: ${list["numberOfDosesTaken"]}/${list["vaccineId"]["numberOfDoses"]}",
-                        numberOfDosesTaken: list["numberOfDosesTaken"],
-                        numberOfDoses: list["vaccineId"]["numberOfDoses"],
+                      return GestureDetector(
+                        child: buildVaccineCard(
+                          list["vaccineId"]["name"],
+                          "Doses tomadas: ${list["numberOfDosesTaken"]}/${list["vaccineId"]["numberOfDoses"]}",
+                          numberOfDosesTaken: list["numberOfDosesTaken"],
+                          numberOfDoses: list["vaccineId"]["numberOfDoses"],
+                        ),
+                        onTap: () async {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TakenVaccines(
+                                      list["vaccineId"]["name"],
+                                      list["vaccineId"]["numberOfDoses"],
+                                      list["vaccineId"]["periodicity"],
+                                      list["numberOfDosesTaken"])));
+                        },
                       );
                     });
               }
@@ -284,12 +297,17 @@ class _SearchTabState extends State<SearchTab> {
                                   "Número de doses: ${list["numberOfDoses"]}",
                                 ),
                                 onTap: () async {
-                                  String vacina = list["_id"];
-                                  await vaccineController.chosenVaccine(vacina);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => AddVacina()));
+                                          builder: (context) => AddVacina(
+                                                list["_id"],
+                                                list["preventDeseases"],
+                                                list["recommendations"],
+                                                list["name"],
+                                                list["description"],
+                                                list["numberOfDoses"],
+                                              )));
                                 },
                               );
                             });

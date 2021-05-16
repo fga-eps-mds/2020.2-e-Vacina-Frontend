@@ -7,6 +7,7 @@ import 'package:e_vacina/services/api.dart';
 UserController userController = new UserController();
 ProfileController profileController = new ProfileController();
 VaccineController vaccineController = new VaccineController();
+
 Api api = new Api();
 
 var options = BaseOptions(

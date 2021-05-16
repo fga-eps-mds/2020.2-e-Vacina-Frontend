@@ -5,6 +5,14 @@ import 'package:flutter/material.dart';
 import '../globals.dart';
 
 class AddVacina extends StatefulWidget {
+  final String vaccineId;
+  final dynamic preventDeseases;
+  final dynamic recommendations;
+  final dynamic name;
+  final dynamic description;
+  final dynamic numberOfDoses;
+
+  const AddVacina(this.vaccineId, this.preventDeseases, this.recommendations, this.name, this.description, this.numberOfDoses, {Key key}) : super(key: key);
   @override
   _AddVacinaState createState() => _AddVacinaState();
 }
@@ -23,7 +31,7 @@ class _AddVacinaState extends State<AddVacina> {
               alignment: Alignment.center,
               color: Theme.of(context).primaryColor,
               child: Text(
-                vaccineController.vaccineName,
+                widget.name.toString(),
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 33, color: Colors.black),
               ),
@@ -33,7 +41,7 @@ class _AddVacinaState extends State<AddVacina> {
               alignment: Alignment.bottomCenter,
               width: MediaQuery.of(context).size.width,
               color: Theme.of(context).primaryColor,
-              child: Text("Número de doses: ${vaccineController.numberOfDoses}",
+              child: Text("Número de doses: ${widget.numberOfDoses.toString()}",
                   style: TextStyle(fontSize: 20, color: Colors.black)),
             ),
             Container(
@@ -43,7 +51,7 @@ class _AddVacinaState extends State<AddVacina> {
               color: Theme.of(context).primaryColor,
               child: Padding(
                 padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                child: Text(vaccineController.description,
+                child: Text(widget.description.toString(),
                     textAlign: TextAlign.justify,
                     style: TextStyle(fontSize: 18, color: Colors.black)),
               ),
@@ -56,7 +64,7 @@ class _AddVacinaState extends State<AddVacina> {
                 child: MyWidgets().button('Adicionar vacina ao cartão', 240.0,
                     39.0, 15, Colors.red[600], () {
                   vaccineController
-                      .postTakenVaccine()
+                      .postTakenVaccine(widget.vaccineId)
                       .then((resposta) => validate(resposta));
                   print("cadastou");
                 })),
