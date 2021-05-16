@@ -1,4 +1,5 @@
 import 'package:e_vacina/component/ListProfiles.dart';
+import 'package:e_vacina/component/MyWidgets.dart';
 import 'package:e_vacina/screens/CreateProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'MainScreen.dart';
@@ -95,6 +96,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
                 onTap: () {
+                  userController.checkToken().then(
+                      (resposta) => MyWidgets().logout(context, resposta));
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => CreateProfile()));
                 },

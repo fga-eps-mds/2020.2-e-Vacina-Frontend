@@ -65,6 +65,8 @@ class _CreateProfileState extends State<CreateProfile> {
                       sexCon.text == '1'
                           ? _sex = 'Masculino'
                           : _sex = 'Feminino';
+                      userController.checkToken().then(
+                          (resposta) => MyWidgets().logout(context, resposta));
                       if (isEmpty() == false) {
                         _error = false;
                         profileController

@@ -1,3 +1,4 @@
+import 'package:e_vacina/component/MyWidgets.dart';
 import 'package:e_vacina/screens/MainScreen.dart';
 import 'package:e_vacina/screens/UserConfig.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,9 @@ import '../globals.dart';
 Widget buildListProfiles(BuildContext context, String name, String prifoleId) {
   return GestureDetector(
     onTap: () async {
+      userController
+          .checkToken()
+          .then((resposta) => MyWidgets().logout(context, resposta));
       await profileController.getById(prifoleId);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => MainScreen()));
@@ -35,6 +39,8 @@ Widget buildListProfiles(BuildContext context, String name, String prifoleId) {
             IconButton(
                 icon: const Icon(Icons.settings_outlined),
                 onPressed: () async {
+                  userController.checkToken().then(
+                      (resposta) => MyWidgets().logout(context, resposta));
                   await profileController.getById(prifoleId);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => UserConfig()));

@@ -108,6 +108,8 @@ class AdminConfigState extends State<AdminConfig> {
                     _phone = phoneCon.text;
                     _password = passwordCon.text;
                   });
+                  userController.checkToken().then(
+                      (resposta) => MyWidgets().logout(context, resposta));
                   await userController.update(_email, _phone, _password);
                 },
               ),

@@ -79,6 +79,8 @@ class _UserConfigState extends State<UserConfig> {
                       sexCon.text == '1'
                           ? _sex = 'Masculino'
                           : _sex = 'Feminino';
+                      userController.checkToken().then(
+                          (resposta) => MyWidgets().logout(context, resposta));
                       if (isEmpty() == false) {
                         _error = false;
                         profileController
@@ -141,6 +143,9 @@ class _UserConfigState extends State<UserConfig> {
               MyWidgets().button(
                   'Excluir Usuário', 150, 45, 17, Color.fromRGBO(255, 0, 0, 1),
                   () {
+                userController
+                    .checkToken()
+                    .then((resposta) => MyWidgets().logout(context, resposta));
                 setState(() {
                   print(userController.profiles.length);
                   if (userController.profiles.length == 1) {
@@ -197,8 +202,8 @@ class _UserConfigState extends State<UserConfig> {
       showDialog(
         barrierDismissible: false,
         context: context,
-        builder: (_) =>
-            PopUpAlertDialog("Impossivel excluir todos os perfis", onPressed: () {
+        builder: (_) => PopUpAlertDialog("Impossivel excluir todos os perfis",
+            onPressed: () {
           Navigator.of(context).pop();
         }),
       );
