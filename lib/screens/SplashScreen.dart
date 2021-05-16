@@ -7,38 +7,46 @@ import 'package:flutter/cupertino.dart';
 
 class InitialSplashScreen extends StatefulWidget {
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  InitialSplashScreenState createState() => InitialSplashScreenState();
 }
 
-class _SplashScreenState extends State<InitialSplashScreen> {
-  Future<Widget> loadFromFuture() async {
-    bool resposta = false;
-    resposta = await userController.persistLogin();
-    if (resposta)
-      return Future.value(MainScreen());
-    else
-      return Future.value(LoginMenu());
+class InitialSplashScreenState extends State<InitialSplashScreen> {
+  bool isValid = false;
+
+  void loadFromFuture() async {
+    bool resposta = await userController.persistLogin();
+    if (resposta) {
+      List profiles = userController.profiles;
+      await profileController.getById(profiles[0]["_id"]);
+    }
+    setState(() {
+      isValid = resposta;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadFromFuture();
+    print("isValid: $isValid");
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        SplashScreen(
-          seconds: 2,
-          backgroundColor: Colors.white,
-          navigateAfterSeconds: LoginMenu(),
-          loaderColor: Theme.of(context).primaryColor,
-          title: Text(
-            'e-Vacina',
-            style: TextStyle(
-              fontSize: 64,
-              fontFamily: 'SuezOne',
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
+    print("isValid init: $isValid");
+    return SplashScreen(
+      seconds: 3,
+      backgroundColor: Colors.white,
+      navigateAfterSeconds: isValid ? MainScreen() : LoginMenu(),
+      loaderColor: Theme.of(context).primaryColor,
+      title: Text(
+        'e-Vacina',
+        style: TextStyle(
+          fontSize: 64,
+          fontFamily: 'SuezOne',
+          color: Theme.of(context).primaryColor,
         ),
-      ],
+      ),
     );
   }
 }
