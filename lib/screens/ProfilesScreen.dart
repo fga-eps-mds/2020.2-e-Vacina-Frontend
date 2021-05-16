@@ -13,13 +13,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List array = profileController.currentName.split(' ');
   String _nome = profileController.currentName;
   bool _isLoading = true;
-  
 
-  String splitName(List array){
+  String splitName(List array) {
     String name;
-    if (array.length > 1){
-      name = array[0].substring(0, 1).toUpperCase() + array[1].substring(0,1).toUpperCase();
-    }else{
+    if (array.length > 1) {
+      name = array[0].substring(0, 1).toUpperCase() +
+          array[1].substring(0, 1).toUpperCase();
+    } else {
       name = array[0].substring(0, 1).toUpperCase();
     }
     return name;

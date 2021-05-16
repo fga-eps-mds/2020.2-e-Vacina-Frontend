@@ -1,3 +1,4 @@
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mobx/mobx.dart';
 import 'package:dio/dio.dart';
 import 'package:e_vacina/globals.dart';
@@ -150,5 +151,16 @@ abstract class UserControllerBase with Store {
     Response response = await api.getProfilesByUserId(userId);
     await changeProfiles(response.data['user']['profilesIds']);
     return response.data['user']['profilesIds'];
+  }
+
+  @action
+  checkToken() async {
+    bool _resposta = true;
+    bool hasExpired = JwtDecoder.isExpired(token);
+    if (hasExpired) {
+      if (!await persistLogin()) _resposta = false;
+    }
+    print("Resposta hasExpired $hasExpired");
+    return _resposta;
   }
 }

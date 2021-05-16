@@ -1,4 +1,7 @@
+import 'package:e_vacina/screens/LoginScreen.dart';
 import 'package:flutter/material.dart';
+
+import '../globals.dart';
 
 class MyWidgets {
   final Color gangGray = Color.fromRGBO(51, 51, 51, 1.0);
@@ -109,13 +112,31 @@ class MyWidgets {
       ),
     );
   }
+
+  void logout(BuildContext context, bool resposta) {
+    if (!resposta) {
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (_) => PopUpAlertDialog(
+          "Sua sessão expirou, por favor faça o login novamente.",
+          onPressed: () {
+            userController.logout();
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => LoginMenu()));
+          },
+        ),
+      );
+    }
+  }
 }
 
 class PopUpAlertDialog extends StatefulWidget {
   final String label;
   final Function onPressed;
 
-  const PopUpAlertDialog(this.label, {Key key, this.onPressed}) : super(key: key);
+  const PopUpAlertDialog(this.label, {Key key, this.onPressed})
+      : super(key: key);
   @override
   _PopUpAlertDialogState createState() => _PopUpAlertDialogState();
 }

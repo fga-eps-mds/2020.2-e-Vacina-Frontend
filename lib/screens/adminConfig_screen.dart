@@ -66,6 +66,8 @@ class AdminConfigState extends State<AdminConfig> {
                     _password = passwordCon.text;
                     _phone = phoneCon.text;
                   });
+                  userController.checkToken().then(
+                      (resposta) => MyWidgets().logout(context, resposta));
                   userController.delete();
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginMenu()));

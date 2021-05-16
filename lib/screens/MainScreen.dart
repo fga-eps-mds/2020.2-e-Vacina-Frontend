@@ -144,6 +144,9 @@ class ConfigTab extends StatelessWidget {
           }),
           MyWidgets().borderButton(
               'Perfis', 86, 25, Colors.black, Icons.arrow_forward, () {
+            userController
+                .checkToken()
+                .then((resposta) => MyWidgets().logout(context, resposta));
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ProfileScreen()));
           }),
