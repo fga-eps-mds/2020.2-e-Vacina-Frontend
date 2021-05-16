@@ -1,29 +1,29 @@
 import 'package:mobx/mobx.dart';
 import 'package:dio/dio.dart';
 import 'package:e_vacina/globals.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 part 'userController.g.dart';
 
 class UserController = UserControllerBase with _$UserController;
 
-// final _storage = new FlutterSecureStorage();
+final _storage = new FlutterSecureStorage();
 
 abstract class UserControllerBase with Store {
   @observable
-  String email='';
+  String email = '';
 
   @action
   changeEmail(String value) => email = value;
 
   @observable
-  String phoneNumber= '';
+  String phoneNumber = '';
 
   @action
   changePhoneNumber(String value) => phoneNumber = value;
 
   @observable
-  String password= '';
+  String password = '';
 
   @action
   changePassword(String value) => password = value;
@@ -35,7 +35,7 @@ abstract class UserControllerBase with Store {
   changeUserId(String value) => userId = value;
 
   @observable
-  dynamic token='';
+  dynamic token = '';
 
   @action
   changeToken(String value) => token = value;
@@ -64,9 +64,10 @@ abstract class UserControllerBase with Store {
       await getProfiles(userId);
       if (!isRegister)
         await profileController.changeCurrentId(profiles[0]['_id']);
-      // await _storage.write(key: 'token', value: token);
-      // await _storage.write(key: 'userId', value: userId);
-      print('$token');
+      await _storage.write(key: 'email', value: email);
+      await _storage.write(key: 'password', value: password);
+      await _storage.write(key: 'token', value: token);
+      await _storage.write(key: 'userId', value: userId);
     } on DioError catch (err) {
       print("Erro: ${err.response.statusCode}");
       resposta = false;
@@ -75,10 +76,26 @@ abstract class UserControllerBase with Store {
   }
 
   @action
+  persistLogin() async {
+    bool _resposta = true;
+    try {
+      String _password = await _storage.read(key: 'password');
+      await _storage.read(key: 'token');
+      String _email = await _storage.read(key: 'email');
+      print(_password);
+      bool teste = await login(_email, _password);
+      if (!teste) _resposta = false;
+    } catch (err) {
+      _resposta = false;
+    }
+    return _resposta;
+  }
+
+  @action
   logout() async {
     changeToken('');
     changeUserId('');
-    // await _storage.deleteAll();
+    await _storage.deleteAll();
   }
 
   @action

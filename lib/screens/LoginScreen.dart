@@ -35,6 +35,16 @@ class _LoginMenuState extends State<LoginMenu> {
     }
   }
 
+  /*bool _isValid = false;
+  void chooseScreen(bool token) {
+    if (token == true) {
+      setState(() {
+        _isValid = true;
+      });
+    }
+    print(token);
+  }*/
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

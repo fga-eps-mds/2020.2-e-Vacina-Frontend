@@ -226,7 +226,7 @@ class SearchTab extends StatefulWidget {
 class _SearchTabState extends State<SearchTab> {
   String search = '';
   int i = 0;
-  List items;
+  List items = [];
 
   @override
   Widget build(BuildContext context) {
