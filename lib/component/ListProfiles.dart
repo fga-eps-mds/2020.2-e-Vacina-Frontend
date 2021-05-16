@@ -13,12 +13,13 @@ Widget buildListProfiles(
   return GestureDetector(
     onTap: () async {
       await _storage.write(key: 'profileIndex', value: index.toString());
-      userController
-          .checkToken()
-          .then((resposta) => MyWidgets().logout(context, resposta));
-      //await profileController.getById(profileId);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MainScreen()));
+      bool resposta = await userController.checkToken();
+      if (resposta) {
+        await profileController.getById(profileId);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MainScreen()));
+      } else
+        MyWidgets().logout(context, resposta);
     },
     child: Container(
       height: 70,
