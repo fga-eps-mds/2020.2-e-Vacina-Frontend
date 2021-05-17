@@ -26,6 +26,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return name;
   }
 
+  void createProfile(bool resposta) {
+    if (resposta) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => CreateProfile()));
+    } else
+      MyWidgets().logout(context, resposta);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,10 +103,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
                 onTap: () {
-                  userController.checkToken().then(
-                      (resposta) => MyWidgets().logout(context, resposta));
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CreateProfile()));
+                  userController
+                      .checkToken()
+                      .then((resposta) => createProfile(resposta));
                 },
               ),
             ),

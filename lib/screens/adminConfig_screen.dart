@@ -17,6 +17,22 @@ class AdminConfigState extends State<AdminConfig> {
   var _email;
   var _password;
 
+  void deleteUser(bool resposta) {
+    if (resposta) {
+      userController.delete();
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginMenu()));
+    } else
+      MyWidgets().logout(context, resposta);
+  }
+
+  void updateUser(bool resposta) async {
+    if (resposta) {
+      await userController.update(_email, _phone, _password);
+    } else
+      MyWidgets().logout(context, resposta);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -65,11 +81,9 @@ class AdminConfigState extends State<AdminConfig> {
                     _password = passwordCon.text;
                     _phone = phoneCon.text;
                   });
-                  userController.checkToken().then(
-                      (resposta) => MyWidgets().logout(context, resposta));
-                  userController.delete();
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginMenu()));
+                  userController
+                      .checkToken()
+                      .then((resposta) => deleteUser(resposta));
                 },
                 child: Text(
                   "Excluir\nUsuário",
@@ -99,15 +113,15 @@ class AdminConfigState extends State<AdminConfig> {
                 50,
                 17,
                 Theme.of(context).primaryColor,
-                () async {
+                () {
                   setState(() {
                     _email = emailCon.text;
                     _phone = phoneCon.text;
                     _password = passwordCon.text;
                   });
-                  userController.checkToken().then(
-                      (resposta) => MyWidgets().logout(context, resposta));
-                  await userController.update(_email, _phone, _password);
+                  userController
+                      .checkToken()
+                      .then((resposta) => updateUser(resposta));
                 },
               ),
               Padding(

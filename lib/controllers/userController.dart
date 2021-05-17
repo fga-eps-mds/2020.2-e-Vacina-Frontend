@@ -63,13 +63,14 @@ abstract class UserControllerBase with Store {
       changeEmail(response.data['user']['email']);
       changePhoneNumber(response.data['user']['phoneNumber']);
       await getProfiles(userId);
-      if (!isRegister)
+      if (!isRegister) {
         await profileController
             .changeCurrentId(profiles[profileController.currentIndex]['_id']);
-      await _storage.write(key: 'email', value: email);
-      await _storage.write(key: 'password', value: password);
-      await _storage.write(key: 'token', value: token);
-      await _storage.write(key: 'userId', value: userId);
+        await _storage.write(key: 'email', value: email);
+        await _storage.write(key: 'password', value: password);
+        await _storage.write(key: 'token', value: token);
+        await _storage.write(key: 'userId', value: userId);
+      }
     } on DioError catch (err) {
       print("Erro: ${err.response.statusCode}");
       resposta = false;
@@ -98,6 +99,7 @@ abstract class UserControllerBase with Store {
   logout() async {
     changeToken('');
     changeUserId('');
+    await _storage.write(key: 'profileIndex', value: "0");
     await _storage.deleteAll();
   }
 

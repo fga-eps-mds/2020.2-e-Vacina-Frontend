@@ -45,11 +45,13 @@ Widget buildListProfiles(
             IconButton(
                 icon: const Icon(Icons.settings_outlined),
                 onPressed: () async {
-                  userController.checkToken().then(
-                      (resposta) => MyWidgets().logout(context, resposta));
-                  await profileController.getById(profileId);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => UserConfig()));
+                  bool resposta = await userController.checkToken();
+                  if (resposta) {
+                    await profileController.getById(profileId);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => UserConfig()));
+                  } else
+                    MyWidgets().logout(context, resposta);
                 })
           ],
         ),

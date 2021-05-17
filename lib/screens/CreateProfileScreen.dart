@@ -25,6 +25,19 @@ class _CreateProfileState extends State<CreateProfile> {
   String _wrongSex;
   bool _error = false;
 
+  void changeScreen(bool resposta) {
+    if (resposta) {
+      if (isEmpty() == false) {
+        _error = false;
+        profileController
+            .createProfile(userController.userId, _name, _cpf, _sex, _birthDate)
+            .then((resposta) => validate(resposta));
+      } else
+        _error = true;
+    } else
+      MyWidgets().logout(context, resposta);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,16 +78,9 @@ class _CreateProfileState extends State<CreateProfile> {
                       sexCon.text == '1'
                           ? _sex = 'Masculino'
                           : _sex = 'Feminino';
-                      userController.checkToken().then(
-                          (resposta) => MyWidgets().logout(context, resposta));
-                      if (isEmpty() == false) {
-                        _error = false;
-                        profileController
-                            .createProfile(userController.userId, _name, _cpf,
-                                _sex, _birthDate)
-                            .then((resposta) => validate(resposta));
-                      } else
-                        _error = true;
+                      userController
+                          .checkToken()
+                          .then((resposta) => changeScreen(resposta));
                     });
                   },
                   child: Text(

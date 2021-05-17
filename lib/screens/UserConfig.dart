@@ -1,6 +1,7 @@
 import 'package:e_vacina/screens/MainScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_vacina/component/MyWidgets.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../globals.dart';
 
@@ -8,6 +9,8 @@ class UserConfig extends StatefulWidget {
   @override
   _UserConfigState createState() => _UserConfigState();
 }
+
+final _storage = new FlutterSecureStorage();
 
 class _UserConfigState extends State<UserConfig> {
   final nameCon = new TextEditingController();
@@ -26,6 +29,35 @@ class _UserConfigState extends State<UserConfig> {
   var _sex;
   //var _id;
   var dropdownValue;
+
+  void deleteProfile(bool resposta) {
+    if (resposta) {
+      setState(() {
+        if (userController.profiles.length == 1) {
+          validateDelete(false);
+        } else {
+          profileController
+              .delete(profileController.currentId)
+              .then((resposta) => validateDelete(resposta));
+        }
+      });
+    } else
+      MyWidgets().logout(context, resposta);
+  }
+
+  void updateProfile(bool resposta) {
+    if (resposta) {
+      if (isEmpty() == false) {
+        _error = false;
+        profileController
+            .update(_name, _cpf, _sex, _birthDate)
+            .then((resposta) => validate(resposta));
+      } else {
+        _error = true;
+      }
+    } else
+      MyWidgets().logout(context, resposta);
+  }
 
   @override
   void initState() {
@@ -78,16 +110,9 @@ class _UserConfigState extends State<UserConfig> {
                       sexCon.text == '1'
                           ? _sex = 'Masculino'
                           : _sex = 'Feminino';
-                      userController.checkToken().then(
-                          (resposta) => MyWidgets().logout(context, resposta));
-                      if (isEmpty() == false) {
-                        _error = false;
-                        profileController
-                            .update(_name, _cpf, _sex, _birthDate)
-                            .then((resposta) => validate(resposta));
-                      } else {
-                        _error = true;
-                      }
+                      userController
+                          .checkToken()
+                          .then((resposta) => updateProfile(resposta));
                     });
                   },
                   child: Text(
@@ -144,16 +169,7 @@ class _UserConfigState extends State<UserConfig> {
                   () {
                 userController
                     .checkToken()
-                    .then((resposta) => MyWidgets().logout(context, resposta));
-                setState(() {
-                  if (userController.profiles.length == 1) {
-                    validateDelete(false);
-                  } else {
-                    profileController
-                        .delete(profileController.currentId)
-                        .then((resposta) => validateDelete(resposta));
-                  }
-                });
+                    .then((resposta) => deleteProfile(resposta));
               }),
             ],
           ),
@@ -212,10 +228,11 @@ class _UserConfigState extends State<UserConfig> {
         builder: (_) => PopUpAlertDialog(
           "Perfil deletado com sucesso.",
           onPressed: () async {
+            await _storage.write(key: 'profileIndex', value: "0");
+            await profileController.getById(userController.profiles[0]['_id']);
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => MainScreen()));
             await userController.getProfiles(userController.userId);
-            await profileController.getById(userController.profiles[0]['_id']);
           },
         ),
       );

@@ -111,6 +111,22 @@ class _MainScreenState extends State<MainScreen> {
 }
 
 class ConfigTab extends StatelessWidget {
+  void infoLogin(BuildContext context, bool resposta) {
+    if (resposta) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => AdminConfig()));
+    } else
+      MyWidgets().logout(context, resposta);
+  }
+
+  void profiles(BuildContext context, bool resposta) {
+    if (resposta) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => ProfileScreen()));
+    } else
+      MyWidgets().logout(context, resposta);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -136,9 +152,7 @@ class ConfigTab extends StatelessWidget {
               () {
             userController
                 .checkToken()
-                .then((resposta) => MyWidgets().logout(context, resposta));
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AdminConfig()));
+                .then((resposta) => infoLogin(context, resposta));
           }),
           MyWidgets().borderButton(
               'Geral', 86, 25, Colors.black, Icons.arrow_forward, () {
@@ -149,9 +163,7 @@ class ConfigTab extends StatelessWidget {
               'Perfis', 86, 25, Colors.black, Icons.arrow_forward, () {
             userController
                 .checkToken()
-                .then((resposta) => MyWidgets().logout(context, resposta));
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ProfileScreen()));
+                .then((resposta) => profiles(context, resposta));
           }),
           MyWidgets().borderButton(
               'Termos de Uso', 86, 25, Colors.black, Icons.arrow_forward, () {
