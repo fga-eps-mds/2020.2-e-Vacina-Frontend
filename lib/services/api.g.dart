@@ -89,10 +89,9 @@ mixin _$Api on ApiBase, Store {
   final _$postTakenVaccineAsyncAction = AsyncAction('ApiBase.postTakenVaccine');
 
   @override
-  Future postTakenVaccine(
-      String profileId, String vaccineId, String numberOfDosesTaken) {
-    return _$postTakenVaccineAsyncAction.run(
-        () => super.postTakenVaccine(profileId, vaccineId, numberOfDosesTaken));
+  Future postTakenVaccine(String profileId, String vaccineId) {
+    return _$postTakenVaccineAsyncAction
+        .run(() => super.postTakenVaccine(profileId, vaccineId));
   }
 
   final _$getTakenVaccinesAsyncAction = AsyncAction('ApiBase.getTakenVaccines');
