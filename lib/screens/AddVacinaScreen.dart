@@ -33,7 +33,7 @@ class _AddVacinaState extends State<AddVacina> {
               child: Text(
                 widget.name.toString(),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 33, color: Colors.black),
+                style: TextStyle(fontSize: 33, color: Colors.black, fontWeight: FontWeight.bold),
               ),
             ),
             Container(
@@ -42,7 +42,7 @@ class _AddVacinaState extends State<AddVacina> {
               width: MediaQuery.of(context).size.width,
               color: Theme.of(context).primaryColor,
               child: Text("Número de doses: ${widget.numberOfDoses.toString()}",
-                  style: TextStyle(fontSize: 20, color: Colors.black)),
+                  style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
             ),
             Container(
               height: MediaQuery.of(context).size.height * 0.59,

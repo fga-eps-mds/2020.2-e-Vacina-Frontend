@@ -30,7 +30,7 @@ class MyWidgets {
   }
 
   Widget button(String label, double largura, double altura, double fontSize,
-      Color cor, Function onPressedAction) {
+      Color cor, Function onPressedAction, {Color textColor}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 11.5),
       child: SizedBox(
@@ -43,7 +43,7 @@ class MyWidgets {
           },
           child: Text(
             label,
-            style: TextStyle(fontSize: fontSize),
+            style: TextStyle(fontSize: fontSize, color: textColor),
           ),
         ),
       ),
