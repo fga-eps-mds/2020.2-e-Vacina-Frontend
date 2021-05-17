@@ -230,10 +230,10 @@ class _UserConfigState extends State<UserConfig> {
           "Perfil deletado com sucesso.",
           onPressed: () async {
             await _storage.write(key: 'profileIndex', value: "0");
+            await userController.getProfiles(userController.userId);
             await profileController.getById(userController.profiles[0]['_id']);
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => MainScreen()));
-            await userController.getProfiles(userController.userId);
           },
         ),
       );
