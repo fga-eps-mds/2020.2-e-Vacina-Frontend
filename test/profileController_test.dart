@@ -1,7 +1,7 @@
 import 'package:test/test.dart';
 import 'package:e_vacina/controllers/profileController.dart';
-void main() {
 
+void main() {
   group('ProfileController', () {
     test('currentId should start with null ', () {
       ProfileController profileController = new ProfileController();
@@ -39,6 +39,10 @@ void main() {
       expect(profileController.names, null);
     });
 
+    test('currentIndex should start with 0 ', () {
+      ProfileController profileController = new ProfileController();
 
+      expect(profileController.currentIndex, 0);
+    });
   });
 }

@@ -1,29 +1,30 @@
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mobx/mobx.dart';
 import 'package:dio/dio.dart';
 import 'package:e_vacina/globals.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 part 'userController.g.dart';
 
 class UserController = UserControllerBase with _$UserController;
 
-// final _storage = new FlutterSecureStorage();
+final _storage = new FlutterSecureStorage();
 
 abstract class UserControllerBase with Store {
   @observable
-  String email='';
+  String email = '';
 
   @action
   changeEmail(String value) => email = value;
 
   @observable
-  String phoneNumber= '';
+  String phoneNumber = '';
 
   @action
   changePhoneNumber(String value) => phoneNumber = value;
 
   @observable
-  String password= '';
+  String password = '';
 
   @action
   changePassword(String value) => password = value;
@@ -35,7 +36,7 @@ abstract class UserControllerBase with Store {
   changeUserId(String value) => userId = value;
 
   @observable
-  dynamic token='';
+  dynamic token = '';
 
   @action
   changeToken(String value) => token = value;
@@ -62,11 +63,14 @@ abstract class UserControllerBase with Store {
       changeEmail(response.data['user']['email']);
       changePhoneNumber(response.data['user']['phoneNumber']);
       await getProfiles(userId);
-      if (!isRegister)
-        await profileController.changeCurrentId(profiles[0]['_id']);
-      // await _storage.write(key: 'token', value: token);
-      // await _storage.write(key: 'userId', value: userId);
-      print('$token');
+      if (!isRegister) {
+        await profileController
+            .changeCurrentId(profiles[profileController.currentIndex]['_id']);
+        await _storage.write(key: 'email', value: email);
+        await _storage.write(key: 'password', value: password);
+        await _storage.write(key: 'token', value: token);
+        await _storage.write(key: 'userId', value: userId);
+      }
     } on DioError catch (err) {
       print("Erro: ${err.response.statusCode}");
       resposta = false;
@@ -75,10 +79,28 @@ abstract class UserControllerBase with Store {
   }
 
   @action
+  persistLogin() async {
+    bool _resposta = true;
+    try {
+      String _password = await _storage.read(key: 'password');
+      String _email = await _storage.read(key: 'email');
+      String _index = await _storage.read(key: 'profileIndex') ?? "0";
+      int intParse = int.parse(_index);
+      profileController.changeCurrentIndex(intParse);
+      bool rLogin = await login(_email, _password);
+      if (!rLogin) _resposta = false;
+    } catch (err) {
+      _resposta = false;
+    }
+    return _resposta;
+  }
+
+  @action
   logout() async {
     changeToken('');
     changeUserId('');
-    // await _storage.deleteAll();
+    await _storage.write(key: 'profileIndex', value: "0");
+    await _storage.deleteAll();
   }
 
   @action
@@ -87,22 +109,19 @@ abstract class UserControllerBase with Store {
     String resposta = "true";
     changeRegister(true);
     try {
-      Response response = await api.registerUser(email, phoneNumber, password);
+      await api.registerUser(email, phoneNumber, password);
       await login(email, password);
-      print(response.statusCode);
     } catch (err) {
       return err.response.data.toString();
     }
     bool rProfile = await profileController.createProfile(
         userId, name, cpf, sex, birthDate);
     if (!rProfile) resposta = "false";
-    print("resposta profile");
     changeEmail(email);
     changePassword(password);
     changePhoneNumber(phoneNumber);
     if (resposta == "false") {
       try {
-        print("userId: $userId, email: $email");
         await delete();
       } catch (e2) {
         print("erro delete: $e2");
@@ -115,9 +134,7 @@ abstract class UserControllerBase with Store {
 
   @action
   delete() async {
-    Response response = await api.deleteUser(userId, token);
-    print(response);
-    print(response.statusCode);
+    await api.deleteUser(userId, token);
   }
 
   @action
@@ -126,8 +143,6 @@ abstract class UserControllerBase with Store {
         await api.updateUser(email, phoneNumber, password, userId, token);
     changeEmail(response.data['updtedUser']['email']);
     changePhoneNumber(response.data['updtedUser']['phoneNumber']);
-    print(response);
-    print(response.statusCode);
   }
 
   @action
@@ -135,5 +150,15 @@ abstract class UserControllerBase with Store {
     Response response = await api.getProfilesByUserId(userId);
     await changeProfiles(response.data['user']['profilesIds']);
     return response.data['user']['profilesIds'];
+  }
+
+  @action
+  checkToken() async {
+    bool _resposta = true;
+    bool hasExpired = JwtDecoder.isExpired(token);
+    if (hasExpired) {
+      if (!await persistLogin()) _resposta = false;
+    }
+    return _resposta;
   }
 }
