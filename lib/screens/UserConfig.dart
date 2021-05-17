@@ -91,7 +91,8 @@ class _UserConfigState extends State<UserConfig> {
               padding: const EdgeInsets.only(left: 30.0),
               child: IconButton(
                 icon: const Icon(Icons.arrow_back),
-                onPressed: () {
+                onPressed: () async {
+                  await profileController.getById(profileController.currentId);
                   Navigator.pop(context);
                 },
                 alignment: Alignment.centerRight,
@@ -203,9 +204,9 @@ class _UserConfigState extends State<UserConfig> {
           builder: (_) => PopUpAlertDialog(
                 "Perfil atualizado com sucesso.",
                 onPressed: () async {
+                  await profileController.getById(profileController.currentId);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => MainScreen()));
-                  await profileController.getById(profileController.currentId);
                 },
               ));
     }

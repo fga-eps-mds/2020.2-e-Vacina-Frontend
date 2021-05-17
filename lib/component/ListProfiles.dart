@@ -47,6 +47,8 @@ Widget buildListProfiles(
                 onPressed: () async {
                   bool resposta = await userController.checkToken();
                   if (resposta) {
+                    await _storage.write(
+                        key: 'profileIndex', value: index.toString());
                     await profileController.getById(profileId);
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => UserConfig()));
