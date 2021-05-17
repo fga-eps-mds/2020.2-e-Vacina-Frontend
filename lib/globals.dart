@@ -11,7 +11,7 @@ VaccineController vaccineController = new VaccineController();
 Api api = new Api();
 
 var options = BaseOptions(
-  baseUrl: 'http://localhost:3000',
+  baseUrl: 'localhost:3000', //'https://6f7f2a7a5e77.ngrok.io',
   connectTimeout: 5000,
   receiveTimeout: 3000,
 );

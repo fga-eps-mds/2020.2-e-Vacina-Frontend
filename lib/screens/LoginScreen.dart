@@ -77,7 +77,6 @@ class _LoginMenuState extends State<LoginMenu> {
             }),
             Text('OU\n'),
             MyWidgets().button('Registre-se', 200.0, 50.0, 16, gangGray, () {
-              print('Registrar');
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => RegisterScreen()));
             }),
