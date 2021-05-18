@@ -15,7 +15,6 @@ class MyWidgets {
     TextInputType textInput = TextInputType.text,
     String errorText,
     bool enabled = true,
-    Widget suffix,
     Widget suffixIcon,
   }) {
     return Container(
