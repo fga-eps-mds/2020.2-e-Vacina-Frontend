@@ -162,7 +162,8 @@ class _UserConfigState extends State<UserConfig> {
                   )),
               ErrorText(_error),
               MyWidgets().caixaTexto('Nome:', nameCon, errorText: _wrongName),
-              MyWidgets().caixaTexto('CPF:', cpfCon, errorText: _wrongCpf),
+              MyWidgets().caixaTexto('CPF:', cpfCon,
+                  maxLength: 11, errorText: _wrongCpf),
               DatePick(birthDateCon, errorText: _wrongBirthDate),
               GenderPicker(sexCon, dropdownValue: sexCon.text),
               MyWidgets().button(
