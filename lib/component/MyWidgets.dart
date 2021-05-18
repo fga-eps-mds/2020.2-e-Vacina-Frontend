@@ -14,18 +14,26 @@ class MyWidgets {
     int maxLength = TextField.noMaxLength,
     TextInputType textInput = TextInputType.text,
     String errorText,
+    bool enabled = true,
+    Widget suffix,
+    Widget suffixIcon,
   }) {
     return Container(
       padding: EdgeInsets.only(bottom: 11.5),
       child: TextField(
+        enabled: enabled,
         controller: inputCon,
         keyboardType: textInput,
         maxLength: maxLength,
         obscureText: isObscure,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
+          disabledBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.black54)),
+          labelStyle: TextStyle(color: Colors.black54),
           labelText: texto,
           errorText: errorText,
+          suffixIcon: suffixIcon,
         ),
         //controller: _textEditingController,
       ),

@@ -117,6 +117,7 @@ abstract class UserControllerBase with Store {
     bool rProfile = await profileController.createProfile(
         userId, name, cpf, sex, birthDate);
     if (!rProfile) resposta = "false";
+    profileController.changeCurrentIndex(0);
     changeEmail(email);
     changePassword(password);
     changePhoneNumber(phoneNumber);
@@ -139,10 +140,17 @@ abstract class UserControllerBase with Store {
 
   @action
   update(String email, String phoneNumber, String password) async {
-    Response response =
-        await api.updateUser(email, phoneNumber, password, userId, token);
-    changeEmail(response.data['updtedUser']['email']);
-    changePhoneNumber(response.data['updtedUser']['phoneNumber']);
+    bool _resposta = true;
+    try {
+      Response response =
+          await api.updateUser(email, phoneNumber, password, userId, token);
+      changeEmail(response.data['updtedUser']['email']);
+      changePhoneNumber(response.data['updtedUser']['phoneNumber']);
+    } catch (err) {
+      print(err.response.data);
+      _resposta = false;
+    }
+    return _resposta;
   }
 
   @action
