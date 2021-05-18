@@ -111,6 +111,22 @@ class _MainScreenState extends State<MainScreen> {
 }
 
 class ConfigTab extends StatelessWidget {
+  void infoLogin(BuildContext context, bool resposta) {
+    if (resposta) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => AdminConfig()));
+    } else
+      MyWidgets().logout(context, resposta);
+  }
+
+  void profiles(BuildContext context, bool resposta) {
+    if (resposta) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => ProfileScreen()));
+    } else
+      MyWidgets().logout(context, resposta);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -134,8 +150,9 @@ class ConfigTab extends StatelessWidget {
           MyWidgets().borderButton(
               'Informações de Login', 86, 25, Colors.black, Icons.arrow_forward,
               () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AdminConfig()));
+            userController
+                .checkToken()
+                .then((resposta) => infoLogin(context, resposta));
           }),
           MyWidgets().borderButton(
               'Geral', 86, 25, Colors.black, Icons.arrow_forward, () {
@@ -144,8 +161,9 @@ class ConfigTab extends StatelessWidget {
           }),
           MyWidgets().borderButton(
               'Perfis', 86, 25, Colors.black, Icons.arrow_forward, () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ProfileScreen()));
+            userController
+                .checkToken()
+                .then((resposta) => profiles(context, resposta));
           }),
           MyWidgets().borderButton(
               'Termos de Uso', 86, 25, Colors.black, Icons.arrow_forward, () {
@@ -226,7 +244,7 @@ class SearchTab extends StatefulWidget {
 class _SearchTabState extends State<SearchTab> {
   String search = '';
   int i = 0;
-  List items;
+  List items = [];
 
   @override
   Widget build(BuildContext context) {
@@ -239,7 +257,6 @@ class _SearchTabState extends State<SearchTab> {
                 child: FutureBuilder(
                     future: vaccineController.getVaccines(),
                     builder: (context, projectSnap) {
-                      // print(projectSnap);
                       if (projectSnap.hasError) {
                         return Text("Something went wrong");
                       } else if (projectSnap.connectionState ==

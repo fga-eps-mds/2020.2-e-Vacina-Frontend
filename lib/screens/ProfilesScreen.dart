@@ -1,4 +1,5 @@
 import 'package:e_vacina/component/ListProfiles.dart';
+import 'package:e_vacina/component/MyWidgets.dart';
 import 'package:e_vacina/screens/CreateProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'MainScreen.dart';
@@ -13,16 +14,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List array = profileController.currentName.split(' ');
   String _nome = profileController.currentName;
   bool _isLoading = true;
-  
 
-  String splitName(List array){
+  String splitName(List array) {
     String name;
-    if (array.length > 1){
-      name = array[0].substring(0, 1).toUpperCase() + array[1].substring(0,1).toUpperCase();
-    }else{
+    if (array.length > 1) {
+      name = array[0].substring(0, 1).toUpperCase() +
+          array[1].substring(0, 1).toUpperCase();
+    } else {
       name = array[0].substring(0, 1).toUpperCase();
     }
     return name;
+  }
+
+  void createProfile(bool resposta) {
+    if (resposta) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => CreateProfile()));
+    } else
+      MyWidgets().logout(context, resposta);
   }
 
   @override
@@ -60,7 +69,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                print('voltar');
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => MainScreen()));
               },
@@ -95,18 +103,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CreateProfile()));
+                  userController
+                      .checkToken()
+                      .then((resposta) => createProfile(resposta));
                 },
               ),
             ),
             FutureBuilder(
                 future: userController.getProfiles(userController.userId),
                 builder: (context, projectSnaps) {
-                  print("PROJETO ${projectSnaps.data}");
                   if (projectSnaps.hasData) {
                     _isLoading = false;
-                    print(_isLoading);
                   }
                   if (_isLoading == true) {
                     return Container(
@@ -127,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       itemBuilder: (context, i) {
                         List profile = projectSnaps.data;
                         return buildListProfiles(
-                            context, profile[i]['name'], profile[i]['_id']);
+                            context, i, profile[i]['name'], profile[i]['_id']);
                       });
                 })
           ],

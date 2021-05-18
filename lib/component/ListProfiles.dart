@@ -1,15 +1,25 @@
+import 'package:e_vacina/component/MyWidgets.dart';
 import 'package:e_vacina/screens/MainScreen.dart';
 import 'package:e_vacina/screens/UserConfig.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../globals.dart';
 
-Widget buildListProfiles(BuildContext context, String name, String prifoleId) {
+final _storage = new FlutterSecureStorage();
+
+Widget buildListProfiles(
+    BuildContext context, int index, String name, String profileId) {
   return GestureDetector(
     onTap: () async {
-      await profileController.getById(prifoleId);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MainScreen()));
+      await _storage.write(key: 'profileIndex', value: index.toString());
+      bool resposta = await userController.checkToken();
+      if (resposta) {
+        await profileController.getById(profileId);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MainScreen()));
+      } else
+        MyWidgets().logout(context, resposta);
     },
     child: Container(
       height: 70,
@@ -35,9 +45,15 @@ Widget buildListProfiles(BuildContext context, String name, String prifoleId) {
             IconButton(
                 icon: const Icon(Icons.settings_outlined),
                 onPressed: () async {
-                  await profileController.getById(prifoleId);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => UserConfig()));
+                  bool resposta = await userController.checkToken();
+                  if (resposta) {
+                    await _storage.write(
+                        key: 'profileIndex', value: index.toString());
+                    await profileController.getById(profileId);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => UserConfig()));
+                  } else
+                    MyWidgets().logout(context, resposta);
                 })
           ],
         ),

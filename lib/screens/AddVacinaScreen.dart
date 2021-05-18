@@ -58,7 +58,6 @@ class _AddVacinaState extends State<AddVacina> {
                   vaccineController
                       .postTakenVaccine()
                       .then((resposta) => validate(resposta));
-                  print("cadastou");
                 })),
             Container(
               height: MediaQuery.of(context).size.height * 0.1,
