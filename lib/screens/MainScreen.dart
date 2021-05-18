@@ -239,6 +239,7 @@ class MainTab extends StatelessWidget {
                           numberOfDoses: list["vaccineId"]["numberOfDoses"],
                         ),
                         onTap: () async {
+                          print(list["numberOfDosesTaken"]);
                           Navigator.push(
                               context,
                               MaterialPageRoute(

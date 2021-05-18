@@ -311,8 +311,9 @@ class _GenderPickerState extends State<GenderPicker> {
 class DatePick extends StatefulWidget {
   final TextEditingController birthDateController;
   final String errorText;
+  final Color backColor;
 
-  const DatePick(this.birthDateController, {Key key, this.errorText})
+  const DatePick(this.birthDateController, {Key key, this.errorText, this.backColor})
       : super(key: key);
   @override
   _DatePickState createState() => _DatePickState();
@@ -338,6 +339,7 @@ class _DatePickState extends State<DatePick> {
       child: SizedBox(
         child: OutlinedButton(
           style: OutlinedButton.styleFrom(
+            backgroundColor: widget.backColor,
               side: BorderSide(
             color:
                 widget.errorText == null ? Colors.grey[500] : Colors.red[600],
@@ -367,7 +369,7 @@ class _DatePickState extends State<DatePick> {
                   fontSize: 16,
                   color: widget.birthDateController.text.isEmpty
                       ? Colors.grey[700]
-                      : Colors.black,
+                      : Colors.grey[800]
                 ),
               ),
               Icon(Icons.arrow_drop_down, size: 23, color: Colors.grey[700]),

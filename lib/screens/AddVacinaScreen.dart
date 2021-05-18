@@ -74,7 +74,8 @@ class _AddVacinaState extends State<AddVacina> {
               color: Theme.of(context).primaryColor,
               // child: Icon(Icons.arrow_downward,),
               child: IconButton(
-                icon: const Icon(Icons.arrow_downward),
+                iconSize: 40,
+                icon: const Icon(Icons.arrow_upward),
                 onPressed: () {
                   Navigator.pop(context);
                 },
