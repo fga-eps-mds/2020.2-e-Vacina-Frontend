@@ -35,6 +35,51 @@ class AdminConfigState extends State<AdminConfig> {
       MyWidgets().logout(context, resposta);
   }
 
+  void changeEmail(bool resposta) {
+    if (resposta) {
+      setState(() {
+        passCon.text = "";
+      });
+      requestPassword(
+          _wrongPassword,
+          update("Insira o novo email:", emailCon, newEmailCon, null,
+              "Email já cadastrado.",
+              email: true));
+    } else {
+      MyWidgets().logout(context, resposta);
+    }
+  }
+
+  void changePhone(bool resposta) {
+    if (resposta) {
+      setState(() {
+        passCon.text = "";
+      });
+      requestPassword(
+          _wrongPassword,
+          update("Insira o novo telefone:", phoneCon, newPhoneCon, null,
+              "Telefone já cadastrado.",
+              phoneNunber: true));
+    } else {
+      MyWidgets().logout(context, resposta);
+    }
+  }
+
+  void changePassword(bool resposta) {
+    if (resposta) {
+      setState(() {
+        passCon.text = "";
+      });
+      requestPassword(
+          _wrongPassword,
+          update(
+              "Insira a nova senha:", passwordCon, newPasswordCon, null, null,
+              password: true));
+    } else {
+      MyWidgets().logout(context, resposta);
+    }
+  }
+
   void initPassword() async {
     passwordCon.text = await _storage.read(key: 'password');
   }
@@ -94,14 +139,9 @@ class AdminConfigState extends State<AdminConfig> {
                       padding: EdgeInsets.only(top: 5),
                       child: TextButton(
                           onPressed: () {
-                            setState(() {
-                              passCon.text = "";
-                            });
-                            requestPassword(
-                                _wrongPassword,
-                                update("Insira o novo email:", emailCon,
-                                    newEmailCon, null, "Email já cadastrado.",
-                                    email: true));
+                            userController
+                                .checkToken()
+                                .then((resposta) => changeEmail(resposta));
                           },
                           child: Text("Alterar")))
                 ],
@@ -114,18 +154,9 @@ class AdminConfigState extends State<AdminConfig> {
                       padding: EdgeInsets.only(top: 5),
                       child: TextButton(
                           onPressed: () {
-                            setState(() {
-                              passCon.text = "";
-                            });
-                            requestPassword(
-                                _wrongPassword,
-                                update(
-                                    "Insira o novo telefone:",
-                                    phoneCon,
-                                    newPhoneCon,
-                                    null,
-                                    "Telefone já cadastrado.",
-                                    phoneNunber: true));
+                            userController
+                                .checkToken()
+                                .then((resposta) => changePhone(resposta));
                           },
                           child: Text("Alterar")))
                 ],
@@ -139,14 +170,9 @@ class AdminConfigState extends State<AdminConfig> {
                       padding: EdgeInsets.only(top: 5),
                       child: TextButton(
                           onPressed: () {
-                            setState(() {
-                              passCon.text = "";
-                            });
-                            requestPassword(
-                                _wrongPassword,
-                                update("Insira a nova senha:", passwordCon,
-                                    newPasswordCon, null, null,
-                                    password: true));
+                            userController
+                                .checkToken()
+                                .then((resposta) => changePassword(resposta));
                           },
                           child: Text("Alterar")))
                 ],
@@ -221,71 +247,70 @@ class AdminConfigState extends State<AdminConfig> {
             child: Text("Cancelar")),
         TextButton(
           onPressed: () async {
-            print("email: $email, teltfone: $phoneNunber, senha: $password");
-            if (email) {
-              print("emailCon.text: ${newController.text}");
-              print("passwordCon.text: ${passwordCon.text}");
-              setState(() {
-                _email = newController.text;
-              });
-              if (await userController.update(_email, phoneCon.text, null)) {
-                await _storage.write(key: 'email', value: _email);
+            bool resposta = await userController.checkToken();
+            if (resposta) {
+              if (email) {
                 setState(() {
-                  controller.text = _email;
+                  _email = newController.text;
                 });
-                Navigator.of(context).pop();
-              } else {
-                print("Email ta errado");
+                if (await userController.update(_email, phoneCon.text, null)) {
+                  await _storage.write(key: 'email', value: _email);
+                  setState(() {
+                    controller.text = _email;
+                  });
+                  Navigator.of(context).pop();
+                } else {
+                  setState(() {
+                    errorText = fromError;
+                  });
+                  Navigator.of(context).pop();
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (_) => update(title, controller, newController,
+                          errorText, fromError,
+                          email: email,
+                          phoneNunber: phoneNunber,
+                          password: password));
+                }
+              } else if (phoneNunber) {
                 setState(() {
-                  errorText = fromError;
+                  _phone = newController.text;
                 });
-                Navigator.of(context).pop();
-                showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (_) => update(
-                        title, controller, newController, errorText, fromError,
-                        email: email,
-                        phoneNunber: phoneNunber,
-                        password: password));
+                if (await userController.update(emailCon.text, _phone, null)) {
+                  setState(() {
+                    controller.text = _phone;
+                  });
+                  Navigator.of(context).pop();
+                } else {
+                  setState(() {
+                    errorText = fromError;
+                  });
+                  Navigator.of(context).pop();
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (_) => update(title, controller, newController,
+                          errorText, fromError,
+                          email: email,
+                          phoneNunber: phoneNunber,
+                          password: password));
+                }
+              } else if (password) {
+                setState(() {
+                  _password = newController.text;
+                });
+                if (await userController.update(
+                    emailCon.text, phoneCon.text, _password)) {
+                  await _storage.write(key: 'password', value: _password);
+                  setState(() {
+                    controller.text = _password;
+                  });
+                  Navigator.of(context).pop();
+                }
               }
-            } else if (phoneNunber) {
-              print("Email: $email, Telefone: $phoneNunber, Senha: $password");
-              setState(() {
-                _phone = newController.text;
-              });
-              if (await userController.update(emailCon.text, _phone, null)) {
-                setState(() {
-                  controller.text = _phone;
-                });
-                Navigator.of(context).pop();
-              } else {
-                setState(() {
-                  errorText = fromError;
-                });
-                Navigator.of(context).pop();
-                showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (_) => update(
-                        title, controller, newController, errorText, fromError,
-                        email: email,
-                        phoneNunber: phoneNunber,
-                        password: password));
-              }
-            } else if (password) {
-              setState(() {
-                _password = newController.text;
-              });
-              if (await userController.update(
-                  emailCon.text, phoneCon.text, _password)) {
-                await _storage.write(key: 'password', value: _password);
-                setState(() {
-                  controller.text = _password;
-                });
-                Navigator.of(context).pop();
-              }
-            }
+            } else
+              MyWidgets().logout(context, resposta);
           },
           child: Text("Ok"),
         )
@@ -321,24 +346,29 @@ class AdminConfigState extends State<AdminConfig> {
           ),
           TextButton(
             onPressed: () async {
-              setState(() {
-                _password = passCon.text;
-              });
-              if (await userController.login(userController.email, _password)) {
-                Navigator.of(context).pop();
+              bool resposta = await userController.checkToken();
+              if (resposta) {
                 setState(() {
-                  newEmailCon.text = "";
-                  newPhoneCon.text = "";
-                  newPasswordCon.text = "";
+                  _password = passCon.text;
                 });
-                showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (_) => newPopUp);
-              } else {
-                Navigator.of(context).pop();
-                requestPassword("Senha incorreta", newPopUp);
-              }
+                if (await userController.login(
+                    userController.email, _password)) {
+                  Navigator.of(context).pop();
+                  setState(() {
+                    newEmailCon.text = "";
+                    newPhoneCon.text = "";
+                    newPasswordCon.text = "";
+                  });
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (_) => newPopUp);
+                } else {
+                  Navigator.of(context).pop();
+                  requestPassword("Senha incorreta", newPopUp);
+                }
+              } else
+                MyWidgets().logout(context, resposta);
             },
             child: Text(
               "Ok",
