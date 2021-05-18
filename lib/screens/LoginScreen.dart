@@ -41,6 +41,7 @@ class _LoginMenuState extends State<LoginMenu> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
