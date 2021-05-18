@@ -35,7 +35,7 @@ abstract class VaccineControllerBase with Store {
     var resposta = true;
     try {
       await api.postTakenVaccine(
-          profileController.currentId, vaccineId, '0');
+          profileController.currentId, vaccineId);
     } on DioError catch (err) {
       print("Erro: ${err.response.statusCode}");
       resposta = false;

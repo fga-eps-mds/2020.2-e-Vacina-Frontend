@@ -111,14 +111,14 @@ abstract class ApiBase with Store {
   }
 
   @action
-  postTakenVaccine(
-      String profileId, String vaccineId, String numberOfDosesTaken) async {
+
+  postTakenVaccine(String profileId, String vaccineId) async {
+
     Response response = await dio.post(
       '/taken',
       data: {
         'profileId': profileId,
         'vaccineId': vaccineId,
-        'numberOfDosesTaken': numberOfDosesTaken
       },
     );
     return response;
