@@ -10,12 +10,17 @@ class VaccineController = VaccineControllerBase with _$VaccineController;
 // final _storage = new FlutterSecureStorage();
 
 abstract class VaccineControllerBase with Store {
- 
   @observable
   List takenVaccines;
 
   @action
   changeTakenVaccine(List value) => takenVaccines = value;
+
+  @observable
+  List dateOfTakenVaccines;
+
+  @action
+  changedateOfTakenVaccines(List value) => dateOfTakenVaccines = value;
 
   @action
   getVaccines() async {
@@ -34,12 +39,39 @@ abstract class VaccineControllerBase with Store {
   postTakenVaccine(String vaccineId) async {
     var resposta = true;
     try {
-      await api.postTakenVaccine(
-          profileController.currentId, vaccineId);
+      await api.postTakenVaccine(profileController.currentId, vaccineId);
     } on DioError catch (err) {
       print("Erro: ${err.response.statusCode}");
       resposta = false;
     }
     return resposta;
+  }
+
+  updateTakenVaccine(String takenVaccineId, List date) async {
+    try {
+      await api.updateTakenVaccine(takenVaccineId, date);
+    } on DioError catch (err) {
+      print('erro');
+      print("Erro: ${err.response.statusCode}");
+    }
+  }
+
+  getDateofTakenVaccine(String takenVaccineId) async {
+    try {
+      Response response = await api.getTakenVaccineById(takenVaccineId);
+      print(response.data["takenVaccine"]["dateOfDosesTaken"]);
+      changedateOfTakenVaccines(
+          response.data["takenVaccine"]["dateOfDosesTaken"]);
+    } on DioError catch (err) {
+      print("Erro: ${err.response.statusCode}");
+    }
+  }
+
+  deleteTakenVaccine(String takenVaccineId) async {
+    try {
+      await api.deleteTakenVaccineById(takenVaccineId);
+    } on DioError catch (err) {
+      print("Erro: ${err.response.statusCode}");
+    }
   }
 }

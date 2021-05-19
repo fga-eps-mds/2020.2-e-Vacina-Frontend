@@ -198,59 +198,57 @@ class MainTab extends StatelessWidget {
         child: FutureBuilder(
             future: vaccineController.getTakenVaccine(),
             builder: (context, projectSnap) {
-              if (projectSnap.hasData) {
-                _isLoading = false;
-              }
-              if (_isLoading == true) {
-                return Center(
-                  child: SizedBox(
-                    child: CircularProgressIndicator(),
-                    width: 60,
-                    height: 60,
-                  ),
-                );
-              } else if (projectSnap.data.isEmpty || projectSnap.data == null) {
-                return Center(
-                  child: SizedBox(
-                    height: 90,
-                    width: 90,
-                    child: FloatingActionButton(
-                      elevation: 0,
-                      backgroundColor: Colors.white,
-                      onPressed: () {
-                        print('Botão');
-                      },
-                      child: new Icon(Icons.add,
-                          color: Theme.of(context).primaryColor, size: 80),
-                    ),
-                  ),
-                );
-              } else {
-                return ListView.builder(
-                    itemCount: projectSnap.data.length,
-                    padding: EdgeInsets.all(16),
-                    itemBuilder: (context, index) {
-                      Map list = projectSnap.data[index];
-                      return GestureDetector(
-                        child: buildVaccineCard(
-                          list["vaccineId"]["name"],
-                          "Doses tomadas: ${list["numberOfDosesTaken"]}/${list["vaccineId"]["numberOfDoses"]}",
-                          numberOfDosesTaken: list["numberOfDosesTaken"],
-                          numberOfDoses: list["vaccineId"]["numberOfDoses"],
-                        ),
-                        onTap: () async {
-                          print(list["numberOfDosesTaken"]);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TakenVaccines(
-                                      list["vaccineId"]["name"],
-                                      list["vaccineId"]["numberOfDoses"],
-                                      list["vaccineId"]["periodicity"],
-                                      list["numberOfDosesTaken"])));
+              if (projectSnap.hasError) {
+                return Text("Something went wrong");
+              } else if (projectSnap.connectionState == ConnectionState.done) {
+                if (projectSnap.data.isEmpty || projectSnap.data == null) {
+                  return Center(
+                    child: SizedBox(
+                      height: 90,
+                      width: 90,
+                      child: FloatingActionButton(
+                        elevation: 0,
+                        backgroundColor: Colors.white,
+                        onPressed: () {
+                          print('Botão');
                         },
-                      );
-                    });
+                        child: new Icon(Icons.add,
+                            color: Theme.of(context).primaryColor, size: 80),
+                      ),
+                    ),
+                  );
+                } else {
+                  return ListView.builder(
+                      itemCount: projectSnap.data.length,
+                      padding: EdgeInsets.all(16),
+                      itemBuilder: (context, index) {
+                        Map list = projectSnap.data[index];
+                        return GestureDetector(
+                          child: buildVaccineCard(
+                            list["vaccineId"]["name"],
+                            "Doses tomadas: ${list["dateOfDosesTaken"].length}/${list["vaccineId"]["numberOfDoses"]}",
+                            numberOfDosesTaken: list["dateOfDosesTaken"].length,
+                            numberOfDoses: list["vaccineId"]["numberOfDoses"],
+                          ),
+                          onTap: () async {
+                            await vaccineController
+                                .getDateofTakenVaccine(list['_id']);
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TakenVaccines(
+                                        list["vaccineId"]["name"],
+                                        list["vaccineId"]["numberOfDoses"],
+                                        list["vaccineId"]["periodicity"],
+                                        list["dateOfDosesTaken"],
+                                        list['_id'])));
+                          },
+                        );
+                      });
+                }
+              } else {
+                return Center(child: CircularProgressIndicator());
               }
             }));
   }

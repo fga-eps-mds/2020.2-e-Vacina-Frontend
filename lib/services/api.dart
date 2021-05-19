@@ -137,6 +137,14 @@ abstract class ApiBase with Store {
     return response;
   }
 
+  updateTakenVaccine(String takenVaccineId, List date) async {
+    Response response = await dio.put('/taken/$takenVaccineId',
+        data: {
+          'dateOfDosesTaken': date,
+        },);
+    return response;
+  }
+
   @action
   getVaccines() async {
     Response response = await dio.get('/vaccine/');
@@ -156,6 +164,16 @@ abstract class ApiBase with Store {
         options: Options(
           headers: {'Authorization': 'Bearer $token'},
         ));
+    return response;
+  }
+
+  getTakenVaccineById(String takenVaccineId)async{
+    Response response = await dio.get('/taken/$takenVaccineId');
+    return response;
+  }
+
+  deleteTakenVaccineById(String takenVaccineId)async{
+    Response response = await dio.delete('/taken/$takenVaccineId');
     return response;
   }
 }
