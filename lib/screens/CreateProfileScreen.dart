@@ -1,8 +1,7 @@
-import 'package:e_vacina/screens/MainScreen.dart';
+import 'package:e_vacina/screens/ProfilesScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_vacina/component/MyWidgets.dart';
 import '../globals.dart';
-
 
 class CreateProfile extends StatefulWidget {
   @override
@@ -26,6 +25,19 @@ class _CreateProfileState extends State<CreateProfile> {
   String _wrongSex;
   bool _error = false;
 
+  void changeScreen(bool resposta) {
+    if (resposta) {
+      if (isEmpty() == false) {
+        _error = false;
+        profileController
+            .createProfile(userController.userId, _name, _cpf, _sex, _birthDate)
+            .then((resposta) => validate(resposta));
+      } else
+        _error = true;
+    } else
+      MyWidgets().logout(context, resposta);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +60,7 @@ class _CreateProfileState extends State<CreateProfile> {
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MainScreen()));
+                      MaterialPageRoute(builder: (context) => ProfileScreen()));
                 },
                 alignment: Alignment.centerRight,
               ),
@@ -64,20 +76,12 @@ class _CreateProfileState extends State<CreateProfile> {
                       _cpf = cpfCon.text;
                       _birthDate = birthDateCon.text;
                       sexCon.text == '1'
-                          ? (_sex = 'Masculino')
-                          : (_sex = 'Feminino');
-                      if (isEmpty() == false) {
-                        _error = false;
-                        profileController
-                            .createProfile(userController.userId, _name, _cpf,
-                                _sex, _birthDate)
-                            .then((resposta) => validate(resposta));
-                      } else
-                        _error = true;
+                          ? _sex = 'Masculino'
+                          : _sex = 'Feminino';
+                      userController
+                          .checkToken()
+                          .then((resposta) => changeScreen(resposta));
                     });
-
-                    print('Sexo:$_sex');
-                    print('Data: $_birthDate');
                   },
                   child: Text(
                     "Salvar",
@@ -123,10 +127,11 @@ class _CreateProfileState extends State<CreateProfile> {
                       ),
                     ),
                   )),
-              errorText(_error),
+              ErrorText(_error),
               MyWidgets().caixaTexto('Nome:', nameCon, errorText: _wrongName),
-              MyWidgets().caixaTexto('CPF:', cpfCon, errorText: _wrongCpf),
-              DatePick(birthDateCon, errorText: _wrongBirthDate),
+              MyWidgets().caixaTexto('CPF:', cpfCon,
+                  maxLength: 11, errorText: _wrongCpf),
+              DatePick(birthDateCon, "Data de Nascimento" , errorText: _wrongBirthDate),
               GenderPicker(sexCon, errorText: _wrongSex),
             ],
           ),
@@ -143,13 +148,14 @@ class _CreateProfileState extends State<CreateProfile> {
         _wrongCpf = null;
       });
       showDialog(
+        barrierDismissible: false,
         context: context,
-        builder: (_) => alertDialog(
+        builder: (_) => PopUpAlertDialog(
           "Perfil criado com sucesso.",
           onPressed: () async {
             await userController.getProfiles(userController.userId);
-            await profileController.getById(
-                userController.profiles[userController.profiles.length - 1]);
+            await profileController.getById(userController
+                .profiles[userController.profiles.length - 1]['_id']);
             Navigator.of(context).pop();
           },
         ),

@@ -1,6 +1,7 @@
 import 'package:e_vacina/screens/MainScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_vacina/component/MyWidgets.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../globals.dart';
 
@@ -8,6 +9,8 @@ class UserConfig extends StatefulWidget {
   @override
   _UserConfigState createState() => _UserConfigState();
 }
+
+final _storage = new FlutterSecureStorage();
 
 class _UserConfigState extends State<UserConfig> {
   final nameCon = new TextEditingController();
@@ -24,20 +27,48 @@ class _UserConfigState extends State<UserConfig> {
   var _cpf;
   var _birthDate;
   var _sex;
-  var _id;
+  //var _id;
   var dropdownValue;
+
+  void deleteProfile(bool resposta) {
+    if (resposta) {
+      setState(() {
+        if (userController.profiles.length == 1) {
+          validateDelete(false);
+        } else {
+          profileController
+              .delete(profileController.currentId)
+              .then((resposta) => validateDelete(resposta));
+        }
+      });
+    } else
+      MyWidgets().logout(context, resposta);
+  }
+
+  void updateProfile(bool resposta) {
+    if (resposta) {
+      if (isEmpty() == false) {
+        _error = false;
+        profileController
+            .update(_name, _cpf, _sex, _birthDate)
+            .then((resposta) => validate(resposta));
+      } else {
+        _error = true;
+      }
+    } else
+      MyWidgets().logout(context, resposta);
+  }
 
   @override
   void initState() {
     super.initState();
-    _id = profileController.currentId;
+    //_id = profileController.currentId;
     nameCon.text = profileController.currentName;
     cpfCon.text = profileController.currentCpf;
     birthDateCon.text = profileController.currentBirthDate;
     profileController.currentSex == 'Masculino'
         ? sexCon.text = '1'
         : sexCon.text = '2';
-    print(birthDateCon.text);
   }
 
   @override
@@ -60,7 +91,8 @@ class _UserConfigState extends State<UserConfig> {
               padding: const EdgeInsets.only(left: 30.0),
               child: IconButton(
                 icon: const Icon(Icons.arrow_back),
-                onPressed: () {
+                onPressed: () async {
+                  await profileController.getById(profileController.currentId);
                   Navigator.pop(context);
                 },
                 alignment: Alignment.centerRight,
@@ -77,16 +109,11 @@ class _UserConfigState extends State<UserConfig> {
                       _cpf = cpfCon.text;
                       _birthDate = birthDateCon.text;
                       sexCon.text == '1'
-                          ? (_sex = 'Masculino')
-                          : (_sex = 'Feminino');
-                      if (isEmpty() == false) {
-                        _error = false;
-                        profileController
-                            .update(_name, _cpf, _sex, _birthDate)
-                            .then((resposta) => validate(resposta));
-                      } else {
-                        _error = true;
-                      }
+                          ? _sex = 'Masculino'
+                          : _sex = 'Feminino';
+                      userController
+                          .checkToken()
+                          .then((resposta) => updateProfile(resposta));
                     });
                   },
                   child: Text(
@@ -133,23 +160,18 @@ class _UserConfigState extends State<UserConfig> {
                       ),
                     ),
                   )),
-              errorText(_error),
+              ErrorText(_error),
               MyWidgets().caixaTexto('Nome:', nameCon, errorText: _wrongName),
-              MyWidgets().caixaTexto('CPF:', cpfCon, errorText: _wrongCpf),
-              DatePick(birthDateCon, errorText: _wrongBirthDate),
+              MyWidgets().caixaTexto('CPF:', cpfCon,
+                  maxLength: 11, errorText: _wrongCpf),
+              DatePick(birthDateCon, "Data de Nascimento", errorText: _wrongBirthDate),
               GenderPicker(sexCon, dropdownValue: sexCon.text),
               MyWidgets().button(
                   'Excluir Usuário', 150, 45, 17, Color.fromRGBO(255, 0, 0, 1),
                   () {
-                setState(() {
-                  if (userController.profiles.length == 1) {
-                    validateDelete(false);
-                  } else {
-                    profileController
-                        .delete(profileController.currentId)
-                        .then((resposta) => validateDelete(resposta));
-                  }
-                });
+                userController
+                    .checkToken()
+                    .then((resposta) => deleteProfile(resposta));
               }),
             ],
           ),
@@ -180,12 +202,12 @@ class _UserConfigState extends State<UserConfig> {
       });
       showDialog(
           context: context,
-          builder: (_) => alertDialog(
+          builder: (_) => PopUpAlertDialog(
                 "Perfil atualizado com sucesso.",
                 onPressed: () async {
+                  await profileController.getById(profileController.currentId);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => MainScreen()));
-                  await profileController.getById(profileController.currentId);
                 },
               ));
     }
@@ -195,21 +217,22 @@ class _UserConfigState extends State<UserConfig> {
     if (resposta == false) {
       showDialog(
         context: context,
-        builder: (_) =>
-            alertDialog("Impossivel excluir todos os perfis", onPressed: () {
+        builder: (_) => PopUpAlertDialog("Impossivel excluir todos os perfis",
+            onPressed: () {
           Navigator.of(context).pop();
         }),
       );
     } else {
       showDialog(
         context: context,
-        builder: (_) => alertDialog(
+        builder: (_) => PopUpAlertDialog(
           "Perfil deletado com sucesso.",
           onPressed: () async {
+            await _storage.write(key: 'profileIndex', value: "0");
+            await userController.getProfiles(userController.userId);
+            await profileController.getById(userController.profiles[0]['_id']);
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => MainScreen()));
-            await userController.getProfiles(userController.userId);
-            await profileController.getById(userController.profiles[0]);
           },
         ),
       );
