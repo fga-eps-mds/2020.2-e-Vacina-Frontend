@@ -164,7 +164,7 @@ class _UserConfigState extends State<UserConfig> {
               MyWidgets().caixaTexto('Nome:', nameCon, errorText: _wrongName),
               MyWidgets().caixaTexto('CPF:', cpfCon,
                   maxLength: 11, errorText: _wrongCpf),
-              DatePick(birthDateCon, errorText: _wrongBirthDate),
+              DatePick(birthDateCon, "Data de Nascimento", errorText: _wrongBirthDate),
               GenderPicker(sexCon, dropdownValue: sexCon.text),
               MyWidgets().button(
                   'Excluir Usuário', 150, 45, 17, Color.fromRGBO(255, 0, 0, 1),

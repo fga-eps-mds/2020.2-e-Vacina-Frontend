@@ -40,7 +40,7 @@ class MyWidgets {
   }
 
   Widget button(String label, double largura, double altura, double fontSize,
-      Color cor, Function onPressedAction) {
+      Color cor, Function onPressedAction, {Color textColor}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 11.5),
       child: SizedBox(
@@ -53,7 +53,7 @@ class MyWidgets {
           },
           child: Text(
             label,
-            style: TextStyle(fontSize: fontSize),
+            style: TextStyle(fontSize: fontSize, color: textColor),
           ),
         ),
       ),
@@ -318,8 +318,10 @@ class _GenderPickerState extends State<GenderPicker> {
 class DatePick extends StatefulWidget {
   final TextEditingController birthDateController;
   final String errorText;
+  final Color backColor;
+  final String textData;
 
-  const DatePick(this.birthDateController, {Key key, this.errorText})
+  const DatePick(this.birthDateController, this.textData, {Key key, this.errorText, this.backColor})
       : super(key: key);
   @override
   _DatePickState createState() => _DatePickState();
@@ -345,6 +347,7 @@ class _DatePickState extends State<DatePick> {
       child: SizedBox(
         child: OutlinedButton(
           style: OutlinedButton.styleFrom(
+            backgroundColor: widget.backColor,
               side: BorderSide(
             color:
                 widget.errorText == null ? Colors.grey[500] : Colors.red[600],
@@ -368,13 +371,13 @@ class _DatePickState extends State<DatePick> {
             children: [
               Text(
                 widget.birthDateController.text.isEmpty
-                    ? "Data de nascimento"
+                    ? widget.textData
                     : setDate(widget.birthDateController.text),
                 style: TextStyle(
                   fontSize: 16,
                   color: widget.birthDateController.text.isEmpty
                       ? Colors.grey[700]
-                      : Colors.black,
+                      : Colors.grey[800]
                 ),
               ),
               Icon(Icons.arrow_drop_down, size: 23, color: Colors.grey[700]),

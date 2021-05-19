@@ -1,8 +1,8 @@
 import 'package:e_vacina/screens/AddVacinaScreen.dart';
 import 'package:e_vacina/screens/LoginScreen.dart';
+import 'package:e_vacina/screens/TakenVaccinesScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_vacina/globals.dart';
-import 'package:e_vacina/screens/UserConfig.dart';
 import 'package:e_vacina/screens/adminConfig_screen.dart';
 import 'package:e_vacina/component/MyWidgets.dart';
 import 'package:e_vacina/screens/GeneralScreen.dart';
@@ -14,7 +14,6 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-bool _isLoading = true;
 
 class _MainScreenState extends State<MainScreen> {
   List array = profileController.currentName.split(' ');
@@ -51,9 +50,6 @@ class _MainScreenState extends State<MainScreen> {
       backgroundColor: Colors.white,
       title: GestureDetector(
         onTap: () {
-          setState(() {
-            _isLoading = true;
-          });
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => ProfileScreen()));
         },
@@ -105,7 +101,6 @@ class _MainScreenState extends State<MainScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedItem = index;
-      _isLoading = true;
     });
   }
 }
@@ -167,8 +162,16 @@ class ConfigTab extends StatelessWidget {
           }),
           MyWidgets().borderButton(
               'Termos de Uso', 86, 25, Colors.black, Icons.arrow_forward, () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => UserConfig()));
+            showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (_) => PopUpAlertDialog(
+                "Termos de uso em produção.",
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                },
+              ),
+            );
           }),
           MyWidgets().borderButton(
               'Sair', 86, 25, Colors.black, Icons.arrow_forward, () {
@@ -190,46 +193,57 @@ class MainTab extends StatelessWidget {
         child: FutureBuilder(
             future: vaccineController.getTakenVaccine(),
             builder: (context, projectSnap) {
-              if (projectSnap.hasData) {
-                _isLoading = false;
-              }
-              if (_isLoading == true) {
-                return Center(
-                  child: SizedBox(
-                    child: CircularProgressIndicator(),
-                    width: 60,
-                    height: 60,
-                  ),
-                );
-              } else if (projectSnap.data.isEmpty || projectSnap.data == null) {
-                return Center(
-                  child: SizedBox(
-                    height: 90,
-                    width: 90,
-                    child: FloatingActionButton(
-                      elevation: 0,
-                      backgroundColor: Colors.white,
-                      onPressed: () {
-                        print('Botão');
-                      },
-                      child: new Icon(Icons.add,
-                          color: Theme.of(context).primaryColor, size: 80),
+              if (projectSnap.hasError) {
+                return Text("Something went wrong");
+              } else if (projectSnap.connectionState == ConnectionState.done) {
+                if (projectSnap.data.isEmpty || projectSnap.data == null) {
+                  return Center(
+                    child: SizedBox(
+                      height: 90,
+                      width: 90,
+                      child: FloatingActionButton(
+                        elevation: 0,
+                        backgroundColor: Colors.white,
+                        onPressed: () {
+                          print("Oi");
+                        },
+                        child: new Icon(Icons.add,
+                            color: Theme.of(context).primaryColor, size: 80),
+                      ),
                     ),
-                  ),
-                );
+                  );
+                } else {
+                  return ListView.builder(
+                      itemCount: projectSnap.data.length,
+                      padding: EdgeInsets.all(16),
+                      itemBuilder: (context, index) {
+                        Map list = projectSnap.data[index];
+                        return GestureDetector(
+                          child: buildVaccineCard(
+                            list["vaccineId"]["name"],
+                            "Doses tomadas: ${list["dateOfDosesTaken"].length}/${list["vaccineId"]["numberOfDoses"]}",
+                            numberOfDosesTaken: list["dateOfDosesTaken"].length,
+                            numberOfDoses: list["vaccineId"]["numberOfDoses"],
+                          ),
+                          onTap: () async {
+                            await vaccineController
+                                .getDateofTakenVaccine(list['_id']);
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TakenVaccines(
+                                        list["vaccineId"]["name"],
+                                        list["vaccineId"]["numberOfDoses"],
+                                        list["vaccineId"]["periodicity"],
+                                        list["dateOfDosesTaken"],
+                                        list['_id'])));
+                          },
+                        );
+                      });
+                }
               } else {
-                return ListView.builder(
-                    itemCount: projectSnap.data.length,
-                    padding: EdgeInsets.all(16),
-                    itemBuilder: (context, index) {
-                      Map list = projectSnap.data[index];
-                      return buildVaccineCard(
-                        list["vaccineId"]["name"],
-                        "Doses tomadas: ${list["numberOfDosesTaken"]}/${list["vaccineId"]["numberOfDoses"]}",
-                        numberOfDosesTaken: list["numberOfDosesTaken"],
-                        numberOfDoses: list["vaccineId"]["numberOfDoses"],
-                      );
-                    });
+                return Center(child: CircularProgressIndicator());
               }
             }));
   }
@@ -293,12 +307,17 @@ class _SearchTabState extends State<SearchTab> {
                                   "Número de doses: ${list["numberOfDoses"]}",
                                 ),
                                 onTap: () async {
-                                  String vacina = list["_id"];
-                                  await vaccineController.chosenVaccine(vacina);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => AddVacina()));
+                                          builder: (context) => AddVacina(
+                                                list["_id"],
+                                                list["preventDeseases"],
+                                                list["recommendations"],
+                                                list["name"],
+                                                list["description"],
+                                                list["numberOfDoses"],
+                                              )));
                                 },
                               );
                             });

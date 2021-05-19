@@ -100,6 +100,21 @@ mixin _$ProfileController on ProfileControllerBase, Store {
     });
   }
 
+  final _$currentIndexAtom = Atom(name: 'ProfileControllerBase.currentIndex');
+
+  @override
+  int get currentIndex {
+    _$currentIndexAtom.reportRead();
+    return super.currentIndex;
+  }
+
+  @override
+  set currentIndex(int value) {
+    _$currentIndexAtom.reportWrite(value, super.currentIndex, () {
+      super.currentIndex = value;
+    });
+  }
+
   final _$createProfileAsyncAction =
       AsyncAction('ProfileControllerBase.createProfile');
 
@@ -202,6 +217,17 @@ mixin _$ProfileController on ProfileControllerBase, Store {
   }
 
   @override
+  dynamic changeCurrentIndex(int value) {
+    final _$actionInfo = _$ProfileControllerBaseActionController.startAction(
+        name: 'ProfileControllerBase.changeCurrentIndex');
+    try {
+      return super.changeCurrentIndex(value);
+    } finally {
+      _$ProfileControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 currentId: ${currentId},
@@ -209,7 +235,8 @@ currentCpf: ${currentCpf},
 currentName: ${currentName},
 currentSex: ${currentSex},
 currentBirthDate: ${currentBirthDate},
-names: ${names}
+names: ${names},
+currentIndex: ${currentIndex}
     ''';
   }
 }

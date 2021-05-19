@@ -64,6 +64,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                   maxLength: 11, errorText: _wrongCpf),
               DatePick(
                 birthDateCon,
+                "Data de Nascimento",
                 errorText: _wrongBirthDate,
               ),
               GenderPicker(
