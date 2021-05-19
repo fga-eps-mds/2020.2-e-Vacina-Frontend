@@ -1,4 +1,7 @@
+import 'package:e_vacina/screens/LoginScreen.dart';
 import 'package:flutter/material.dart';
+
+import '../globals.dart';
 
 class MyWidgets {
   final Color gangGray = Color.fromRGBO(51, 51, 51, 1.0);
@@ -11,18 +14,25 @@ class MyWidgets {
     int maxLength = TextField.noMaxLength,
     TextInputType textInput = TextInputType.text,
     String errorText,
+    bool enabled = true,
+    Widget suffixIcon,
   }) {
     return Container(
       padding: EdgeInsets.only(bottom: 11.5),
       child: TextField(
+        enabled: enabled,
         controller: inputCon,
         keyboardType: textInput,
         maxLength: maxLength,
         obscureText: isObscure,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
+          disabledBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.black54)),
+          labelStyle: TextStyle(color: Colors.black54),
           labelText: texto,
           errorText: errorText,
+          suffixIcon: suffixIcon,
         ),
         //controller: _textEditingController,
       ),
@@ -30,7 +40,7 @@ class MyWidgets {
   }
 
   Widget button(String label, double largura, double altura, double fontSize,
-      Color cor, Function onPressedAction) {
+      Color cor, Function onPressedAction, {Color textColor}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 11.5),
       child: SizedBox(
@@ -43,7 +53,7 @@ class MyWidgets {
           },
           child: Text(
             label,
-            style: TextStyle(fontSize: fontSize),
+            style: TextStyle(fontSize: fontSize, color: textColor),
           ),
         ),
       ),
@@ -74,7 +84,7 @@ class MyWidgets {
     );
   }
 
-  Widget BorderButton(String label, double altura, double fontSize, Color cor,
+  Widget borderButton(String label, double altura, double fontSize, Color cor,
       IconData arrow, Function onPressed,
       {Icon icon}) {
     return Padding(
@@ -108,18 +118,36 @@ class MyWidgets {
       ),
     );
   }
+
+  void logout(BuildContext context, bool resposta) {
+    if (!resposta) {
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (_) => PopUpAlertDialog(
+          "Sua sessão expirou, por favor faça o login novamente.",
+          onPressed: () {
+            userController.logout();
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => LoginMenu()));
+          },
+        ),
+      );
+    }
+  }
 }
 
-class alertDialog extends StatefulWidget {
+class PopUpAlertDialog extends StatefulWidget {
   final String label;
   final Function onPressed;
 
-  const alertDialog(this.label, {Key key, this.onPressed}) : super(key: key);
+  const PopUpAlertDialog(this.label, {Key key, this.onPressed})
+      : super(key: key);
   @override
-  _alertDialogState createState() => _alertDialogState();
+  _PopUpAlertDialogState createState() => _PopUpAlertDialogState();
 }
 
-class _alertDialogState extends State<alertDialog> {
+class _PopUpAlertDialogState extends State<PopUpAlertDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -145,15 +173,15 @@ class _alertDialogState extends State<alertDialog> {
   }
 }
 
-class errorText extends StatefulWidget {
+class ErrorText extends StatefulWidget {
   final bool error;
 
-  const errorText(this.error, {Key key}) : super(key: key);
+  const ErrorText(this.error, {Key key}) : super(key: key);
   @override
-  _errorTextState createState() => _errorTextState();
+  _ErrorTextState createState() => _ErrorTextState();
 }
 
-class _errorTextState extends State<errorText> {
+class _ErrorTextState extends State<ErrorText> {
   Color mostraTexto() {
     Color color;
     widget.error
@@ -183,18 +211,18 @@ class _errorTextState extends State<errorText> {
   }
 }
 
-class textSwitch extends StatefulWidget {
+class TextSwitch extends StatefulWidget {
   final String label;
   final double altura, fontSize;
   final Icon icon;
 
-  const textSwitch(this.label, this.altura, this.fontSize, {Key key, this.icon})
+  const TextSwitch(this.label, this.altura, this.fontSize, {Key key, this.icon})
       : super(key: key);
   @override
-  _textSwitchState createState() => _textSwitchState();
+  _TextSwitchState createState() => _TextSwitchState();
 }
 
-class _textSwitchState extends State<textSwitch> {
+class _TextSwitchState extends State<TextSwitch> {
   bool _escolha = false;
 
   @override
@@ -254,10 +282,15 @@ class _GenderPickerState extends State<GenderPicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 31.5),
+      height: 92,
+      padding: widget.errorText == null
+          ? EdgeInsets.only(bottom: 31.5)
+          : EdgeInsets.only(bottom: 10.5),
       child: DropdownButtonFormField<String>(
           decoration: InputDecoration(
-              border: OutlineInputBorder(), errorText: widget.errorText),
+            border: OutlineInputBorder(),
+            errorText: widget.errorText,
+          ),
           hint: Text('Sexo'),
           value: widget.dropdownValue,
           isExpanded: true,
@@ -265,7 +298,6 @@ class _GenderPickerState extends State<GenderPicker> {
             setState(() {
               dropdownValue = newValue;
               widget.controller.text = newValue;
-              print(newValue);
             });
           },
           items: [
@@ -285,8 +317,10 @@ class _GenderPickerState extends State<GenderPicker> {
 class DatePick extends StatefulWidget {
   final TextEditingController birthDateController;
   final String errorText;
+  final Color backColor;
+  final String textData;
 
-  const DatePick(this.birthDateController, {Key key, this.errorText})
+  const DatePick(this.birthDateController, this.textData, {Key key, this.errorText, this.backColor})
       : super(key: key);
   @override
   _DatePickState createState() => _DatePickState();
@@ -312,12 +346,12 @@ class _DatePickState extends State<DatePick> {
       child: SizedBox(
         child: OutlinedButton(
           style: OutlinedButton.styleFrom(
+            backgroundColor: widget.backColor,
               side: BorderSide(
             color:
                 widget.errorText == null ? Colors.grey[500] : Colors.red[600],
           )),
           onPressed: () {
-            print(widget.birthDateController.text);
             showDatePicker(
                     context: context,
                     initialDate: _dateTime == null ? DateTime.now() : _dateTime,
@@ -336,13 +370,13 @@ class _DatePickState extends State<DatePick> {
             children: [
               Text(
                 widget.birthDateController.text.isEmpty
-                    ? "Data de nascimento"
+                    ? widget.textData
                     : setDate(widget.birthDateController.text),
                 style: TextStyle(
                   fontSize: 16,
                   color: widget.birthDateController.text.isEmpty
                       ? Colors.grey[700]
-                      : Colors.black,
+                      : Colors.grey[800]
                 ),
               ),
               Icon(Icons.arrow_drop_down, size: 23, color: Colors.grey[700]),

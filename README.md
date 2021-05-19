@@ -1,6 +1,8 @@
 # MDS-G1-Front-End
 # Carteira de Vacinação Digital
 
+[![codecov](https://codecov.io/gh/fga-eps-mds/2020.2-e-Vacina-Frontend/branch/main/graph/badge.svg?token=BJVWE9EXHI)](https://codecov.io/gh/fga-eps-mds/2020.2-e-Vacina-Frontend)
+    
 ## Descrição
 Este é o repositório destinado ao frontend do e-Vacina. O e-Vacina é um aplicativo para IOS e Android de carteira de vacinação digital. O e-Vacina irá ajudar nas campanhas de vacinação da população, informando novas vacinas e campanhas além de guardar dados sobre vacinas já aplicadas.
 

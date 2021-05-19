@@ -7,10 +7,11 @@ import 'package:e_vacina/services/api.dart';
 UserController userController = new UserController();
 ProfileController profileController = new ProfileController();
 VaccineController vaccineController = new VaccineController();
+
 Api api = new Api();
 
 var options = BaseOptions(
-  baseUrl: 'http://localhost:3000',
+  baseUrl: 'https://e-vacina-backend.herokuapp.com',  
   connectTimeout: 5000,
   receiveTimeout: 3000,
 );

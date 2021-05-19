@@ -111,15 +111,50 @@ abstract class ApiBase with Store {
   }
 
   @action
-  getTakenVaccines()async {
-    var token = userController.token;
-    var currentProfile = profileController.currentId;
-    Response response = await dio.get('/taken/p/$currentProfile',
-        options: Options(
-          headers: {'Authorization': 'Bearer $token'},
-        ));
+  postTakenVaccine(String profileId, String vaccineId) async {
+    Response response = await dio.post(
+      '/taken',
+      data: {
+        'profileId': profileId,
+        'vaccineId': vaccineId,
+      },
+    );
     return response;
   }
+
+  @action
+  getTakenVaccines() async {
+    var token = userController.token;
+    var currentProfile = profileController.currentId;
+    Response response = await dio.get(
+      '/taken/p/$currentProfile',
+      options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+      ),
+    );
+    return response;
+  }
+
+  updateTakenVaccine(String takenVaccineId, List date) async {
+    Response response = await dio.put('/taken/$takenVaccineId',
+        data: {
+          'dateOfDosesTaken': date,
+        },);
+    return response;
+  }
+
+  @action
+  getVaccines() async {
+    Response response = await dio.get('/vaccine/');
+    return response;
+  }
+
+  @action
+  getVaccineById(String vacinaId) async {
+    Response response = await dio.get('/vaccine/$vacinaId');
+    return response;
+  }
+
   @action
   getProfilesByUserId(String userId) async {
     var token = userController.token;
@@ -127,6 +162,16 @@ abstract class ApiBase with Store {
         options: Options(
           headers: {'Authorization': 'Bearer $token'},
         ));
+    return response;
+  }
+
+  getTakenVaccineById(String takenVaccineId)async{
+    Response response = await dio.get('/taken/$takenVaccineId');
+    return response;
+  }
+
+  deleteTakenVaccineById(String takenVaccineId)async{
+    Response response = await dio.delete('/taken/$takenVaccineId');
     return response;
   }
 }

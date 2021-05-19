@@ -26,16 +26,13 @@ jobs:
         flutter-version: '2.0.1.x'
     
     - name: Getting the dependencies for the Flutter project
-      run: flutter pub get
-     
-    # - name: Run tests for Flutter
-    #   run: flutter test 
+      run: flutter pub get    
+ 
+    - name: Run tests for Flutter
+      run: flutter test --coverage
       
-    # - name: Run tests for Flutter
-    #   run: flutter test --coverage
-
-    # - name: Sending the results to codecov
-    #   run: bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_TOKEN}}
+    - name: Sending the results to codecov
+      run: bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_TOKEN}}
 
     - name: Running lint
       run: flutter analyze

@@ -24,12 +24,45 @@ mixin _$VaccineController on VaccineControllerBase, Store {
     });
   }
 
+  final _$dateOfTakenVaccinesAtom =
+      Atom(name: 'VaccineControllerBase.dateOfTakenVaccines');
+
+  @override
+  List<dynamic> get dateOfTakenVaccines {
+    _$dateOfTakenVaccinesAtom.reportRead();
+    return super.dateOfTakenVaccines;
+  }
+
+  @override
+  set dateOfTakenVaccines(List<dynamic> value) {
+    _$dateOfTakenVaccinesAtom.reportWrite(value, super.dateOfTakenVaccines, () {
+      super.dateOfTakenVaccines = value;
+    });
+  }
+
+  final _$getVaccinesAsyncAction =
+      AsyncAction('VaccineControllerBase.getVaccines');
+
+  @override
+  Future getVaccines() {
+    return _$getVaccinesAsyncAction.run(() => super.getVaccines());
+  }
+
   final _$getTakenVaccineAsyncAction =
       AsyncAction('VaccineControllerBase.getTakenVaccine');
 
   @override
   Future getTakenVaccine() {
     return _$getTakenVaccineAsyncAction.run(() => super.getTakenVaccine());
+  }
+
+  final _$postTakenVaccineAsyncAction =
+      AsyncAction('VaccineControllerBase.postTakenVaccine');
+
+  @override
+  Future postTakenVaccine(String vaccineId) {
+    return _$postTakenVaccineAsyncAction
+        .run(() => super.postTakenVaccine(vaccineId));
   }
 
   final _$VaccineControllerBaseActionController =
@@ -47,9 +80,21 @@ mixin _$VaccineController on VaccineControllerBase, Store {
   }
 
   @override
+  dynamic changedateOfTakenVaccines(List<dynamic> value) {
+    final _$actionInfo = _$VaccineControllerBaseActionController.startAction(
+        name: 'VaccineControllerBase.changedateOfTakenVaccines');
+    try {
+      return super.changedateOfTakenVaccines(value);
+    } finally {
+      _$VaccineControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-takenVaccines: ${takenVaccines}
+takenVaccines: ${takenVaccines},
+dateOfTakenVaccines: ${dateOfTakenVaccines}
     ''';
   }
 }

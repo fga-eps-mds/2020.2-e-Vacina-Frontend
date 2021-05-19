@@ -18,8 +18,8 @@ class _LoginMenuState extends State<LoginMenu> {
   var _email;
   var _password;
   List profiles;
-  String _wrongEmail = null;
-  String _wrongPassword = null;
+  String _wrongEmail;
+  String _wrongPassword;
 
   void mudaTela(bool resposta) async {
     if (resposta == true) {
@@ -41,6 +41,7 @@ class _LoginMenuState extends State<LoginMenu> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
@@ -77,7 +78,6 @@ class _LoginMenuState extends State<LoginMenu> {
             }),
             Text('OU\n'),
             MyWidgets().button('Registre-se', 200.0, 50.0, 16, gangGray, () {
-              print('Registrar');
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => RegisterScreen()));
             }),
