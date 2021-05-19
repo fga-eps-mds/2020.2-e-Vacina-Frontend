@@ -13,7 +13,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   List array = profileController.currentName.split(' ');
   String _nome = profileController.currentName;
-  bool _isLoading = true;
+  
 
   String splitName(List array) {
     String name;
