@@ -13,7 +13,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   List array = profileController.currentName.split(' ');
   String _nome = profileController.currentName;
-  bool _isLoading = true;
+  
 
   String splitName(List array) {
     String name;
@@ -112,21 +112,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             FutureBuilder(
                 future: userController.getProfiles(userController.userId),
                 builder: (context, projectSnaps) {
-                  if (projectSnaps.hasData) {
-                    _isLoading = false;
-                  }
-                  if (_isLoading == true) {
-                    return Container(
-                      height: MediaQuery.of(context).size.height * 0.6,
-                      child: Center(
-                        child: SizedBox(
-                          child: CircularProgressIndicator(),
-                          width: 60,
-                          height: 60,
-                        ),
-                      ),
-                    );
-                  }
+                   if (projectSnaps.hasError) {
+                return Text("Something went wrong");
+              } else if (projectSnaps.connectionState == ConnectionState.done) {
                   return ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
@@ -136,6 +124,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         return buildListProfiles(
                             context, i, profile[i]['name'], profile[i]['_id']);
                       });
+              }else{
+                return Center(child: CircularProgressIndicator());
+              }
                 })
           ],
         ),

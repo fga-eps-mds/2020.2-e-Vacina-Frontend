@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:e_vacina/globals.dart';
 import 'package:e_vacina/screens/adminConfig_screen.dart';
 import 'package:e_vacina/component/MyWidgets.dart';
+import 'GeneralScreen.dart';
 import 'package:e_vacina/screens/GeneralScreen.dart';
 import 'package:e_vacina/screens/ProfilesScreen.dart';
 import 'package:e_vacina/component/CardVaccine.dart';
@@ -13,7 +14,6 @@ class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();
 }
-
 
 class _MainScreenState extends State<MainScreen> {
   List array = profileController.currentName.split(' ');
@@ -33,9 +33,11 @@ class _MainScreenState extends State<MainScreen> {
 
   final tabs = [ConfigTab(), MainTab(), SearchTab()];
 
+
+
   @override
   Widget build(BuildContext context) {
-    vaccineController.getTakenVaccine();
+        vaccineController.getTakenVaccine();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appBar(),
@@ -186,7 +188,6 @@ class ConfigTab extends StatelessWidget {
 }
 
 class MainTab extends StatelessWidget {
-  //bool _isLoading = true;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -245,7 +246,10 @@ class MainTab extends StatelessWidget {
               } else {
                 return Center(child: CircularProgressIndicator());
               }
-            }));
+        }
+        )
+    );
+    
   }
 }
 

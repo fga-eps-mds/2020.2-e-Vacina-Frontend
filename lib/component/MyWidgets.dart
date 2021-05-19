@@ -86,7 +86,7 @@ class MyWidgets {
 
   Widget borderButton(String label, double altura, double fontSize, Color cor,
       IconData arrow, Function onPressed,
-      {Icon icon, CircleAvatar circle}) {
+      {Icon icon}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 0),
       child: SizedBox(
@@ -99,7 +99,6 @@ class MyWidgets {
             children: [
               Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                 if (icon != null) icon,
-                if (circle != null) circle,
                 Padding(
                   padding: EdgeInsets.only(left: 8),
                   child: Text(

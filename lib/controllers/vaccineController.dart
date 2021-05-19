@@ -13,7 +13,7 @@ abstract class VaccineControllerBase with Store {
   @observable
   List takenVaccines;
 
-  @action
+  @action 
   changeTakenVaccine(List value) => takenVaccines = value;
 
   @observable

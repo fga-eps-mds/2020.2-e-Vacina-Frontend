@@ -216,7 +216,6 @@ class _UserConfigState extends State<UserConfig> {
   void validateDelete(bool resposta) async {
     if (resposta == false) {
       showDialog(
-        barrierDismissible: false,
         context: context,
         builder: (_) => PopUpAlertDialog("Impossivel excluir todos os perfis",
             onPressed: () {
@@ -225,7 +224,6 @@ class _UserConfigState extends State<UserConfig> {
       );
     } else {
       showDialog(
-        barrierDismissible: false,
         context: context,
         builder: (_) => PopUpAlertDialog(
           "Perfil deletado com sucesso.",
