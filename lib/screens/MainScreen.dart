@@ -14,7 +14,6 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-bool _isLoading = true;
 
 class _MainScreenState extends State<MainScreen> {
   List array = profileController.currentName.split(' ');
@@ -51,9 +50,6 @@ class _MainScreenState extends State<MainScreen> {
       backgroundColor: Colors.white,
       title: GestureDetector(
         onTap: () {
-          setState(() {
-            _isLoading = true;
-          });
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => ProfileScreen()));
         },
@@ -105,7 +101,6 @@ class _MainScreenState extends State<MainScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedItem = index;
-      _isLoading = true;
     });
   }
 }

@@ -121,6 +121,14 @@ mixin _$UserController on UserControllerBase, Store {
     return _$loginAsyncAction.run(() => super.login(email, password));
   }
 
+  final _$persistLoginAsyncAction =
+      AsyncAction('UserControllerBase.persistLogin');
+
+  @override
+  Future persistLogin() {
+    return _$persistLoginAsyncAction.run(() => super.persistLogin());
+  }
+
   final _$logoutAsyncAction = AsyncAction('UserControllerBase.logout');
 
   @override
@@ -158,6 +166,13 @@ mixin _$UserController on UserControllerBase, Store {
   @override
   Future getProfiles(String userId) {
     return _$getProfilesAsyncAction.run(() => super.getProfiles(userId));
+  }
+
+  final _$checkTokenAsyncAction = AsyncAction('UserControllerBase.checkToken');
+
+  @override
+  Future checkToken() {
+    return _$checkTokenAsyncAction.run(() => super.checkToken());
   }
 
   final _$UserControllerBaseActionController =

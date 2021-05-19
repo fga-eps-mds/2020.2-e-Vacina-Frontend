@@ -22,9 +22,11 @@ class TakenVaccines extends StatefulWidget {
 class _TakenVaccinesState extends State<TakenVaccines> {
   String dropdownValue;
   final birthDateCon = new TextEditingController();
+  final doseCon = new TextEditingController();
   String _wrongBirthDate;
   String dropdown;
-  var dateTakenVaccines = new List();
+  List dateTakenVaccines = [];
+  bool _error = false;
 
   //  void initState() {
   //   super.initState();
@@ -73,7 +75,7 @@ class _TakenVaccinesState extends State<TakenVaccines> {
                       style: TextStyle(fontSize: 20, color: Colors.black)),
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0),
-                    child: dosePick(widget.numberOfDoses),
+                    child: dosePick(widget.numberOfDosesTaken.length + 1),
                   ),
                 ],
               ),
@@ -89,6 +91,7 @@ class _TakenVaccinesState extends State<TakenVaccines> {
                   ),
                   DatePick(
                     birthDateCon,
+                    "Selecione a Data",
                     errorText: _wrongBirthDate,
                     backColor: Colors.white,
                   ),
@@ -115,37 +118,50 @@ class _TakenVaccinesState extends State<TakenVaccines> {
                     ),
                   ],
                 )),
+            Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: ErrorText(_error),
+            ),
             Container(
-              height: MediaQuery.of(context).size.height * 0.15,
+              height: MediaQuery.of(context).size.height * 0.11,
               alignment: Alignment.bottomCenter,
               width: MediaQuery.of(context).size.width,
               color: Theme.of(context).primaryColor,
               child: MyWidgets().button('Tomar dose', 177.0, 45.0, 20,
                   Color.fromRGBO(153, 238, 255, 1), () async {
-                dateTakenVaccines = vaccineController.dateOfTakenVaccines;
-                int intParse = int.parse(dropdown);
-                print(intParse);
-                print(birthDateCon.text);
-                if (intParse > dateTakenVaccines.length) {
-                  dateTakenVaccines.add(birthDateCon.text);
-                } else {
-                  dateTakenVaccines[intParse - 1] = birthDateCon.text;
-                }
-                await vaccineController.updateTakenVaccine(
-                    widget.takenVaccineId, dateTakenVaccines);
-                showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (_) => PopUpAlertDialog(
-                    "Dose tomada com sucesso.",
-                    onPressed: () async {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MainScreen()));
-                    },
-                  ),
-                );
+                if (isEmpty() == false) {
+                  setState(() {
+                    _error = false;
+                  });
+                  dateTakenVaccines = vaccineController.dateOfTakenVaccines;
+                  int intParse = int.parse(dropdown);
+                  print(intParse);
+                  print(birthDateCon.text);
+                  if (intParse > dateTakenVaccines.length) {
+                    dateTakenVaccines.add(birthDateCon.text);
+                  } else {
+                    dateTakenVaccines[intParse - 1] = birthDateCon.text;
+                  }
+                  await vaccineController.updateTakenVaccine(
+                      widget.takenVaccineId, dateTakenVaccines);
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (_) => PopUpAlertDialog(
+                      "Dose tomada com sucesso.",
+                      onPressed: () async {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainScreen()));
+                      },
+                    ),
+                  );
+                } else{
+                  setState(() {
+                    _error = true;
+                  });
+                  }
               }, textColor: Colors.black),
             ),
             Container(
@@ -195,15 +211,16 @@ class _TakenVaccinesState extends State<TakenVaccines> {
   }
 
   Widget dosePick(int tamanho) {
+    if(tamanho >= widget.numberOfDoses) tamanho = widget.numberOfDoses;
     final itens = List<String>.generate(tamanho, (i) => "${i + 1}");
     return Container(
       alignment: Alignment.bottomCenter,
-      // padding: EdgeInsets.only(right:15),
       width: MediaQuery.of(context).size.width * 0.475,
       height: 80,
       child: DropdownButtonFormField<String>(
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
+            border: OutlineInputBorder(
+            ),
             fillColor: Colors.white,
             filled: true,
           ),
@@ -213,6 +230,7 @@ class _TakenVaccinesState extends State<TakenVaccines> {
           onChanged: (String newValue) {
             setState(() {
               dropdown = newValue;
+              doseCon.text = newValue;
             });
           },
           items: itens.map<DropdownMenuItem<String>>((String value) {
@@ -231,8 +249,9 @@ class _TakenVaccinesState extends State<TakenVaccines> {
       birthDateCon.text.isEmpty
           ? _wrongBirthDate = text
           : _wrongBirthDate = null;
+      // doseCon.text.isEmpty ? _wrongDose = text : _wrongDose = null;
     });
-    if (birthDateCon.text.isEmpty) {
+    if (birthDateCon.text.isEmpty || doseCon.text.isEmpty) {
       empty = true;
     }
     return empty;

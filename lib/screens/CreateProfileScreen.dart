@@ -131,7 +131,7 @@ class _CreateProfileState extends State<CreateProfile> {
               MyWidgets().caixaTexto('Nome:', nameCon, errorText: _wrongName),
               MyWidgets().caixaTexto('CPF:', cpfCon,
                   maxLength: 11, errorText: _wrongCpf),
-              DatePick(birthDateCon, errorText: _wrongBirthDate),
+              DatePick(birthDateCon, "Data de Nascimento" , errorText: _wrongBirthDate),
               GenderPicker(sexCon, errorText: _wrongSex),
             ],
           ),

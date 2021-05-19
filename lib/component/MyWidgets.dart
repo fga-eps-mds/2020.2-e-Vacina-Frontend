@@ -312,8 +312,9 @@ class DatePick extends StatefulWidget {
   final TextEditingController birthDateController;
   final String errorText;
   final Color backColor;
+  final String textData;
 
-  const DatePick(this.birthDateController, {Key key, this.errorText, this.backColor})
+  const DatePick(this.birthDateController, this.textData, {Key key, this.errorText, this.backColor})
       : super(key: key);
   @override
   _DatePickState createState() => _DatePickState();
@@ -363,7 +364,7 @@ class _DatePickState extends State<DatePick> {
             children: [
               Text(
                 widget.birthDateController.text.isEmpty
-                    ? "Data de nascimento"
+                    ? widget.textData
                     : setDate(widget.birthDateController.text),
                 style: TextStyle(
                   fontSize: 16,
