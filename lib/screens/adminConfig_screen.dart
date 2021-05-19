@@ -2,20 +2,29 @@ import 'package:e_vacina/globals.dart';
 import 'package:e_vacina/screens/LoginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_vacina/component/MyWidgets.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AdminConfig extends StatefulWidget {
   @override
   AdminConfigState createState() => AdminConfigState();
 }
 
+final _storage = new FlutterSecureStorage();
+
 class AdminConfigState extends State<AdminConfig> {
   final passwordCon = new TextEditingController();
   final emailCon = new TextEditingController();
   final phoneCon = new TextEditingController();
+  final passCon = new TextEditingController();
+  final newEmailCon = new TextEditingController();
+  final newPhoneCon = new TextEditingController();
+  final newPasswordCon = new TextEditingController();
 
   var _phone;
   var _email;
   var _password;
+
+  String _wrongPassword;
 
   void deleteUser(bool resposta) {
     if (resposta) {
@@ -26,11 +35,53 @@ class AdminConfigState extends State<AdminConfig> {
       MyWidgets().logout(context, resposta);
   }
 
-  void updateUser(bool resposta) async {
+  void changeEmail(bool resposta) {
     if (resposta) {
-      await userController.update(_email, _phone, _password);
-    } else
+      setState(() {
+        passCon.text = "";
+      });
+      requestPassword(
+          _wrongPassword,
+          update("Insira o novo email:", emailCon, newEmailCon, null,
+              "Email já cadastrado.",
+              email: true));
+    } else {
       MyWidgets().logout(context, resposta);
+    }
+  }
+
+  void changePhone(bool resposta) {
+    if (resposta) {
+      setState(() {
+        passCon.text = "";
+      });
+      requestPassword(
+          _wrongPassword,
+          update("Insira o novo telefone:", phoneCon, newPhoneCon, null,
+              "Telefone já cadastrado.",
+              phoneNunber: true));
+    } else {
+      MyWidgets().logout(context, resposta);
+    }
+  }
+
+  void changePassword(bool resposta) {
+    if (resposta) {
+      setState(() {
+        passCon.text = "";
+      });
+      requestPassword(
+          _wrongPassword,
+          update(
+              "Insira a nova senha:", passwordCon, newPasswordCon, null, null,
+              password: true));
+    } else {
+      MyWidgets().logout(context, resposta);
+    }
+  }
+
+  void initPassword() async {
+    passwordCon.text = await _storage.read(key: 'password');
   }
 
   @override
@@ -38,6 +89,7 @@ class AdminConfigState extends State<AdminConfig> {
     super.initState();
     emailCon.text = userController.email;
     phoneCon.text = userController.phoneNumber;
+    initPassword();
   }
 
   @override
@@ -49,9 +101,9 @@ class AdminConfigState extends State<AdminConfig> {
         elevation: 5,
         shadowColor: Color.fromRGBO(0, 0, 0, 1),
         centerTitle: true,
-        title: Center(
+        title: Container(
           child: Text(
-            'Informações\nusuario',
+            'Informações\nde usuario',
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: 15,
@@ -71,31 +123,6 @@ class AdminConfigState extends State<AdminConfig> {
             ),
           );
         }),
-        actions: <Widget>[
-          Padding(
-              padding: const EdgeInsets.only(right: 30.0),
-              child: TextButton(
-                onPressed: () {
-                  setState(() {
-                    _email = emailCon.text;
-                    _password = passwordCon.text;
-                    _phone = phoneCon.text;
-                  });
-                  userController
-                      .checkToken()
-                      .then((resposta) => deleteUser(resposta));
-                },
-                child: Text(
-                  "Excluir\nUsuário",
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 15,
-                    color: Colors.red,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              )),
-        ],
       ),
       body: Container(
         child: SingleChildScrollView(
@@ -104,24 +131,83 @@ class AdminConfigState extends State<AdminConfig> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              MyWidgets().caixaTexto('Email', emailCon),
-              MyWidgets().caixaTexto('Telefone', phoneCon),
-              MyWidgets().caixaTexto('Senha', passwordCon, isObscure: true),
+              Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  MyWidgets().caixaTexto('Email', emailCon, enabled: false),
+                  Padding(
+                      padding: EdgeInsets.only(top: 5),
+                      child: TextButton(
+                          onPressed: () {
+                            userController
+                                .checkToken()
+                                .then((resposta) => changeEmail(resposta));
+                          },
+                          child: Text("Alterar")))
+                ],
+              ),
+              Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  MyWidgets().caixaTexto('Telefone', phoneCon, enabled: false),
+                  Padding(
+                      padding: EdgeInsets.only(top: 5),
+                      child: TextButton(
+                          onPressed: () {
+                            userController
+                                .checkToken()
+                                .then((resposta) => changePhone(resposta));
+                          },
+                          child: Text("Alterar")))
+                ],
+              ),
+              Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  MyWidgets().caixaTexto('Senha', passwordCon,
+                      isObscure: true, enabled: false),
+                  Padding(
+                      padding: EdgeInsets.only(top: 5),
+                      child: TextButton(
+                          onPressed: () {
+                            userController
+                                .checkToken()
+                                .then((resposta) => changePassword(resposta));
+                          },
+                          child: Text("Alterar")))
+                ],
+              ),
               MyWidgets().button(
-                'Salvar',
-                200,
-                50,
+                'Excluir usuário',
+                150,
+                45,
                 17,
-                Theme.of(context).primaryColor,
+                Color.fromRGBO(255, 0, 0, 1),
                 () {
-                  setState(() {
-                    _email = emailCon.text;
-                    _phone = phoneCon.text;
-                    _password = passwordCon.text;
-                  });
-                  userController
-                      .checkToken()
-                      .then((resposta) => updateUser(resposta));
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (_) => AlertDialog(
+                            title: Text(
+                                "Você realmente deseja excluir este usuário?"),
+                            content: Text(
+                              "Ao confirmar essa escolha, todos os seus perfis e suas respectivas carteiras de vacina serão excluídos. Tem certeza que deseja fazer isso?",
+                              textAlign: TextAlign.justify,
+                            ),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("Não")),
+                              TextButton(
+                                  onPressed: () {
+                                    userController.checkToken().then(
+                                        (resposta) => deleteUser(resposta));
+                                  },
+                                  child: Text("Sim"))
+                            ],
+                          ));
                 },
               ),
               Padding(
@@ -130,6 +216,169 @@ class AdminConfigState extends State<AdminConfig> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget update(
+    String title,
+    TextEditingController controller,
+    TextEditingController newController,
+    String errorText,
+    String fromError, {
+    bool email = false,
+    bool phoneNunber = false,
+    bool password = false,
+  }) {
+    return AlertDialog(
+      title: Text(title),
+      content: TextField(
+        obscureText: password,
+        controller: newController,
+        decoration: InputDecoration(
+          errorText: errorText,
+        ),
+      ),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Cancelar")),
+        TextButton(
+          onPressed: () async {
+            bool resposta = await userController.checkToken();
+            if (resposta) {
+              if (email) {
+                setState(() {
+                  _email = newController.text;
+                });
+                if (await userController.update(_email, phoneCon.text, null)) {
+                  await _storage.write(key: 'email', value: _email);
+                  setState(() {
+                    controller.text = _email;
+                  });
+                  Navigator.of(context).pop();
+                } else {
+                  setState(() {
+                    errorText = fromError;
+                  });
+                  Navigator.of(context).pop();
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (_) => update(title, controller, newController,
+                          errorText, fromError,
+                          email: email,
+                          phoneNunber: phoneNunber,
+                          password: password));
+                }
+              } else if (phoneNunber) {
+                setState(() {
+                  _phone = newController.text;
+                });
+                if (await userController.update(emailCon.text, _phone, null)) {
+                  setState(() {
+                    controller.text = _phone;
+                  });
+                  Navigator.of(context).pop();
+                } else {
+                  setState(() {
+                    errorText = fromError;
+                  });
+                  Navigator.of(context).pop();
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (_) => update(title, controller, newController,
+                          errorText, fromError,
+                          email: email,
+                          phoneNunber: phoneNunber,
+                          password: password));
+                }
+              } else if (password) {
+                setState(() {
+                  _password = newController.text;
+                });
+                if (await userController.update(
+                    emailCon.text, phoneCon.text, _password)) {
+                  await _storage.write(key: 'password', value: _password);
+                  setState(() {
+                    controller.text = _password;
+                  });
+                  Navigator.of(context).pop();
+                }
+              }
+            } else
+              MyWidgets().logout(context, resposta);
+          },
+          child: Text("Ok"),
+        )
+      ],
+    );
+  }
+
+  void requestPassword(String wrongPassword, Widget newPopUp) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text("Insira sua senha:"),
+        content: TextField(
+          obscureText: true,
+          controller: passCon,
+          decoration: InputDecoration(
+            errorText: wrongPassword,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              "Cancelar",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              bool resposta = await userController.checkToken();
+              if (resposta) {
+                setState(() {
+                  _password = passCon.text;
+                });
+                if (await userController.login(
+                    userController.email, _password)) {
+                  Navigator.of(context).pop();
+                  setState(() {
+                    newEmailCon.text = "";
+                    newPhoneCon.text = "";
+                    newPasswordCon.text = "";
+                  });
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (_) => newPopUp);
+                } else {
+                  Navigator.of(context).pop();
+                  requestPassword("Senha incorreta", newPopUp);
+                }
+              } else
+                MyWidgets().logout(context, resposta);
+            },
+            child: Text(
+              "Ok",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

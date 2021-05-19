@@ -10,7 +10,7 @@ VaccineController vaccineController = new VaccineController();
 Api api = new Api();
 
 var options = BaseOptions(
-  baseUrl: 'localhost:3000', //'https://6f7f2a7a5e77.ngrok.io',
+  baseUrl: 'https://e-vacina-backend.herokuapp.com',
   connectTimeout: 5000,
   receiveTimeout: 3000,
 );
