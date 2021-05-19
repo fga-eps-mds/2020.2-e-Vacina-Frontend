@@ -23,16 +23,41 @@ class _TakenVaccinesState extends State<TakenVaccines> {
   String dropdownValue;
   final birthDateCon = new TextEditingController();
   final doseCon = new TextEditingController();
+  final previewDose = new TextEditingController();
   String _wrongBirthDate;
   String dropdown;
   List dateTakenVaccines = [];
   bool _error = false;
+  String _date;
+  DateTime nextDose;
+  var day;
+  var month;
+  var year;
 
-  //  void initState() {
-  //   super.initState();
-  //   dropdown = "1";
-  //   birthDateCon.text = vaccineController.takenVaccines[0];
-  // }
+  String setDate(String dateTime) {
+    setState(() {
+      day = dateTime.substring(8, 10);
+      month = dateTime.substring(5, 7);
+      year = dateTime.substring(0, 4);
+      _date ="$day/$month/$year";
+    });
+    return _date;
+  }
+
+   void initState() {
+    super.initState();
+    if (widget.numberOfDosesTaken.length == 0 || widget.numberOfDosesTaken.length == widget.numberOfDoses){
+      previewDose.text = "Indisponivel";
+    }else{
+      setDate(widget.numberOfDosesTaken[widget.numberOfDosesTaken.length - 1]);
+      int dayParse = int.parse(day);
+      int monthParse = int.parse(month);
+      int yearParse = int.parse(year);
+      nextDose = new DateTime(yearParse, monthParse, dayParse);
+      nextDose = nextDose.add(Duration(days: widget.periodicity));
+      previewDose.text = setDate(nextDose.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,13 +132,14 @@ class _TakenVaccinesState extends State<TakenVaccines> {
                       "Data prevista para próxima dose:",
                       style: TextStyle(fontSize: 20, color: Colors.black),
                     ),
-                    TextField(
-                      decoration: InputDecoration(
+                    TextField(                     
+                      decoration: InputDecoration(                 
                         filled: true,
                         fillColor: Colors.white,
                         enabled: false,
                         border: OutlineInputBorder(),
-                        labelText: 'Indisponivel',
+                        labelText: previewDose.text, 
+                        labelStyle: TextStyle(color: Colors.black),
                       ),
                     ),
                   ],
@@ -224,13 +250,18 @@ class _TakenVaccinesState extends State<TakenVaccines> {
             fillColor: Colors.white,
             filled: true,
           ),
-          hint: Text('Dose'),
+          hint: Text('Dose', style: TextStyle(color: Colors.black),),
           value: dropdown,
           isExpanded: true,
           onChanged: (String newValue) {
             setState(() {
               dropdown = newValue;
               doseCon.text = newValue;
+              int intParse = int.parse(newValue);
+              if(intParse > widget.numberOfDosesTaken.length){
+              birthDateCon.text = "";
+              }else
+              birthDateCon.text = vaccineController.dateOfTakenVaccines[intParse - 1];
             });
           },
           items: itens.map<DropdownMenuItem<String>>((String value) {

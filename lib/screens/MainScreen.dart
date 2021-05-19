@@ -205,7 +205,7 @@ class MainTab extends StatelessWidget {
                         elevation: 0,
                         backgroundColor: Colors.white,
                         onPressed: () {
-                          print('Botão');
+                          print("Oi");
                         },
                         child: new Icon(Icons.add,
                             color: Theme.of(context).primaryColor, size: 80),
