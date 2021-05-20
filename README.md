@@ -34,6 +34,13 @@ Para executar o flutter:
 $ flutter run
 ```
 
+## Apresentações
+
+[Apresentação da Realese 1](https://youtu.be/3epp9Zc3qPY) 
+
+[Apresentação da Realese 2](https://youtu.be/ySeF4msKQL8)
+
+
 ## Equipe
  Matricula|  Aluno  ||
  ---|---|---
